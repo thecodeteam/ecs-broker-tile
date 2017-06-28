@@ -21,7 +21,7 @@ Currently, the Tile version 0.9.0 public beta is availabe to download and deploy
 
 ## Requirement
 
-* ECS Cluster configured and runing. If you do not have one please refer to [ECS Test Drive ](https://portal.ecstestdrive.com to create an account)
+* ECS Cluster configured and runing. If you do not have one please refer to [ECS Test Drive](https://portal.ecstestdrive.com) to create an account
 * ECS VIP address for Management and Object 
 * Namespace and Replication group
 * ECS  SSL cert, to get the ssl cert use ```openssl s_client  -connect <ecsvip>:443 –showcert ``` to get ssl
