@@ -1,0 +1,15 @@
+---
+platform: "linux"
+image: "docker:///concourse/concourse-ci"  # Run inside a docker image that bundles bosh cli
+params:
+  RELEASE_VERSION:                         # Comes from Environment variable
+  RELEASE_NAME:
+  TILE_VERSION: 0.9.0
+  PRODUCT_VERSION: 1.5
+
+inputs:
+  - name: "release"                        
+  - name: "repo"                           
+
+run:
+  path: "repo/ci/scripts/create-ecs-broker-tile.sh"

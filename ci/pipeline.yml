@@ -1,0 +1,34 @@
+---
+resources:
+- name: repo-master
+  type: git
+  source:
+  uri: https://github.com/codedellemc/ecs-broker-tile.git
+
+- name: "ecs-broker-tile"
+  type: s3
+  source:
+    bucket: {{tile-bucket}}
+    regexp: "ecs-broker-tile-(.*).pivotal"
+    access_key_id: {{release-access-key}}
+    secret_access_key: {{release-secret-key}}
+
+jobs:
+
+
+- name: ecs-broker-tile
+  public: true
+  plan:
+  - get: "repo"
+    resource: "repo-master"
+  - get: "release"
+    resource: "ecs-broker-release"
+    params:
+      from: "resources/ecs-broker-1.5.tgz"
+  - task: create-tile
+    privileged: true    # Need to run apt-get install zip...
+    file: repo/ci/scripts/create-tile/task.yml
+  - put: ecs-broker-tile
+    params:
+      from: "ecs-broker-tile-(*).pivotal"
+
