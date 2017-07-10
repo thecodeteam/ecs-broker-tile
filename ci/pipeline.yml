@@ -1,6 +1,35 @@
 ---
+groups:
+-name ci
+  jobs
+  - build-base-image
+  - unit-tests
+  - install-tile-generator
+  - build-ecs-broker-tile
+
+resource_types:
+
+- name: slack-notification
+  type: docker-image
+  source:
+    repository: cfcommunity/slack-notification-resource
+    tag: latest
+
+- name: pypi
+  type: docker-image
+  source:
+    repository: cfplatformeng/concourse-pypi-resource
+  
 resources:
-- name: repo-master
+- name: tile-generator-repo
+  type: git
+  source:
+    ignore_paths: [ "ci/docker-tile-generator", "ci/docker-tile-pipeline" ]
+    branch: {{github-branch}}
+    uri: http://github.com/cf-platform-eng/tile-generator.git
+
+
+- name: ecs-broker-tile-repo
   type: git
   source:
   uri: https://github.com/codedellemc/ecs-broker-tile.git
@@ -12,23 +41,162 @@ resources:
     regexp: "ecs-broker-tile-(.*).pivotal"
     access_key_id: {{release-access-key}}
     secret_access_key: {{release-secret-key}}
-
+	
+- name: slack-alert
+  type: slack-notification
+  source:
+    url: {{slack-hook}}
+	
 jobs:
-
-
-- name: ecs-broker-tile
-  public: true
+- name: build-base-image
   plan:
-  - get: "repo"
-    resource: "repo-master"
-  - get: "release"
-    resource: "ecs-broker-release"
+  - get: base-pipeline-dockerfile-repo
+    trigger: true
+  - put: base-pipeline-docker-image
     params:
-      from: "resources/ecs-broker-1.5.tgz"
-  - task: create-tile
-    privileged: true    # Need to run apt-get install zip...
-    file: repo/ci/scripts/create-tile/task.yml
-  - put: ecs-broker-tile
-    params:
-      from: "ecs-broker-tile-(*).pivotal"
+      build: base-pipeline-dockerfile-repo/ci/docker-tile-pipeline
+	  
+- name: unit-tests
+  plan:
+  - aggregate:
+    - get: base-pipeline-docker-image
+      passed: [ build-base-image ]
+      trigger: true
+    - get: tile-generator-repo
+      trigger: true
+  - task: run-unit-tests
+    image: base-pipeline-docker-image
+    config:
+      platform: linux
+      inputs:
+      - name: tile-generator-repo
+      run:
+        path: tile-generator-repo/ci/scripts/run-unittests.sh
+        args: [ "tile-generator-repo/tile_generator" ]
+    on_failure:
+      aggregate:
+      - put: slack-alert
+        params:
+          channel: {{slack-channel}}
+          icon_emoji: ':concourse:'
+          text: 'Unit tests failed, check <https://concourse.cfplatformeng.com/teams/main/pipelines/tile-generator|here> for details'
+          username: Tile Generator	  
 
+
+- name: install-tile-generator
+  disable_manual_trigger: true
+  plan:
+  - aggregate:
+    - get: base-pipeline-docker-image
+      passed: [ package-tile-generator ]
+      trigger: true
+    - get: tile-generator-package
+      passed: [ package-tile-generator ]
+      trigger: true
+    - get: tile-generator-repo
+      passed: [ package-tile-generator ]
+      trigger: true
+    - get: version
+      passed: [ package-tile-generator ]
+    - get: tile-generator-dockerfile-repo
+      trigger: true
+  - task: prepare-docker-build
+    image: base-pipeline-docker-image
+    config:
+      platform: linux
+      inputs:
+      - name: tile-generator-dockerfile-repo
+      - name: tile-generator-package
+      outputs:
+      - name: docker-build-dir
+      run:
+        path: sh
+        args:
+        - -c
+        - cp tile-generator-package/* docker-build-dir/ && cp tile-generator-dockerfile-repo/ci/docker-tile-generator/* docker-build-dir/
+    on_failure:
+      aggregate:
+      - put: slack-alert
+        params:
+          channel: {{slack-channel}}
+          icon_emoji: ':concourse:'
+          text: 'Tile Generator docker build failed, check <https://concourse.cfplatformeng.com/teams/main/pipelines/tile-generator|here> for details'
+          username: Tile Generator
+  - put: tile-generator-docker-image
+    params:
+      build: docker-build-dir
+      tag: version/version
+      tag_prefix: v
+
+	  
+- name: build-ecs-broker-tile
+  disable_manual_trigger: true
+  plan:
+  - aggregate:
+    - get: tile-generator-docker-image
+      passed: [ install-tile-generator ]
+      trigger: true
+    - get: ecs-broker-boshrelease
+    - get: tile-history
+      trigger: false
+    - get: tile-generator-repo
+      passed: [ install-tile-generator ]
+      trigger: true
+    - get: version
+      passed: [ install-tile-generator ]
+    - get: tile-generator-package
+      passed: [ install-tile-generator ]
+      trigger: true
+  - task: build-broker-tile
+    image: tile-generator-docker-image
+    config:
+      platform: linux
+      inputs:
+      - name: tile-generator-repo
+      - name: ecs-broker-boshrelease
+      outputs:
+      - name: ecs-broker-tile
+      run:
+        path: sh
+        args:
+        - -c
+        - cp resources/ecs-broker*.tgz tile-generator-repo/sample/resources/ && tile-generator-repo/sample/src/build.sh ecs-broker-tile.0.9.0
+    on_failure:
+      aggregate:
+      - put: slack-alert
+        params:
+          channel: {{slack-channel}}
+          icon_emoji: ':concourse:'
+          text: 'Sample app build failed, check <https://concourse.cfplatformeng.com/teams/main/pipelines/tile-generator|here> for details'
+          username: Tile Generator
+  - put: app-docker-image
+    params:
+      build: sample-tile-build/src
+  - get: app-docker-image
+    params:
+      save: true
+  - task: populate-docker-cache
+    image: tile-generator-docker-image
+    config:
+      platform: linux
+      inputs:
+      - name: app-docker-image
+      outputs:
+      - name: docker-cache
+      run:
+        path: sh
+        args: [ "-c", 'cp app-docker-image/image docker-cache/guidowb-sample-cf-app.tgz']
+    on_failure:
+      aggregate:
+      - put: slack-alert
+        params:
+          channel: {{slack-channel}}
+          icon_emoji: ':concourse:'
+          text: 'Sample app docker build failed, check <https://concourse.cfplatformeng.com/teams/main/pipelines/tile-generator|here> for details'
+          username: Tile Generator
+    - put: tile-history
+    params:
+      file: generated-tile/tile-history-*.yml
+  - put: generated-tile
+    params:
+      file: generated-tile/*.pivotal
