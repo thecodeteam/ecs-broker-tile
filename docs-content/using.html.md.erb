@@ -1,0 +1,137 @@
+---
+title: Using ECS BROKER for PCF
+owner: Partners
+---
+
+This topic describes how to use ECS BROKER for Pivotal Cloud Foundry (PCF) after it has been installed. 
+
+##<a id='using'></a> Use ECS BROKER for PCF with an App
+
+To use ECS BROKER for PCF with an app, follow the procedures in this section to create a service instance and bind the service instance
+to your app. For more information about managing service instances, see <a href="https://docs.pivotal.io/pivotalcf/devguide/services/managing-services.html" target="_blank">Managing Service Instances with the cf CLI</a>.
+
+### <a id="list"></a>View the Service
+
+After the tile is installed, `ecs-broker` and its service
+plans appear in your Marketplace. Run `cf marketplace` to
+see the service listing.
+
+<pre class="terminal">
+$ cf marketplace
+Getting services from marketplace in org test / space test as admin...
+OK
+
+service            plans                             description
+ecs-bucket         5gb, unlimited*   				 Elastic Cloud S3 Object Storage Bucket
+</pre>
+
+
+### <a id="create"></a> Create a Service Instance
+
+Use `cf create-service` to provision a bucket.
+
+The following example creates a `5gb` service that provisions a bucket.
+
+<pre class="terminal">
+$ cf create-service ecs-bucket 5gb my-bucket
+</pre>
+
+Check the creation status using `cf services`. This displays a list of all your service instances. To check the status of a specific service instance, run `cf service NAME-OF-YOUR-SERVICE`.
+
+### <a id="bind"></a>Bind the Service Instance to an App
+
+After you create your bucket, run
+`cf bind-service` to bind the service to your app.
+
+<pre class="terminal">
+$ cf bind-service sample-app my-bucket
+</pre>
+
+### <a id="restart"></a>Restage or Restart Your App
+
+To enable your app to access the service instance, run `cf restage` or `cf restart` to restage or restart your app.
+
+### <a id="obtain"></a>Obtain Service Instance Access Credentials
+
+After you bind your service instance to your app, you can find the credentials of your AWS S3
+user in the environment variables of the app.
+
+Run `cf env APP-NAME` to display environment variables. The credentials are listed under
+the <a href="https://docs.pivotal.io/pivotalcf/devguide/deploy-apps/environment-variable.html#VCAP-SERVICES" target="_blank">VCAP_SERVICES</a> key.
+
+<pre class="terminal">
+$ cf env sample-app
+Getting env variables for app sample-app in org test / space test as admin...
+OK
+
+System-Provided:
+{
+ "VCAP_SERVICES": {
+  "ecs-bucket": [
+   {
+    "credentials": {
+     "access_key_id": "EXAMPLE-ACCESS-KEY",
+     "bucket": "ecs-cf-broker-c369db61-8382-49c7-a1d4-75e6a5a43786",
+     "endpoint": "EXAMPLE-ECS-OBJECT-END-POINT-URL",
+	 "s3Url": "http://<access_key_id>:<secret_access_key>@<EXAMPLE-ECS-OBJECT-END-POINT-URL>/ecs-cf-broker-c369db61-8382-49c7-a1d4-75e6a5a43786",
+     "secret_access_key": "EXAMPLE-SECRET-ACCESS-KEY"
+    },
+    "label": "ecs-bucket",
+    "name": "my-bucket",
+    "plan": "5gb",
+    "provider": null,
+    "syslog_drain_url": null,
+    "tags": [
+     "s3",
+     "bucket"
+    ],
+    "volume_mounts": []
+
+   }
+  ]
+ }
+}
+...
+</pre>
+
+You can use the access key ID, secret access key, bucket, and region to connect to a bucket.
+
+##<a id='deleting'></a> Delete an ECS BROKER for PCF Service Instance
+
+<p class="note warning"><strong>WARNING!</strong> Before deleting a service instance, you must back up the data stored in your bucket. This operation cannot be undone, and all the data is lost when the service is deleted.</p>
+
+Follow the instructions below to unbind your service instance from all apps and delete it.
+
+### <a id="list2"></a>List Available Services
+
+Run `cf service` to list your available services.
+
+<pre class="terminal">
+$ cf service
+
+Getting services in org test / space test as admin...
+OK
+
+name           service    plan    bound apps   last operation
+my-bucket      ecs-bucket 5gb     sample-app   create succeeded
+</pre>
+
+This example shows that `my-bucket` is bound to the `sample-app` app.
+
+### <a id="unbind"></a>Unbind a Service Instance
+
+Run `cf unbind` to unbind the service from your app:
+
+<pre class="terminal">
+$ cf unbind-service sample-app my-bucket
+</pre>
+
+### <a id="delete"></a>Delete a Service Instance
+
+Run `cf delete-service` to delete the service.
+
+<pre class="terminal">
+  $ cf delete-service my-bucket
+</pre>
+
+Run the `cf services` command to check the deletion status.

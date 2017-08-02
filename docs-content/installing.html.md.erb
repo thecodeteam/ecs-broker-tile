@@ -1,0 +1,42 @@
+---
+title: Installing and Configuring ECS BROKER for PCF
+owner: Partners
+---
+
+This topic describes how to install and configure ECS BROKER for PCF.
+
+##<a id='install'></a> Install and Configure ECS BROKER for PCF
+
+1. Download the product file from [Pivotal Network](https://network.pivotal.io/products/ecs-cf-broker).
+
+2. Navigate to the Ops Manager Installation Dashboard and click **Import a Product** to upload the product file.
+
+3. Under the **Import a Product** button, click **+** next to the version number of ECS BROKER for PCF.
+This adds the tile to your staging area.
+
+4. Click the newly added **ECS BROKER for PCF** tile.
+
+##<a id="aws-config"></a>ECS BROKER for PCF Configuration
+
+1. Click **Service Broker Application**.
+2. For **Service Broker Application Name**, Enter the name for the Service Broker App
+3. For **Service Broker Application version**, Enter the version of the Service Broker App (Final app name would include app version like ${appName}-${appversion}
+4. For **Service Broker Application URI**, Enter the uri/endpoint for the Service Broker app (on push to CF)
+5. For **Open up Security Groups**, Check to Open up security group on CF for Service Broker to access other apps or CF Cloud Controller
+6. For **Enable Global access to all Services and Plans**, Check to Open up access to all service plans across all orgs and spaces
+7. For **ECS Management Endpoint**, Enter the uri/endpoint for the ECS HTTPS management API
+8. For **ECS Object Endpoint**, Enter the uri/endpoint for the ECS S3 API.  Not needed the base URL endpoint should be used.
+9. For **ECS Base URL**, (Optional) Enter the name of the ECS configured base URL that should be used with bucket credentials.
+10. For **Repository Endpoint**, (Optional) Enter the uri/endpoint for the ECS S3 API that should be used for persisting broker metadata.  Defaults to the object endpoint or base url.
+11. For **Replication Group**, Enter the ID of the ECS replication group to be used for created buckets.
+12. For **Namespace**, Enter the name of the ECS namespace to be used for created buckets and users.
+13. For **Repository User**, (Optional) Enter the name of the user that should be created/used for managing broker metadata.
+14. For **Repository Bucket**, (Optional) Enter the name of the bucket that should be created/used for managing broker metadata.
+15. For **ECS Admin Username**, Enter the name of the ECS Management API user.
+16. For **ECS Admin Password**, Enter the ECS Management API password.
+17. For **ECS Repository Prefix**, (Optional) Enter a string used to prefix broker created buckets and users.
+18. For **ECS Management Certification**, Certification to enable broker to communicate with ECS API Managment
+19. For **ECS Broker Security Username**, Enter the name to register broker.  Defaults to "user".
+20. For **ECS Broker Password**,  Enter the password to register broker.  Defaults to "password"
+21. Click **Save**.
+22. Return to the Ops Manager Installation Dashboard and click **Apply Changes** to install ECS BROKER for PCF.
