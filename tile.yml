@@ -144,6 +144,12 @@ forms:
       type: string
       configurable: true
       optional: true
+    - name: apiversion
+      label: ECS Management API Version
+      description: 'Enter ECS Management API version.'
+      type: string
+      configurable: true
+      default: 2.11
     - name: certificate
       label: ECS Management Certification
       description: 'Certification to enable broker to communicate with ECS API Managment'
