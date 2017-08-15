@@ -2,7 +2,7 @@
 
 ## Description
 
-*This Project is in a work in progress state currently relase 0.9 public beta vesion is available under relase branch*
+*This Project is in a work in progress state currently relase 1.0 GA vesion is available under relase branch*
 
 A BOSH release for the [ECS CF service broker](https://github.com/emccode/final/ecs-cf-service-broker).
 It is based on [BOSH Generic SB Release](https://github.com/cf-platform-eng/bosh-generic-sb-release),
@@ -17,7 +17,7 @@ be configured from the PCF Ops Manager.
 
 ## Current Status
 
-Currently, the Tile version 0.9.0 public beta is availabe to download and deploy ECS Service Broker.
+Currently, the Tile version 1.0 GA is availabe to download and deploy ECS Service Broker.
 
 ## Requirement
 
