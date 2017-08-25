@@ -37,7 +37,7 @@ properties:
 forms:
 - name: ecs_broker_app
   label: Service Broker Application
-  description: Service Broker configuration
+  description: Service Broker CF App Configuration Details
   properties:
     - name: app_name
       type: string
@@ -64,87 +64,97 @@ forms:
       configurable: true
     - name: enable_global_access_to_plans
       label: Enable Global access to all Services and Plans
-      description: 'Open up access to all service plans across all orgs and spaces'
+      description: 'Open up access to all service plans across all orgs and spaces. If set to false, administrators must use the "enable-service-access" command to allow access.'
       type: boolean
       configurable: true
-    - name: managementEndpoint
+      default: true
+- name: ecs_connection
+  label: Dell EMC ECS Connectivity
+  description: Service Broker ECS Connection Details
+  properties:
+    - name: management_endpoint
       label: ECS Management Endpoint
-      description: 'Enter the uri/endpoint for the ECS HTTPS management API'
+      description: 'Enter the URI/endpoint for the ECS HTTPS management API. This is typically accessed from port `4443`, but may be on a different port if accessed through a load balancer.'
       type: string
       configurable: true
-    - name: objectEndpoint
-      label: ECS Object Endpoint
-      description: 'Enter the uri/endpoint for the ECS S3 API.  Not needed the base URL endpoint should be used.'
-      type: string
-      configurable: true
-    - name: baseUrl
-      label: ECS Base URL
-      description: '(Optional) Enter the name of the ECS configured base URL that should be used with bucket credentials.'
-      type: string
-      configurable: true
-      optional: true
-    - name: repositoryEndpoint
-      label: Repository Endpoint
-      description: '(Optional) Enter the uri/endpoint for the ECS S3 API that should be used for persisting broker metadata.  Defaults to the object endpoint or base url.'
-      type: string
-      configurable: true
-      optional: true
-    - name: replicationGroup
+    - name: replication_group
       label: Replication Group
-      description: 'Enter the ID of the ECS replication group to be used for created buckets.'
+      description: 'Enter the name of the ECS "replication group" to be used for created buckets. This can be found in the ECS management UI.'
       type: string
       configurable: true
     - name: namespace
       label: Namespace
-      description: 'Enter the name of the ECS namespace to be used for created buckets and users.'
+      description: 'Enter the name of the ECS "namespace" to be used for created buckets and users. This can be found in the ECS management UI.'
       type: string
       configurable: true
-    - name: repositoryUser
-      label: Repository User
-      description: '(Optional) Enter the name of the user that should be created/used for managing broker metadata.'
-      type: string
-      configurable: true  
-      optional: true
-    - name: repositoryBucket
-      label: Repository Bucket
-      description: '(Optional) Enter the name of the bucket that should be created/used for managing broker metadata.'
-      type: string
-      configurable: true
-      optional: true
-    - name: apiUserName
+    - name: api_username
       label: ECS Admin Username
-      description: 'Enter the name of the ECS Management API user.'
+      description: 'Enter the name of the ECS Management API admin user. This should be a namespace admin or system administrator management user on the ECS.'
       type: string
       configurable: true
-    - name: apiPassword
+    - name: api_password
       label: ECS Admin Password
       description: 'Enter the ECS Management API password.'
       type: string
       configurable: true
-    - name: prefix
-      label: ECS Repository Prefix
-      description: '(Optional) Enter a string used to prefix broker created buckets and users.'
+    - name: base_url
+      label: ECS Base URL
+      description: '(Optional) Enter the name of the ECS configured base URL, to discover the object endpoint. If not provided, the broker will attempt to discover a default base URL. Alternatively, the URI/endpoint can be specified using the "Object Endpoint" parameter.'
       type: string
       configurable: true
       optional: true
-    - name: apiversion
-      label: ECS Management API Version
-      description: 'Enter ECS Management API version.'
-      type: string
-      configurable: true
-      default: 2.11
     - name: certificate
       label: ECS Management Certification
-      description: 'Certification to enable broker to communicate with ECS API Managment'
-      type: text 
+      description: 'SSL certificate to enable broker to communicate with ECS API Managment. This is required for self-signed certificates, but may not be needed when the ECS is configured with a signed certificate from a trusted source.'
+      type: text
       configurable: true
-    - name: securityUser
+    - name: object_endpoint
+      label: ECS Object Endpoint
+      description: '(Optional) Manually specify the URI/endpoint of the ECS S3 API, rather than discover from the ECS configured "base URL". This is typically accessed form port 9020 (HTTP) or port 9021 (HTTPS), but may be on a different port if accessed through a load balancer.'
+      type: string
+      configurable: true
+      optional: true
+- name: broker_service_details
+  label: Service Broker Webservice Settings
+  description: Service Broker Webservice Settings
+  properties:
+    - name: api_version
+      label: ECS Management API Version
+      description: 'The Cloud Foundry service broker API version that the broker should advertise. This should be configured to be compatible with the release of Cloud Foundry.'
+      type: string
+      configurable: true
+      default: "*"
+    - name: prefix
+      label: Broker Prefix
+      description: '(Optional) Enter a string used to prefix all broker created buckets and users. Defaults to ecs-cf-broker-.'
+      type: string
+      configurable: true
+      optional: true
+    - name: repository_endpoint
+      label: Repository Endpoint
+      description: '(Optional) Enter the URI/endpoint for the ECS S3 API that should be used for storing broker metadata.  Defaults to the object endpoint or base URL.'
+      type: string
+      configurable: true
+      optional: true
+    - name: repository_user
+      label: Repository User
+      description: '(Optional) Enter the name of the user that should be created/used for managing broker metadata. Defaults to {prefix}-user.'
+      type: string
+      configurable: true
+      optional: true
+    - name: repository_bucket
+      label: Repository Bucket
+      description: '(Optional) Enter the name of the bucket that should be created/used for managing broker metadata. Defaults to {prefix}-repository'
+      type: string
+      configurable: true
+      optional: true
+    - name: security_username
       label: ECS Broker Security Username
       description: 'Enter the name to register broker.  Defaults to "user".'
       type: string
       configurable: true
-      default: user 
-    - name: securityPassword
+      default: user
+    - name: security_password
       label: ECS Broker Password
       description: ' Enter the password to register broker.  Defaults to "password"'
       type: string
@@ -189,12 +199,10 @@ packages:
       configurable: false
       default: 1
     properties:
-    - name: vm_credentials
-      type: salted_credentials
-      default:
-        identity: vcap
-    - name: broker_credentials
-      type: salted_credentials
+      vm_credentials:
+        type: salted_credentials
+        default:
+          identity: vcap
   - name: register-broker
     resource_label: Register Ecs Service Broker
     templates:
@@ -229,10 +237,10 @@ packages:
       configurable: false
       default: 1
     properties:
-    - name: vm_credentials
-      type: salted_credentials
-      default:
-        identity: vcap
+      vm_credentials:
+        type: salted_credentials
+        default:
+          identity: vcap
   - name: destroy-broker
     resource_label: Remove Ecs Service Broker
     templates:
@@ -267,36 +275,10 @@ packages:
       configurable: false
       default: 1
     properties:
-    - name: vm_credentials
-      type: salted_credentials
-      default:
-        identity: vcap
-  - name: compilation
-    resource_label: compilation
-    resource_definitions:
-     - name: ram
-       type: integer
-       configurable: true
-       default: 1024
-     - name: ephemeral_disk
-       type: integer
-       configurable: true
-       default: 1024
-     - name: persistent_disk
-       type: integer
-       configurable: true
-       default: 0
-     - name: cpu
-       type: integer
-       configurable: true
-       default: 2
-    static_ip: 0
-    dynamic_ip: 1
-    max_in_flight: 1
-    instance_definitions:
-      - name: instances
-        type: integer
-        default: 1
+      vm_credentials:
+        type: salted_credentials
+        default:
+          identity: vcap
 update:
   canaries: 1
   canary_watch_time: 60000-240000
