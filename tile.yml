@@ -153,13 +153,13 @@ forms:
 packages:
 - name: ecs-broker
   type: bosh-release
-  path: resources/ecs-broker-1.5.tgz
+  path: resources/ecs-broker-1.5.1.tgz
   jobs:
   - name: deploy-service-broker
     resource_label: Deploy Ecs Service Broker
     templates:
     - name: deploy-service-broker
-      release: ecs-broker
+      release: ecs_broker
     lifecycle: errand
     post_deploy: true
     run_post_deploy_errand_default: when-changed
@@ -199,7 +199,7 @@ packages:
     resource_label: Register Ecs Service Broker
     templates:
     - name: register-broker
-      release: ecs-broker
+      release: ecs_broker
     lifecycle: errand
     post_deploy: true
     run_post_deploy_errand_default: when-changed
@@ -237,7 +237,7 @@ packages:
     resource_label: Remove Ecs Service Broker
     templates:
     - name: destroy-broker
-      release: ecs-broker
+      release: ecs_broker
     lifecycle: errand
     pre_delete: true
     run_pre_delete_errand_default: when-changed
@@ -307,7 +307,7 @@ requires_product_versions:
   version: "~> 1.0"
 provides_product_versions:
 - name: ecs-broker
-  version: '1.5'
+  version: '1.5.1'
 post_deploy_errands:
 - name: deploy-service-broker
 - name: register-broker
