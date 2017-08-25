@@ -1,31 +1,14 @@
 ---
-# The high-level description of your tile.
-# Replace these properties with real values.
-#
-name: ecs-broker-tile # By convention lowercase with dashes
+name: ecs-broker-tile
 icon_file: resources/icon.png
-label: DELL/EMC ECS Broker 
-description: ECS Broker for Pivotal CF 
-metadata_version: 1.8               # Optional, defaults to 1.5
+label: DELL EMC ECS Broker
+description: ECS Broker for Pivotal CF
+metadata_version: 1.8
 rank: 50
-# Global defaults (all optional)
-#
-# org: test-org                         # Name of org to create for your apps
-# space: test-space                     # Name of space to create for your apps
-# apply_open_security_group: true       # Apply open security group, default: false
-
-# Specify the packages to be included in your tile.
-# The format of the section to include depends on the type
-# of package you are describing. For fragments of each type
-# that you can copy & paste, see:
-#
-# https://github.com/cf-platform-eng/tile-generator/blob/master/README.md
-#
 stemcell_criteria:
   os: ubuntu-trusty
   version: '3363.15'
   requires_cpi: false
-
 properties:
 - name: encryption_key
   type: secret
@@ -60,8 +43,8 @@ forms:
       type: string
       label: Service Broker Application Name
       description: 'Enter the name for the Service Broker App'
-      configurable: true 
-      default: EcsServiceBoker
+      configurable: true
+      default: ecs-broker
     - name: app_version
       label: Service Broker Application version
       description: 'Enter the version of the Service Broker App (Final app name would include app version like ${appName}-${appversion}'
@@ -73,7 +56,7 @@ forms:
       description: 'Enter the uri/endpoint for the Service Broker app (on push to CF)'
       type: string
       configurable: true
-      default: ecs-broker  
+      default: ecs-broker
     - name: create_open_security_group
       label: Open up Security Groups
       description: 'Open up security group on CF for Service Broker to access other apps or CF Cloud Controller'
@@ -167,7 +150,6 @@ forms:
       type: string
       configurable: true
       default: password
-
 packages:
 - name: ecs-broker
   type: bosh-release
@@ -213,7 +195,6 @@ packages:
         identity: vcap
     - name: broker_credentials
       type: salted_credentials
-
   - name: register-broker
     resource_label: Register Ecs Service Broker
     templates:
@@ -252,7 +233,6 @@ packages:
       type: salted_credentials
       default:
         identity: vcap
-
   - name: destroy-broker
     resource_label: Remove Ecs Service Broker
     templates:
@@ -291,7 +271,6 @@ packages:
       type: salted_credentials
       default:
         identity: vcap
-
   - name: compilation
     resource_label: compilation
     resource_definitions:
@@ -318,13 +297,11 @@ packages:
       - name: instances
         type: integer
         default: 1
-
 update:
   canaries: 1
   canary_watch_time: 60000-240000
   max_in_flight: 1
   update_watch_time: 60000-240000
-
 requires_product_versions:
 - name: cf
   version: "~> 1.0"
@@ -336,6 +313,3 @@ post_deploy_errands:
 - name: register-broker
 pre_delete_errands:
 - name: destroy-broker
-
-
-
