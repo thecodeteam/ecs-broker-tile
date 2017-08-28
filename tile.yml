@@ -42,29 +42,29 @@ forms:
     - name: app_name
       type: string
       label: Service Broker Application Name
-      description: 'Enter the name for the Service Broker App'
+      description: Enter the name for the Service Broker App
       configurable: true
       default: ecs-broker
     - name: app_version
       label: Service Broker Application version
-      description: 'Enter the version of the Service Broker App (Final app name would include app version like ${appName}-${appversion}'
+      description: Enter the version of the Service Broker App (Final app name would include app version like ${appName}-${appversion}
       type: string
       configurable: true
       default: v1
     - name: app_uri
       label: Service Broker Application URI
-      description: 'Enter the uri/endpoint for the Service Broker app (on push to CF)'
+      description: Enter the URI/endpoint for the Service Broker app (on push to CF)
       type: string
       configurable: true
       default: ecs-broker
     - name: create_open_security_group
       label: Open up Security Groups
-      description: 'Open up security group on CF for Service Broker to access other apps or CF Cloud Controller'
+      description: Open up security group on CF for Service Broker to access other apps or CF Cloud Controller
       type: boolean
       configurable: true
     - name: enable_global_access_to_plans
       label: Enable Global access to all Services and Plans
-      description: 'Open up access to all service plans across all orgs and spaces. If set to false, administrators must use the "enable-service-access" command to allow access.'
+      description: Open up access to all service plans across all orgs and spaces. If set to false, administrators must use the "enable-service-access" command to allow access
       type: boolean
       configurable: true
       default: true
@@ -74,43 +74,43 @@ forms:
   properties:
     - name: management_endpoint
       label: ECS Management Endpoint
-      description: 'Enter the URI/endpoint for the ECS HTTPS management API. This is typically accessed from port `4443`, but may be on a different port if accessed through a load balancer.'
+      description: Enter the URI/endpoint for the ECS HTTPS management API. This is typically accessed from port `4443`, but may be on a different port if accessed through a load balancer
       type: string
       configurable: true
     - name: replication_group
       label: Replication Group
-      description: 'Enter the name of the ECS "replication group" to be used for created buckets. This can be found in the ECS management UI.'
+      description: Enter the name of the ECS "replication group" to be used for created buckets. This can be found in the ECS management UI
       type: string
       configurable: true
     - name: namespace
       label: Namespace
-      description: 'Enter the name of the ECS "namespace" to be used for created buckets and users. This can be found in the ECS management UI.'
+      description: Enter the name of the ECS "namespace" to be used for created buckets and users. This can be found in the ECS management UI
       type: string
       configurable: true
     - name: api_username
       label: ECS Admin Username
-      description: 'Enter the name of the ECS Management API admin user. This should be a namespace admin or system administrator management user on the ECS.'
+      description: Enter the name of the ECS Management API admin user. This should be a namespace admin or system administrator management user on the ECS
       type: string
       configurable: true
     - name: api_password
       label: ECS Admin Password
-      description: 'Enter the ECS Management API password.'
+      description: Enter the ECS Management API password
       type: string
       configurable: true
     - name: base_url
       label: ECS Base URL
-      description: '(Optional) Enter the name of the ECS configured base URL, to discover the object endpoint. If not provided, the broker will attempt to discover a default base URL. Alternatively, the URI/endpoint can be specified using the "Object Endpoint" parameter.'
+      description: (Optional) Enter the name of the ECS configured base URL, to discover the object endpoint. If not provided, the broker will attempt to discover a default base URL. Alternatively, the URI/endpoint can be specified using the "Object Endpoint" parameter
       type: string
       configurable: true
       optional: true
     - name: certificate
       label: ECS Management Certification
-      description: 'SSL certificate to enable broker to communicate with ECS API Managment. This is required for self-signed certificates, but may not be needed when the ECS is configured with a signed certificate from a trusted source.'
+      description: SSL certificate to enable broker to communicate with ECS API Managment. This is required for self-signed certificates, but may not be needed when the ECS is configured with a signed certificate from a trusted source
       type: text
       configurable: true
     - name: object_endpoint
       label: ECS Object Endpoint
-      description: '(Optional) Manually specify the URI/endpoint of the ECS S3 API, rather than discover from the ECS configured "base URL". This is typically accessed form port 9020 (HTTP) or port 9021 (HTTPS), but may be on a different port if accessed through a load balancer.'
+      description: (Optional) Manually specify the URI/endpoint of the ECS S3 API, rather than discover from the ECS configured "base URL". This is typically accessed form port 9020 (HTTP) or port 9021 (HTTPS), but may be on a different port if accessed through a load balancer
       type: string
       configurable: true
       optional: true
@@ -120,43 +120,43 @@ forms:
   properties:
     - name: api_version
       label: ECS Management API Version
-      description: 'The Cloud Foundry service broker API version that the broker should advertise. This should be configured to be compatible with the release of Cloud Foundry.'
+      description: The Cloud Foundry service broker API version that the broker should advertise. This should be configured to be compatible with the release of Cloud Foundry
       type: string
       configurable: true
       default: "*"
     - name: prefix
       label: Broker Prefix
-      description: '(Optional) Enter a string used to prefix all broker created buckets and users. Defaults to ecs-cf-broker-.'
+      description: (Optional) Enter a string used to prefix all broker created buckets and users. Defaults to "ecs-cf-broker-"
       type: string
       configurable: true
       optional: true
     - name: repository_endpoint
       label: Repository Endpoint
-      description: '(Optional) Enter the URI/endpoint for the ECS S3 API that should be used for storing broker metadata.  Defaults to the object endpoint or base URL.'
+      description: (Optional) Enter the URI/endpoint for the ECS S3 API that should be used for storing broker metadata.  Defaults to the object endpoint or base URL
       type: string
       configurable: true
       optional: true
     - name: repository_user
       label: Repository User
-      description: '(Optional) Enter the name of the user that should be created/used for managing broker metadata. Defaults to {prefix}-user.'
+      description: (Optional) Enter the name of the user that should be created/used for managing broker metadata. Defaults to "{prefix}-user"
       type: string
       configurable: true
       optional: true
     - name: repository_bucket
       label: Repository Bucket
-      description: '(Optional) Enter the name of the bucket that should be created/used for managing broker metadata. Defaults to {prefix}-repository'
+      description: (Optional) Enter the name of the bucket that should be created/used for managing broker metadata. Defaults to {prefix}-repository
       type: string
       configurable: true
       optional: true
     - name: security_username
       label: ECS Broker Security Username
-      description: 'Enter the name to register broker.  Defaults to "user".'
+      description: Enter the name to register broker. Defaults to "user"
       type: string
       configurable: true
       default: user
     - name: security_password
       label: ECS Broker Password
-      description: ' Enter the password to register broker.  Defaults to "password"'
+      description: Enter the password to register broker. Defaults to "password"
       type: string
       configurable: true
       default: password
