@@ -10,6 +10,16 @@ stemcell_criteria:
   version: '3363.15'
   requires_cpi: false
 properties:
+- name: service1_guid
+  type: uuid
+- name: service2_guid
+  type: uuid
+- name: service3_guid
+  type: uuid
+- name: service4_guid
+  type: uuid
+- name: service5_guid
+  type: uuid
 - name: encryption_key
   type: secret
 - name: vm_credentials
@@ -103,11 +113,25 @@ forms:
       type: string
       configurable: true
       optional: true
-    - name: certificate
-      label: ECS Management Certification
-      description: SSL certificate to enable broker to communicate with ECS API Managment. This is required for self-signed certificates, but may not be needed when the ECS is configured with a signed certificate from a trusted source
-      type: text
+    - name: certificate_selector
+      label: Is the ECS SSL certificate is signed by a trust authority?
+      description: If the ECS does not have a properly signed certificate from a trust authority (a self-signed certificate, for example), then customers will need to provide the SSL certificate.
+      default: "No"
       configurable: true
+      type: selector
+      option_templates:
+      - name: untrusted_ssl
+        select_value: "No"
+        property_blueprints:
+        - name: certificate
+          label: ECS Management Certificate
+          description: SSL certificate to enable broker to communicate with ECS API Managment. This is required for self-signed certificates, but may not be needed when the ECS is configured with a signed certificate from a trusted source
+          type: text
+          configurable: true
+          optional: true
+      - name: trusted_ssl
+        select_value: "Yes"
+        property_blueprints: []
     - name: object_endpoint
       label: ECS Object Endpoint
       description: (Optional) Manually specify the URI/endpoint of the ECS S3 API, rather than discover from the ECS configured "base URL". This is typically accessed form port 9020 (HTTP) or port 9021 (HTTPS), but may be on a different port if accessed through a load balancer
@@ -160,77 +184,320 @@ forms:
       type: string
       configurable: true
       default: password
-- name: service-1
+- name: service1
   label: Catalog Service 1
   description: Configure Catalog Service 1
   properties:
-  - name: service-1-active
+  - name: service1_active
     default: true
     label: Enable Catalog Service 1
     description: If enabled, this service will be included in the broker catalog, which supplies the Cloud Foundry marketplace.
     configurable: true
     type: boolean
-  - name: name
+  - name: service1_name
     label: Name
     type: string
     configurable: true
     description: Service named used in the Cloud Foundry marketplace. This should be kept fairly short
-    default: ecs-namespace
-  - name: repository_service
-    type: boolean
-    label: Enable as Repository Service
-    description: Use this service for the internal metadata of the broker. This should only be enabled for one service, as the broker may pick from repository enabled services at random on startup.
-    configurable: true
-    default: false
-  - name: description
+    default: ecs-bucket
+  - name: service1_description
     label: Description
     type: string
     configurable: true
     description: Full description of the service appearing in the marketplace
-    default: Dell EMC ECS private object storage namespace
-  - name: display_name
-    default: ECS Namespace
+    default: Dell EMC ECS private object storage bucket
+  - name: service1_display_name
+    default: ECS Bucket
     label: Display Name
     type: string
     configurable: true
     description: The name that will show in the PCF Apps Manager Marketplace
-  - name: image_url
+  - name: service1_image_url
     label: Image URL
     type: http_url
     configurable: true
     default: https://avatars.githubusercontent.com/u/12926680
     description: The image that will show in the PCF Apps Manager Marketplace
-  - name: long_description
-    default: Dell EMC Elastic Cloud Storage (ECS) private object storage Namespace
+  - name: service1_long_description
+    default: Dell EMC Elastic Cloud Storage (ECS) private object storage Bucket
     type: text
     label: Long Description
     configurable: true
     description: A long description to use for the service, which will show in the PCF Apps Manager Marketplace
-  - name: provider_display_name
+  - name: service1_provider_display_name
     label: Provider Display Name
     type: string
     default: Dell EMC
     configurable: true
     description: Provider name that will show in the PCF Apps Manager Marketplace
-  - name: documentation_url
+  - name: service1_documentation_url
     label: Documentation URL
     type: http_url
     configurable: true
     default: https://community.emc.com/docs/DOC-45012
     description: The documentation link that will show in the PCF Apps Manager Marketplace
-  - name: support_url
+  - name: service1_tags
+    type: string_list
+    label: Tags
+    configurable: true
+    description: Tags for service. These can be used by applications or cloud services (such as Spring Cloud) to identify service offerings & instances
+    default:
+    - s3
+    - bucket
+  - name: service1_support_url
     label: Support URL
     type: http_url
     configurable: true
     default: http://www.emc.com/products-solutions/trial-software-download/ecs.htm
     description: The support link that will show in the PCF Apps Manager Marketplace
-  - name: bindable
+  - name: service1_bindable
     label: Binable
     type: boolean
     default: true
     configurable: true
     description: Determines if this service can be bound to user applications. This should typically be enabled, but could be disabled for internal-only services
-  - name: service_type
+  - name: service1_service_type
+    type: selector
+    label: Service Type
+    configurable: true
+    default: Bucket
+    description: Set the type of service to be available in the marketplace. A bucket provides a single bucket per service. A namespace provides a tentant "area" where multiple buckets can be provisioned
+    option_templates:
+    - name: namespace_option
+      select_value: Namespace
+      property_blueprints:
+      - name: compliance_enabled
+        type: boolean
+        label: Enable Compliance
+        default: false
+        configurable: true
+        description: Strongly enforce object retention for compliance. This only applies to namespace services
+      - name: default_bucket_quota
+        type: integer
+        label: Default Bucket Quota (GB)
+        optional: true
+        configurable: true
+        description: Default quota applied to all buckets created within this namespacedefault_bucket_quota. This only applies to namespace services
+    - name: bucket_option
+      select_value: Bucket
+      property_blueprints:
+      - name: head_type
+        label: Object Head Type
+        type: dropdown_select
+        default: s3
+        configurable: false
+        description: Object protocol to use for the provisioned bucket. Today the broker only supports S3, but will support Swift, Atmos & CAS in the future. This only applies to bucket services
+        options:
+        - name: s3
+          label: S3
+      - name: repository_service
+        type: boolean
+        label: Enable as Repository Service
+        description: Use this service for the internal metadata of the broker. This should only be enabled for one service, as the broker may pick from repository enabled services at random on startup.
+        configurable: true
+        default: true
+      - name: file_accessible
+        label: Enable File Access
+        type: boolean
+        default: false
+        configurable: true
+        description: Enable NFS and HDFS access for provisioned buckets. This also enables volume mount services for the service, so a bucket can be used as an application mount point. File access cannot be changed after creation, so this setting cannot be changed by plan upgrades. This only applies to bucket services
+      - name: default_retention
+        type: integer
+        label: Default Retention (Seconds)
+        optional: true
+        configurable: true
+        description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services
+  - name: service1_quota_limit
+    type: integer
+    label: Quota Limit (GB)
+    optional: true
+    configurable: true
+    description: The capacity quota limit in gigabytes. A user will not be able to store more than this amount in a provisioned bucket or namespace
+  - name: service1_quota_warn
+    type: integer
+    label: Quota Warning (GB)
+    optional: true
+    configurable: true
+    description: The capacity quota warning in gigabytes. A ECS warning notification will be generated when a user consumes this amount of storage
+  - name: service1_encrypted
+    label: Enable Encryption
+    type: boolean
+    default: false
+    configurable: true
+    description: Enabled encryption on this service. Encryption cannot be changed after creation, so this setting cannot be changed by plan upgrades
+  - name: service1_access_during_outage
+    label: Enable Access During Outage
+    type: boolean
+    default: true
+    configurable: true
+    description: This allows a bucket or namespace to remain online even if the primary site is offline. This is typically enabled, but can be disabled if strict data consistency is required, since actual replication is asynchronous
+  - name: service1_plans
+    type: collection
+    label: Customize Plans for this Service
+    configurable: true
+    property_blueprints:
+    - name: name
+      type: string
+      label: Name
+      configurable: true
+      description: Name of this service plan to show in Cloud Foundry marketplace
+    - name: plan_guid
+      type: string
+      label: GUID
+      configurable: true
+      description: Unique Identifier for this Plan
+    - name: description
+      type: string
+      label: Description
+      configurable: true
+      description: Description of this service plan to show in Cloud Foundry marketplace
+    - name: repository_plan
+      type: boolean
+      label: Enable as Repository Plan
+      description: Use this plan for the internal metadata of the broker. This should only be enabled for one service, as the broker may pick from repository enabled plans at random on startup.
+      configurable: true
+      description: Description of this service plan to show in Cloud Foundry marketplace
+    - name: cost_usd
+      type: string
+      label: Cost in US Dollars
+      configurable: true
+      description: The cost for the plan based on the "Cost Unit". Should be in the form of a float -- 0.00
+    - name: cost_unit
+      type: string
+      label: Cost Unit
+      configurable: true
+      description: The unit for each to charge. By convention is should be in ALL CAPS. Examples include MONTHLY, PER_GB, PER_GB_PER_MONTH
+    - name: bullets
+      type: string_list
+      label: Bullet Points
+      configurable: true
+      description: Bullet points to show up about the plan in the PCF Marketplace.
+    - name: quota_limit
+      type: integer
+      label: Quota Limit (GB)
+      optional: true
+      configurable: true
+      description: The capacity quota limit in gigabytes. A user will not be able to store more than this amount in a provisioned bucket or namespace
+    - name: quota_warn
+      type: integer
+      label: Quota Warning (GB)
+      optional: true
+      configurable: true
+      description: The capacity quota warning in gigabytes. A ECS warning notification will be generated when a user consumes this amount of storage
+    - name: free
+      type: boolean
+      label: Free of Charge
+      configurable: true
+      description: Whether this service is free or paid
+    - name: access_during_outage
+      label: Enable Access During Outage
+      type: boolean
+      default: true
+      configurable: true
+      description: This allows a bucket or namespace to remain online even if the primary site is offline. This is typically enabled, but can be disabled if strict data consistency is required, since actual replication is asynchronous
+    - name: default_retention
+      type: integer
+      label: Default Retention (Seconds)
+      optional: true
+      configurable: true
+      description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services
+    default:
+    - plan_guid: 47ed6eaa-4fb1-4202-8256-21b0947d2154
+      name: 5gb
+      description: 5 GB free trial
+      cost_usd: 0.00
+      cost_unit: MONTHLY
+      quota_limit: 5
+      quota_warn: 4
+      free: true
+      bullets:
+      - Shared Object Storage
+      - 5 GB Storage Limit
+      - S3 Protocol Access
+    - plan_guid: a0d743cf-e0ce-4ed9-b71b-5829530e72b7
+      name: unlimited
+      repository_plan: true
+      description: Usage based billing
+      cost_usd: 0.03
+      cost_unit: PER_GB_PER_MONTH
+      bullets:
+      - Shared Object Storage
+      - Unlimited Storage
+      - S3 Protocol Access
+- name: service2
+  label: Catalog Service 2
+  description: Configure Catalog Service 2
+  properties:
+  - name: service2_active
+    default: true
+    label: Enable Catalog Service 2
+    description: If enabled, this service will be included in the broker catalog, which supplies the Cloud Foundry marketplace.
+    configurable: true
+    type: boolean
+  - name: service2_name
+    label: Name
+    type: string
+    configurable: true
+    description: Service named used in the Cloud Foundry marketplace. This should be kept fairly short
+    default: ecs-namespace
+  - name: service2_description
+    label: Description
+    type: string
+    configurable: true
+    description: Full description of the service appearing in the marketplace
+    default: Dell EMC ECS private object storage namespace
+  - name: service2_display_name
+    default: ECS Namespace
+    label: Display Name
+    type: string
+    configurable: true
+    description: The name that will show in the PCF Apps Manager Marketplace
+  - name: service2_image_url
+    label: Image URL
+    type: http_url
+    configurable: true
+    default: https://avatars.githubusercontent.com/u/12926680
+    description: The image that will show in the PCF Apps Manager Marketplace
+  - name: service2_long_description
+    default: Dell EMC Elastic Cloud Storage (ECS) private object storage Namespace
+    type: text
+    label: Long Description
+    configurable: true
+    description: A long description to use for the service, which will show in the PCF Apps Manager Marketplace
+  - name: service2_provider_display_name
+    label: Provider Display Name
+    type: string
+    default: Dell EMC
+    configurable: true
+    description: Provider name that will show in the PCF Apps Manager Marketplace
+  - name: service2_documentation_url
+    label: Documentation URL
+    type: http_url
+    configurable: true
+    default: https://community.emc.com/docs/DOC-45012
+    description: The documentation link that will show in the PCF Apps Manager Marketplace
+  - name: service2_tags
+    type: string_list
+    label: Tags
+    configurable: true
+    description: Tags for service. These can be used by applications or cloud services (such as Spring Cloud) to identify service offerings & instances
+    default:
+    - s3
+    - namespace
+  - name: service2_support_url
+    label: Support URL
+    type: http_url
+    configurable: true
+    default: http://www.emc.com/products-solutions/trial-software-download/ecs.htm
+    description: The support link that will show in the PCF Apps Manager Marketplace
+  - name: service2_bindable
+    label: Binable
+    type: boolean
+    default: true
+    configurable: true
+    description: Determines if this service can be bound to user applications. This should typically be enabled, but could be disabled for internal-only services
+  - name: service2_service_type
     type: selector
     label: Service Type
     configurable: true
@@ -264,6 +531,12 @@ forms:
         options:
         - name: s3
           label: S3
+      - name: repository_service
+        type: boolean
+        label: Enable as Repository Service
+        description: Use this service for the internal metadata of the broker. This should only be enabled for one service, as the broker may pick from repository enabled services at random on startup.
+        configurable: true
+        default: false
       - name: file_accessible
         label: Enable File Access
         type: boolean
@@ -276,33 +549,33 @@ forms:
         optional: true
         configurable: true
         description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services
-  - name: quota_limit
+  - name: service2_quota_limit
     type: integer
     label: Quota Limit (GB)
     optional: true
     configurable: true
     description: The capacity quota limit in gigabytes. A user will not be able to store more than this amount in a provisioned bucket or namespace
-  - name: quota_warn
+  - name: service2_quota_warn
     type: integer
     label: Quota Warning (GB)
     optional: true
     configurable: true
     description: The capacity quota warning in gigabytes. A ECS warning notification will be generated when a user consumes this amount of storage
-  - name: encrypted
+  - name: service2_encrypted
     label: Enable Encryption
     type: boolean
     default: false
     configurable: true
     description: Enabled encryption on this service. Encryption cannot be changed after creation, so this setting cannot be changed by plan upgrades
-  - name: access_during_outage
+  - name: service2_access_during_outage
     label: Enable Access During Outage
     type: boolean
     default: true
     configurable: true
     description: This allows a bucket or namespace to remain online even if the primary site is offline. This is typically enabled, but can be disabled if strict data consistency is required, since actual replication is asynchronous
-  - name: plans
+  - name: service2_plans
     type: collection
-    label: Plans
+    label: Customize Plans for this Service
     configurable: true
     property_blueprints:
     - name: name
@@ -310,9 +583,20 @@ forms:
       label: Name
       configurable: true
       description: Name of this service plan to show in Cloud Foundry marketplace
+    - name: plan_guid
+      type: string
+      label: GUID
+      configurable: true
+      description: Unique Identifier for this Plan
     - name: description
       type: string
       label: Description
+      configurable: true
+      description: Description of this service plan to show in Cloud Foundry marketplace
+    - name: repository_plan
+      type: boolean
+      label: Enable as Repository Plan
+      description: Use this plan for the internal metadata of the broker. This should only be enabled for one service, as the broker may pick from repository enabled plans at random on startup.
       configurable: true
       description: Description of this service plan to show in Cloud Foundry marketplace
     - name: cost_usd
@@ -320,16 +604,16 @@ forms:
       label: Cost in US Dollars
       configurable: true
       description: The cost for the plan based on the "Cost Unit". Should be in the form of a float -- 0.00
-    - name: bullets
-      type: string_list
-      label: Bullet Points
-      configurable: true
-      description: Bullet points to show up about the plan in the PCF Marketplace.
     - name: cost_unit
       type: string
       label: Cost Unit
       configurable: true
       description: The unit for each to charge. By convention is should be in ALL CAPS. Examples include MONTHLY, PER_GB, PER_GB_PER_MONTH
+    - name: bullets
+      type: string_list
+      label: Bullet Points
+      configurable: true
+      description: Bullet points to show up about the plan in the PCF Marketplace.
     - name: quota_limit
       type: integer
       label: Quota Limit (GB)
@@ -360,7 +644,8 @@ forms:
       configurable: true
       description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services
     default:
-    - name: 5gb
+    - plan_guid: 07745f74-d969-4d05-8c60-b66f0c0a80bc
+      name: 5gb
       description: 5 GB free trial
       cost_usd: 0.00
       cost_unit: MONTHLY
@@ -371,7 +656,8 @@ forms:
       - Shared Object Storage
       - 5 GB Storage Limit
       - S3 Protocol Access
-    - name: unlimited
+    - plan_guid: eff5c23e-b838-4500-918a-a8196ede36df
+      name: unlimited
       description: Usage based billing
       cost_usd: 0.03
       cost_unit: PER_GB_PER_MONTH
@@ -379,6 +665,689 @@ forms:
       - Shared Object Storage
       - Unlimited Storage
       - S3 Protocol Access
+- name: service3
+  label: Catalog Service 3
+  description: Configure Catalog Service 3
+  properties:
+  - name: service3_active
+    default: true
+    label: Enable Catalog Service 3
+    description: If enabled, this service will be included in the broker catalog, which supplies the Cloud Foundry marketplace.
+    configurable: true
+    type: boolean
+  - name: service3_name
+    label: Name
+    type: string
+    configurable: true
+    description: Service named used in the Cloud Foundry marketplace. This should be kept fairly short
+    default: ecs-file-bucket
+  - name: service3_description
+    label: Description
+    type: string
+    configurable: true
+    description: Full description of the service appearing in the marketplace
+    default: Dell EMC ECS private object storage bucket with file support
+  - name: service3_display_name
+    default: ECS File-Enabled Bucket
+    label: Display Name
+    type: string
+    configurable: true
+    description: The name that will show in the PCF Apps Manager Marketplace
+  - name: service3_image_url
+    label: Image URL
+    type: http_url
+    configurable: true
+    default: https://avatars.githubusercontent.com/u/12926680
+    description: The image that will show in the PCF Apps Manager Marketplace
+  - name: service3_long_description
+    default: Dell EMC Elastic Cloud Storage (ECS) object storage bucket with support for file protocols. Supports S3, NFS and HDFS access.
+    type: text
+    label: Long Description
+    configurable: true
+    description: A long description to use for the service, which will show in the PCF Apps Manager Marketplace
+  - name: service3_provider_display_name
+    label: Provider Display Name
+    type: string
+    default: Dell EMC
+    configurable: true
+    description: Provider name that will show in the PCF Apps Manager Marketplace
+  - name: service3_documentation_url
+    label: Documentation URL
+    type: http_url
+    configurable: true
+    default: https://community.emc.com/docs/DOC-45012
+    description: The documentation link that will show in the PCF Apps Manager Marketplace
+  - name: service3_tags
+    type: string_list
+    label: Tags
+    configurable: true
+    description: Tags for service. These can be used by applications or cloud services (such as Spring Cloud) to identify service offerings & instances
+    default:
+    - s3
+    - bucket
+    - nfs
+    - hdfs
+  - name: service3_support_url
+    label: Support URL
+    type: http_url
+    configurable: true
+    default: http://www.emc.com/products-solutions/trial-software-download/ecs.htm
+    description: The support link that will show in the PCF Apps Manager Marketplace
+  - name: service3_bindable
+    label: Binable
+    type: boolean
+    default: true
+    configurable: true
+    description: Determines if this service can be bound to user applications. This should typically be enabled, but could be disabled for internal-only services
+  - name: service3_service_type
+    type: selector
+    label: Service Type
+    configurable: true
+    default: Bucket
+    description: Set the type of service to be available in the marketplace. A bucket provides a single bucket per service. A namespace provides a tentant "area" where multiple buckets can be provisioned
+    option_templates:
+    - name: namespace_option
+      select_value: Namespace
+      property_blueprints:
+      - name: compliance_enabled
+        type: boolean
+        label: Enable Compliance
+        default: false
+        configurable: true
+        description: Strongly enforce object retention for compliance. This only applies to namespace services
+      - name: default_bucket_quota
+        type: integer
+        label: Default Bucket Quota (GB)
+        optional: true
+        configurable: true
+        description: Default quota applied to all buckets created within this namespacedefault_bucket_quota. This only applies to namespace services
+    - name: bucket_option
+      select_value: Bucket
+      property_blueprints:
+      - name: head_type
+        label: Object Head Type
+        type: dropdown_select
+        default: s3
+        configurable: false
+        description: Object protocol to use for the provisioned bucket. Today the broker only supports S3, but will support Swift, Atmos & CAS in the future. This only applies to bucket services
+        options:
+        - name: s3
+          label: S3
+      - name: repository_service
+        type: boolean
+        label: Enable as Repository Service
+        description: Use this service for the internal metadata of the broker. This should only be enabled for one service, as the broker may pick from repository enabled services at random on startup.
+        configurable: true
+        default: false
+      - name: file_accessible
+        label: Enable File Access
+        type: boolean
+        default: true
+        configurable: true
+        description: Enable NFS and HDFS access for provisioned buckets. This also enables volume mount services for the service, so a bucket can be used as an application mount point. File access cannot be changed after creation, so this setting cannot be changed by plan upgrades. This only applies to bucket services
+      - name: default_retention
+        type: integer
+        label: Default Retention (Seconds)
+        optional: true
+        configurable: true
+        description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services
+  - name: service3_quota_limit
+    type: integer
+    label: Quota Limit (GB)
+    optional: true
+    configurable: true
+    description: The capacity quota limit in gigabytes. A user will not be able to store more than this amount in a provisioned bucket or namespace
+  - name: service3_quota_warn
+    type: integer
+    label: Quota Warning (GB)
+    optional: true
+    configurable: true
+    description: The capacity quota warning in gigabytes. A ECS warning notification will be generated when a user consumes this amount of storage
+  - name: service3_encrypted
+    label: Enable Encryption
+    type: boolean
+    default: false
+    configurable: true
+    description: Enabled encryption on this service. Encryption cannot be changed after creation, so this setting cannot be changed by plan upgrades
+  - name: service3_access_during_outage
+    label: Enable Access During Outage
+    type: boolean
+    default: true
+    configurable: true
+    description: This allows a bucket or namespace to remain online even if the primary site is offline. This is typically enabled, but can be disabled if strict data consistency is required, since actual replication is asynchronous
+  - name: service3_plans
+    type: collection
+    label: Customize Plans for this Service
+    configurable: true
+    property_blueprints:
+    - name: name
+      type: string
+      label: Name
+      configurable: true
+      description: Name of this service plan to show in Cloud Foundry marketplace
+    - name: plan_guid
+      type: string
+      label: GUID
+      configurable: true
+      description: Unique Identifier for this Plan
+    - name: description
+      type: string
+      label: Description
+      configurable: true
+      description: Description of this service plan to show in Cloud Foundry marketplace
+    - name: repository_plan
+      type: boolean
+      label: Enable as Repository Plan
+      description: Use this plan for the internal metadata of the broker. This should only be enabled for one service, as the broker may pick from repository enabled plans at random on startup.
+      configurable: true
+      description: Description of this service plan to show in Cloud Foundry marketplace
+    - name: cost_usd
+      type: string
+      label: Cost in US Dollars
+      configurable: true
+      description: The cost for the plan based on the "Cost Unit". Should be in the form of a float -- 0.00
+    - name: cost_unit
+      type: string
+      label: Cost Unit
+      configurable: true
+      description: The unit for each to charge. By convention is should be in ALL CAPS. Examples include MONTHLY, PER_GB, PER_GB_PER_MONTH
+    - name: bullets
+      type: string_list
+      label: Bullet Points
+      configurable: true
+      description: Bullet points to show up about the plan in the PCF Marketplace.
+    - name: quota_limit
+      type: integer
+      label: Quota Limit (GB)
+      optional: true
+      configurable: true
+      description: The capacity quota limit in gigabytes. A user will not be able to store more than this amount in a provisioned bucket or namespace
+    - name: quota_warn
+      type: integer
+      label: Quota Warning (GB)
+      optional: true
+      configurable: true
+      description: The capacity quota warning in gigabytes. A ECS warning notification will be generated when a user consumes this amount of storage
+    - name: free
+      type: boolean
+      label: Free of Charge
+      configurable: true
+      description: Whether this service is free or paid
+    - name: access_during_outage
+      label: Enable Access During Outage
+      type: boolean
+      default: true
+      configurable: true
+      description: This allows a bucket or namespace to remain online even if the primary site is offline. This is typically enabled, but can be disabled if strict data consistency is required, since actual replication is asynchronous
+    - name: default_retention
+      type: integer
+      label: Default Retention (Seconds)
+      optional: true
+      configurable: true
+      description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services
+    default:
+    - plan_guid: b00dc5b0-716f-4dd8-9324-5e75d80f67ab
+      name: 5gb
+      description: 5 GB free trial
+      cost_usd: 0.00
+      cost_unit: MONTHLY
+      quota_limit: 5
+      quota_warn: 4
+      free: true
+      bullets:
+      - Shared Object Storage
+      - 5 GB Storage Limit
+      - S3 Protocol Access
+      - NFS Access
+      - HDFS Access
+      - Support for Persistent Volume Mounts via NFS
+    - plan_guid: 26960f32-bc6f-4724-8f77-c3c181634d09
+      name: unlimited
+      description: Usage based billing
+      cost_usd: 0.03
+      cost_unit: PER_GB_PER_MONTH
+      bullets:
+      - Shared Object Storage
+      - Unlimited Storage
+      - S3 Protocol Access
+      - NFS Access
+      - HDFS Access
+      - Support for Persistent Volume Mounts via NFS
+- name: service4
+  label: Catalog Service 4
+  description: Configure Catalog Service 4
+  properties:
+  - name: service4_active
+    default: false
+    label: Enable Catalog Service 4
+    description: If enabled, this service will be included in the broker catalog, which supplies the Cloud Foundry marketplace.
+    configurable: true
+    type: boolean
+  - name: service4_name
+    label: Name
+    type: string
+    configurable: true
+    description: Service named used in the Cloud Foundry marketplace. This should be kept fairly short
+    optional: true
+  - name: service4_description
+    label: Description
+    type: string
+    configurable: true
+    description: Full description of the service appearing in the marketplace
+    optional: true
+  - name: service4_display_name
+    label: Display Name
+    type: string
+    configurable: true
+    description: The name that will show in the PCF Apps Manager Marketplace
+    optional: true
+  - name: service4_image_url
+    label: Image URL
+    type: http_url
+    configurable: true
+    default: https://avatars.githubusercontent.com/u/12926680
+    description: The image that will show in the PCF Apps Manager Marketplace
+  - name: service4_long_description
+    type: text
+    label: Long Description
+    configurable: true
+    description: A long description to use for the service, which will show in the PCF Apps Manager Marketplace
+    optional: true
+  - name: service4_provider_display_name
+    label: Provider Display Name
+    type: string
+    default: Dell EMC
+    configurable: true
+    description: Provider name that will show in the PCF Apps Manager Marketplace
+  - name: service4_documentation_url
+    label: Documentation URL
+    type: http_url
+    configurable: true
+    default: https://community.emc.com/docs/DOC-45012
+    description: The documentation link that will show in the PCF Apps Manager Marketplace
+  - name: service4_tags
+    type: string_list
+    label: Tags
+    configurable: true
+    description: Tags for service. These can be used by applications or cloud services (such as Spring Cloud) to identify service offerings & instances
+    optional: true
+  - name: service4_support_url
+    label: Support URL
+    type: http_url
+    configurable: true
+    default: http://www.emc.com/products-solutions/trial-software-download/ecs.htm
+    description: The support link that will show in the PCF Apps Manager Marketplace
+  - name: service4_bindable
+    label: Binable
+    type: boolean
+    default: true
+    configurable: true
+    description: Determines if this service can be bound to user applications. This should typically be enabled, but could be disabled for internal-only services
+  - name: service4_service_type
+    type: selector
+    label: Service Type
+    configurable: true
+    default: Bucket
+    description: Set the type of service to be available in the marketplace. A bucket provides a single bucket per service. A namespace provides a tentant "area" where multiple buckets can be provisioned
+    option_templates:
+    - name: namespace_option
+      select_value: Namespace
+      property_blueprints:
+      - name: compliance_enabled
+        type: boolean
+        label: Enable Compliance
+        default: false
+        configurable: true
+        description: Strongly enforce object retention for compliance. This only applies to namespace services
+      - name: default_bucket_quota
+        type: integer
+        label: Default Bucket Quota (GB)
+        optional: true
+        configurable: true
+        description: Default quota applied to all buckets created within this namespacedefault_bucket_quota. This only applies to namespace services
+    - name: bucket_option
+      select_value: Bucket
+      property_blueprints:
+      - name: head_type
+        label: Object Head Type
+        type: dropdown_select
+        default: s3
+        configurable: false
+        description: Object protocol to use for the provisioned bucket. Today the broker only supports S3, but will support Swift, Atmos & CAS in the future. This only applies to bucket services
+        options:
+        - name: s3
+          label: S3
+      - name: repository_service
+        type: boolean
+        label: Enable as Repository Service
+        description: Use this service for the internal metadata of the broker. This should only be enabled for one service, as the broker may pick from repository enabled services at random on startup.
+        configurable: true
+        default: false
+      - name: file_accessible
+        label: Enable File Access
+        type: boolean
+        default: false
+        configurable: true
+        description: Enable NFS and HDFS access for provisioned buckets. This also enables volume mount services for the service, so a bucket can be used as an application mount point. File access cannot be changed after creation, so this setting cannot be changed by plan upgrades. This only applies to bucket services
+      - name: default_retention
+        type: integer
+        label: Default Retention (Seconds)
+        optional: true
+        configurable: true
+        description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services
+  - name: service4_quota_limit
+    type: integer
+    label: Quota Limit (GB)
+    optional: true
+    configurable: true
+    description: The capacity quota limit in gigabytes. A user will not be able to store more than this amount in a provisioned bucket or namespace
+  - name: service4_quota_warn
+    type: integer
+    label: Quota Warning (GB)
+    optional: true
+    configurable: true
+    description: The capacity quota warning in gigabytes. A ECS warning notification will be generated when a user consumes this amount of storage
+  - name: service4_encrypted
+    label: Enable Encryption
+    type: boolean
+    default: false
+    configurable: true
+    description: Enabled encryption on this service. Encryption cannot be changed after creation, so this setting cannot be changed by plan upgrades
+  - name: service4_access_during_outage
+    label: Enable Access During Outage
+    type: boolean
+    default: true
+    configurable: true
+    description: This allows a bucket or namespace to remain online even if the primary site is offline. This is typically enabled, but can be disabled if strict data consistency is required, since actual replication is asynchronous
+  - name: service4_plans
+    type: collection
+    label: Customize Plans for this Service
+    configurable: true
+    optional: true
+    property_blueprints:
+    - name: name
+      type: string
+      label: Name
+      configurable: true
+      description: Name of this service plan to show in Cloud Foundry marketplace
+    - name: plan_guid
+      type: string
+      label: GUID
+      configurable: true
+      description: Unique Identifier for this Plan
+    - name: description
+      type: string
+      label: Description
+      configurable: true
+      description: Description of this service plan to show in Cloud Foundry marketplace
+    - name: repository_plan
+      type: boolean
+      label: Enable as Repository Plan
+      description: Use this plan for the internal metadata of the broker. This should only be enabled for one service, as the broker may pick from repository enabled plans at random on startup.
+      configurable: true
+      description: Description of this service plan to show in Cloud Foundry marketplace
+    - name: cost_usd
+      type: string
+      label: Cost in US Dollars
+      configurable: true
+      description: The cost for the plan based on the "Cost Unit". Should be in the form of a float -- 0.00
+    - name: cost_unit
+      type: string
+      label: Cost Unit
+      configurable: true
+      description: The unit for each to charge. By convention is should be in ALL CAPS. Examples include MONTHLY, PER_GB, PER_GB_PER_MONTH
+    - name: bullets
+      type: string_list
+      label: Bullet Points
+      configurable: true
+      description: Bullet points to show up about the plan in the PCF Marketplace.
+    - name: quota_limit
+      type: integer
+      label: Quota Limit (GB)
+      optional: true
+      configurable: true
+      description: The capacity quota limit in gigabytes. A user will not be able to store more than this amount in a provisioned bucket or namespace
+    - name: quota_warn
+      type: integer
+      label: Quota Warning (GB)
+      optional: true
+      configurable: true
+      description: The capacity quota warning in gigabytes. A ECS warning notification will be generated when a user consumes this amount of storage
+    - name: free
+      type: boolean
+      label: Free of Charge
+      configurable: true
+      description: Whether this service is free or paid
+    - name: access_during_outage
+      label: Enable Access During Outage
+      type: boolean
+      default: true
+      configurable: true
+      description: This allows a bucket or namespace to remain online even if the primary site is offline. This is typically enabled, but can be disabled if strict data consistency is required, since actual replication is asynchronous
+    - name: default_retention
+      type: integer
+      label: Default Retention (Seconds)
+      optional: true
+      configurable: true
+      description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services
+- name: service5
+  label: Catalog Service 5
+  description: Configure Catalog Service 5
+  properties:
+  - name: service5_active
+    default: false
+    label: Enable Catalog Service 5
+    description: If enabled, this service will be included in the broker catalog, which supplies the Cloud Foundry marketplace.
+    configurable: true
+    type: boolean
+  - name: service5_name
+    label: Name
+    type: string
+    configurable: true
+    description: Service named used in the Cloud Foundry marketplace. This should be kept fairly short
+    optional: true
+  - name: service5_description
+    label: Description
+    type: string
+    configurable: true
+    description: Full description of the service appearing in the marketplace
+    optional: true
+  - name: service5_display_name
+    label: Display Name
+    type: string
+    configurable: true
+    description: The name that will show in the PCF Apps Manager Marketplace
+    optional: true
+  - name: service5_image_url
+    label: Image URL
+    type: http_url
+    configurable: true
+    default: https://avatars.githubusercontent.com/u/12926680
+    description: The image that will show in the PCF Apps Manager Marketplace
+  - name: service5_long_description
+    type: text
+    label: Long Description
+    configurable: true
+    description: A long description to use for the service, which will show in the PCF Apps Manager Marketplace
+    optional: true
+  - name: service5_provider_display_name
+    label: Provider Display Name
+    type: string
+    default: Dell EMC
+    configurable: true
+    description: Provider name that will show in the PCF Apps Manager Marketplace
+  - name: service5_documentation_url
+    label: Documentation URL
+    type: http_url
+    configurable: true
+    default: https://community.emc.com/docs/DOC-45012
+    description: The documentation link that will show in the PCF Apps Manager Marketplace
+  - name: service5_tags
+    type: string_list
+    label: Tags
+    configurable: true
+    description: Tags for service. These can be used by applications or cloud services (such as Spring Cloud) to identify service offerings & instances
+    default:
+    - s3
+  - name: service5_support_url
+    label: Support URL
+    type: http_url
+    configurable: true
+    default: http://www.emc.com/products-solutions/trial-software-download/ecs.htm
+    description: The support link that will show in the PCF Apps Manager Marketplace
+  - name: service5_bindable
+    label: Binable
+    type: boolean
+    default: true
+    configurable: true
+    description: Determines if this service can be bound to user applications. This should typically be enabled, but could be disabled for internal-only services
+  - name: service5_service_type
+    type: selector
+    label: Service Type
+    configurable: true
+    default: Bucket
+    description: Set the type of service to be available in the marketplace. A bucket provides a single bucket per service. A namespace provides a tentant "area" where multiple buckets can be provisioned
+    option_templates:
+    - name: namespace_option
+      select_value: Namespace
+      property_blueprints:
+      - name: compliance_enabled
+        type: boolean
+        label: Enable Compliance
+        default: false
+        configurable: true
+        description: Strongly enforce object retention for compliance. This only applies to namespace services
+      - name: default_bucket_quota
+        type: integer
+        label: Default Bucket Quota (GB)
+        optional: true
+        configurable: true
+        description: Default quota applied to all buckets created within this namespacedefault_bucket_quota. This only applies to namespace services
+    - name: bucket_option
+      select_value: Bucket
+      property_blueprints:
+      - name: head_type
+        label: Object Head Type
+        type: dropdown_select
+        default: s3
+        configurable: false
+        description: Object protocol to use for the provisioned bucket. Today the broker only supports S3, but will support Swift, Atmos & CAS in the future. This only applies to bucket services
+        options:
+        - name: s3
+          label: S3
+      - name: repository_service
+        type: boolean
+        label: Enable as Repository Service
+        description: Use this service for the internal metadata of the broker. This should only be enabled for one service, as the broker may pick from repository enabled services at random on startup.
+        configurable: true
+        default: false
+      - name: file_accessible
+        label: Enable File Access
+        type: boolean
+        default: false
+        configurable: true
+        description: Enable NFS and HDFS access for provisioned buckets. This also enables volume mount services for the service, so a bucket can be used as an application mount point. File access cannot be changed after creation, so this setting cannot be changed by plan upgrades. This only applies to bucket services
+      - name: default_retention
+        type: integer
+        label: Default Retention (Seconds)
+        optional: true
+        configurable: true
+        description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services
+  - name: service5_quota_limit
+    type: integer
+    label: Quota Limit (GB)
+    optional: true
+    configurable: true
+    description: The capacity quota limit in gigabytes. A user will not be able to store more than this amount in a provisioned bucket or namespace
+  - name: service5_quota_warn
+    type: integer
+    label: Quota Warning (GB)
+    optional: true
+    configurable: true
+    description: The capacity quota warning in gigabytes. A ECS warning notification will be generated when a user consumes this amount of storage
+  - name: service5_encrypted
+    label: Enable Encryption
+    type: boolean
+    default: false
+    configurable: true
+    description: Enabled encryption on this service. Encryption cannot be changed after creation, so this setting cannot be changed by plan upgrades
+  - name: service5_access_during_outage
+    label: Enable Access During Outage
+    type: boolean
+    default: true
+    configurable: true
+    description: This allows a bucket or namespace to remain online even if the primary site is offline. This is typically enabled, but can be disabled if strict data consistency is required, since actual replication is asynchronous
+  - name: service5_plans
+    type: collection
+    label: Customize Plans for this Service
+    configurable: true
+    optional: true
+    property_blueprints:
+    - name: name
+      type: string
+      label: Name
+      configurable: true
+      description: Name of this service plan to show in Cloud Foundry marketplace
+    - name: plan_guid
+      type: string
+      label: GUID
+      configurable: true
+      description: Unique Identifier for this Plan
+    - name: description
+      type: string
+      label: Description
+      configurable: true
+      description: Description of this service plan to show in Cloud Foundry marketplace
+    - name: repository_plan
+      type: boolean
+      label: Enable as Repository Plan
+      description: Use this plan for the internal metadata of the broker. This should only be enabled for one service, as the broker may pick from repository enabled plans at random on startup.
+      configurable: true
+      description: Description of this service plan to show in Cloud Foundry marketplace
+    - name: cost_usd
+      type: string
+      label: Cost in US Dollars
+      configurable: true
+      description: The cost for the plan based on the "Cost Unit". Should be in the form of a float -- 0.00
+    - name: cost_unit
+      type: string
+      label: Cost Unit
+      configurable: true
+      description: The unit for each to charge. By convention is should be in ALL CAPS. Examples include MONTHLY, PER_GB, PER_GB_PER_MONTH
+    - name: bullets
+      type: string_list
+      label: Bullet Points
+      configurable: true
+      description: Bullet points to show up about the plan in the PCF Marketplace.
+    - name: quota_limit
+      type: integer
+      label: Quota Limit (GB)
+      optional: true
+      configurable: true
+      description: The capacity quota limit in gigabytes. A user will not be able to store more than this amount in a provisioned bucket or namespace
+    - name: quota_warn
+      type: integer
+      label: Quota Warning (GB)
+      optional: true
+      configurable: true
+      description: The capacity quota warning in gigabytes. A ECS warning notification will be generated when a user consumes this amount of storage
+    - name: free
+      type: boolean
+      label: Free of Charge
+      configurable: true
+      description: Whether this service is free or paid
+    - name: access_during_outage
+      label: Enable Access During Outage
+      type: boolean
+      default: true
+      configurable: true
+      description: This allows a bucket or namespace to remain online even if the primary site is offline. This is typically enabled, but can be disabled if strict data consistency is required, since actual replication is asynchronous
+    - name: default_retention
+      type: integer
+      label: Default Retention (Seconds)
+      optional: true
+      configurable: true
+      description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services
 packages:
 - name: ecs-broker
   type: bosh-release
@@ -418,6 +1387,130 @@ packages:
       configurable: false
       default: 1
     properties:
+      certificate: (( .properties.certificate_selector.untrusted_ssl.certificate.value ))
+      catalog_services:
+      - active: (( .properties.service1_active.value ))
+        service_guid: (( .properties.service1_guid.value ))
+        name: (( .properties.service1_name.value ))
+        repository_service: (( .properties.service1_service_type.bucket_option.repository_service.value ))
+        description: (( .properties.service1_description.value ))
+        bindable: (( .properties.service1_bindable.value ))
+        tags: (( .properties.service1_tags.value ))
+        display_name: (( .properties.service1_display_name.value ))
+        image_url: (( .properties.service1_image_url.value ))
+        long_description: (( .properties.service1_long_description.value ))
+        provider_display_name: (( .properties.service1_provider_display_name.value ))
+        documentation_url: (( .properties.service1_documentation_url.value ))
+        support_url: (( .properties.service1_support_url.value ))
+        service_type: (( .properties.service1_service_type.value ))
+        compliance_enabled: (( .properties.service1_service_type.namespace_option.compliance_enabled.value ))
+        default_bucket_quota: (( .properties.service1_service_type.namespace_option.default_bucket_quota.value ))
+        head_type: (( .properties.service1_service_type.bucket_option.head_type.value ))
+        file_accessible: (( .properties.service1_service_type.bucket_option.file_accessible.value ))
+        default_retention: (( .properties.service1_service_type.bucket_option.default_retention.value ))
+        encrypted: (( .properties.service1_encrypted.value ))
+        access_during_outage: (( .properties.service1_access_during_outage.value ))
+        quota_limit: (( .properties.service1_quota_limit.value ))
+        quota_warn: (( .properties.service1_quota_warn.value ))
+        plans: (( .properties.service1_plans.value ))
+      - active: (( .properties.service2_active.value ))
+        service_guid: (( .properties.service2_guid.value ))
+        name: (( .properties.service2_name.value ))
+        repository_service: (( .properties.service2_service_type.bucket_option.repository_service.value ))
+        description: (( .properties.service2_description.value ))
+        bindable: (( .properties.service2_bindable.value ))
+        tags: (( .properties.service2_tags.value ))
+        display_name: (( .properties.service2_display_name.value ))
+        image_url: (( .properties.service2_image_url.value ))
+        long_description: (( .properties.service2_long_description.value ))
+        provider_display_name: (( .properties.service2_provider_display_name.value ))
+        documentation_url: (( .properties.service2_documentation_url.value ))
+        support_url: (( .properties.service2_support_url.value ))
+        service_type: (( .properties.service2_service_type.value ))
+        compliance_enabled: (( .properties.service2_service_type.namespace_option.compliance_enabled.value ))
+        default_bucket_quota: (( .properties.service2_service_type.namespace_option.default_bucket_quota.value ))
+        head_type: (( .properties.service2_service_type.bucket_option.head_type.value ))
+        file_accessible: (( .properties.service2_service_type.bucket_option.file_accessible.value ))
+        default_retention: (( .properties.service2_service_type.bucket_option.default_retention.value ))
+        encrypted: (( .properties.service2_encrypted.value ))
+        access_during_outage: (( .properties.service2_access_during_outage.value ))
+        quota_limit: (( .properties.service2_quota_limit.value ))
+        quota_warn: (( .properties.service2_quota_warn.value ))
+        plans: (( .properties.service2_plans.value ))
+      - active: (( .properties.service3_active.value ))
+        service_guid: (( .properties.service3_guid.value ))
+        name: (( .properties.service3_name.value ))
+        repository_service: (( .properties.service3_service_type.bucket_option.repository_service.value ))
+        description: (( .properties.service3_description.value ))
+        bindable: (( .properties.service3_bindable.value ))
+        tags: (( .properties.service3_tags.value ))
+        display_name: (( .properties.service3_display_name.value ))
+        image_url: (( .properties.service3_image_url.value ))
+        long_description: (( .properties.service3_long_description.value ))
+        provider_display_name: (( .properties.service3_provider_display_name.value ))
+        documentation_url: (( .properties.service3_documentation_url.value ))
+        support_url: (( .properties.service3_support_url.value ))
+        service_type: (( .properties.service3_service_type.value ))
+        compliance_enabled: (( .properties.service3_service_type.namespace_option.compliance_enabled.value ))
+        default_bucket_quota: (( .properties.service3_service_type.namespace_option.default_bucket_quota.value ))
+        head_type: (( .properties.service3_service_type.bucket_option.head_type.value ))
+        file_accessible: (( .properties.service3_service_type.bucket_option.file_accessible.value ))
+        default_retention: (( .properties.service3_service_type.bucket_option.default_retention.value ))
+        encrypted: (( .properties.service3_encrypted.value ))
+        access_during_outage: (( .properties.service3_access_during_outage.value ))
+        quota_limit: (( .properties.service3_quota_limit.value ))
+        quota_warn: (( .properties.service3_quota_warn.value ))
+        plans: (( .properties.service3_plans.value ))
+      - active: (( .properties.service4_active.value ))
+        service_guid: (( .properties.service4_guid.value ))
+        name: (( .properties.service4_name.value ))
+        repository_service: (( .properties.service4_service_type.bucket_option.repository_service.value ))
+        description: (( .properties.service4_description.value ))
+        bindable: (( .properties.service4_bindable.value ))
+        tags: (( .properties.service4_tags.value ))
+        display_name: (( .properties.service4_display_name.value ))
+        image_url: (( .properties.service4_image_url.value ))
+        long_description: (( .properties.service4_long_description.value ))
+        provider_display_name: (( .properties.service4_provider_display_name.value ))
+        documentation_url: (( .properties.service4_documentation_url.value ))
+        support_url: (( .properties.service4_support_url.value ))
+        service_type: (( .properties.service4_service_type.value ))
+        compliance_enabled: (( .properties.service4_service_type.namespace_option.compliance_enabled.value ))
+        default_bucket_quota: (( .properties.service4_service_type.namespace_option.default_bucket_quota.value ))
+        head_type: (( .properties.service4_service_type.bucket_option.head_type.value ))
+        file_accessible: (( .properties.service4_service_type.bucket_option.file_accessible.value ))
+        default_retention: (( .properties.service4_service_type.bucket_option.default_retention.value ))
+        encrypted: (( .properties.service4_encrypted.value ))
+        access_during_outage: (( .properties.service4_access_during_outage.value ))
+        quota_limit: (( .properties.service4_quota_limit.value ))
+        quota_warn: (( .properties.service4_quota_warn.value ))
+        plans: (( .properties.service4_plans.value ))
+      - active: (( .properties.service5_active.value ))
+        service_guid: (( .properties.service5_guid.value ))
+        name: (( .properties.service5_name.value ))
+        repository_service: (( .properties.service5_service_type.bucket_option.repository_service.value ))
+        description: (( .properties.service5_description.value ))
+        bindable: (( .properties.service5_bindable.value ))
+        tags: (( .properties.service5_tags.value ))
+        display_name: (( .properties.service5_display_name.value ))
+        image_url: (( .properties.service5_image_url.value ))
+        long_description: (( .properties.service5_long_description.value ))
+        provider_display_name: (( .properties.service5_provider_display_name.value ))
+        documentation_url: (( .properties.service5_documentation_url.value ))
+        support_url: (( .properties.service5_support_url.value ))
+        service_type: (( .properties.service5_service_type.value ))
+        compliance_enabled: (( .properties.service5_service_type.namespace_option.compliance_enabled.value ))
+        default_bucket_quota: (( .properties.service5_service_type.namespace_option.default_bucket_quota.value ))
+        head_type: (( .properties.service5_service_type.bucket_option.head_type.value ))
+        file_accessible: (( .properties.service5_service_type.bucket_option.file_accessible.value ))
+        default_retention: (( .properties.service5_service_type.bucket_option.default_retention.value ))
+        encrypted: (( .properties.service5_encrypted.value ))
+        access_during_outage: (( .properties.service5_access_during_outage.value ))
+        quota_limit: (( .properties.service5_quota_limit.value ))
+        quota_warn: (( .properties.service5_quota_warn.value ))
+        plans: (( .properties.service5_plans.value ))
+      broker_credentials:
+        type: salted_credentials
       vm_credentials:
         type: salted_credentials
         default:
