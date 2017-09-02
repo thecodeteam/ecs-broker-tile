@@ -22,6 +22,10 @@ properties:
   type: uuid
 - name: encryption_key
   type: secret
+- name: broker_credentials
+  type: simple_credentials
+  default:
+    identity: user
 - name: vm_credentials
   type: salted_credentials
   default:
@@ -172,18 +176,6 @@ forms:
       type: string
       configurable: true
       optional: true
-    - name: security_username
-      label: ECS Broker Security Username
-      description: Enter the name to register broker. Defaults to "user"
-      type: string
-      configurable: true
-      default: user
-    - name: security_password
-      label: ECS Broker Password
-      description: Enter the password to register broker. Defaults to "password"
-      type: string
-      configurable: true
-      default: password
 - name: service1
   label: Catalog Service 1
   description: Configure Catalog Service 1
@@ -1387,6 +1379,8 @@ packages:
       configurable: false
       default: 1
     properties:
+      security_username: (( .properties.broker_credentials.identity ))
+      security_password: (( .properties.broker_credentials.password ))
       certificate: (( .properties.certificate_selector.untrusted_ssl.certificate.value ))
       catalog_services:
       - active: (( .properties.service1_active.value ))
@@ -1509,8 +1503,6 @@ packages:
         quota_limit: (( .properties.service5_quota_limit.value ))
         quota_warn: (( .properties.service5_quota_warn.value ))
         plans: (( .properties.service5_plans.value ))
-      broker_credentials:
-        type: salted_credentials
       vm_credentials:
         type: salted_credentials
         default:
@@ -1549,6 +1541,8 @@ packages:
       configurable: false
       default: 1
     properties:
+      security_username: (( .properties.broker_credentials.identity ))
+      security_password: (( .properties.broker_credentials.password ))
       vm_credentials:
         type: salted_credentials
         default:
