@@ -143,7 +143,7 @@ forms:
   description: Service Broker Webservice Settings
   properties:
     - name: api_version
-      label: ECS Management API Version
+      label: Service Broker API Version
       description: The Cloud Foundry service broker API version that the broker should advertise. This should be configured to be compatible with the release of Cloud Foundry
       type: string
       configurable: true
