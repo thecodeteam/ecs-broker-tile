@@ -44,10 +44,6 @@ properties:
     min: 256
     max: 4096
   default: 4096
-- name: internal_service_names
-  type: string
-  configurable: false
-  default: "ecs-bucket"
 forms:
 - name: ecs_broker_app
   label: Service Broker Application
