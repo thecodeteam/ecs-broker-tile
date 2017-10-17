@@ -1591,7 +1591,7 @@ requires_product_versions:
   version: "~> 1.0"
 provides_product_versions:
 - name: ecs-broker
-  version: '1.5.1'
+  version: '1.5.2'
 post_deploy_errands:
 - name: deploy-service-broker
 - name: register-broker
