@@ -1,14 +1,16 @@
 ---
-title: Using ECS BROKER for PCF
+title: Using ECS Service Broker for PCF
 owner: Partners
 ---
 
-This topic describes how to use ECS BROKER for Pivotal Cloud Foundry (PCF) after it has been installed. 
+This topic describes how to use ECS Service Broker for Pivotal Cloud Foundry (PCF) after it has been installed. 
 
-##<a id='using'></a> Use ECS BROKER for PCF with an App
+##<a id='using'></a> Use ECS Service Broker for PCF with an App
 
-To use ECS BROKER for PCF with an app, follow the procedures in this section to create a service instance and bind the service instance
-to your app. For more information about managing service instances, see <a href="https://docs.pivotal.io/pivotalcf/devguide/services/managing-services.html" target="_blank">Managing Service Instances with the cf CLI</a>.
+To use ECS Service Broker for PCF with an app, follow the procedures
+in this section to create a service instance and bind the service instance to your app.
+For more information about managing service instances,
+see <a href="https://docs.pivotal.io/pivotalcf/devguide/services/managing-services.html" target="_blank">Managing Service Instances with the cf CLI</a>.
 
 ### <a id="list"></a>View the Service
 
@@ -53,7 +55,7 @@ To enable your app to access the service instance, run `cf restage` or `cf resta
 
 ### <a id="obtain"></a>Obtain Service Instance Access Credentials
 
-After you bind your service instance to your app, you can find the credentials of your AWS S3
+After you bind your service instance to your app, you can find the credentials of your ECS S3
 user in the environment variables of the app.
 
 Run `cf env APP-NAME` to display environment variables. The credentials are listed under
@@ -96,11 +98,11 @@ System-Provided:
 
 You can use the access key ID, secret access key, bucket, and region to connect to a bucket.
 
-##<a id='deleting'></a> Delete an ECS BROKER for PCF Service Instance
-
-<p class="note warning"><strong>WARNING!</strong> Before deleting a service instance, you must back up the data stored in your bucket. This operation cannot be undone, and all the data is lost when the service is deleted.</p>
+##<a id='deleting'></a> Delete an ECS Service Broker for PCF Service Instance
 
 Follow the instructions below to unbind your service instance from all apps and delete it.
+
+<p class="note warning"><strong>WARNING!</strong> This operation cannot be undone, and all the data is lost when the service is deleted. Before deleting a service instance, you must back up the data stored in your bucket. </p>
 
 ### <a id="list2"></a>List Available Services
 
@@ -116,7 +118,7 @@ name           service    plan    bound apps   last operation
 my-bucket      ecs-bucket 5gb     sample-app   create succeeded
 </pre>
 
-This example shows that `my-bucket` is bound to the `sample-app` app.
+The above example shows that `my-bucket` is bound to the `sample-app` app.
 
 ### <a id="unbind"></a>Unbind a Service Instance
 

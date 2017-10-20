@@ -1,44 +1,30 @@
 ---
-title: ECS BROKER for PCF (Beta)
+title: ECS Service Broker for PCF
 owner: Partners
 ---
-<style>
-    .note.warning {
-        background-color: #fdd;
-        border-color: #fbb
-    }
 
-    .note.warning:before {
-        color: #f99;
-     }
-</style>
+This documentation describes ECS Service Broker for Pivotal Cloud Foundry (PCF).
 
-<p class="note warning">
-<strong>WARNING! </strong>
-The ECS BROKER for PCF tile is currently in beta and is intended for evaluation and test purposes only.
-Do not use this product in a PCF production environment.
-</p>
+## <a id="overview"></a> Overview
 
-This documentation describes ECS BROKER for Pivotal Cloud Foundry (PCF).
+ECS Service Broker for PCF registers a service broker on PCF and exposes its service plans on the Marketplace. Developers can provision buckets by creating instances of service plans using Apps Manager or the cf Command Line Interface (CLI) tool.
 
-ECS BROKER for PCF registers a service broker on PCF and exposes its service plans on the Marketplace. Developers can provision buckets by creating instances of service plans using Apps Manager or the cf Command Line Interface (CLI) tool.
+## <a id='overview'></a>Key Features
 
-## <a id='overview'></a>Overview
+ECS Service Broker for PCF lets you do the following:
 
-ECS BROKER for PCF includes the following key features:
-
-* Create and Delete Object Storage Buckets
-* Create and Delete Object Storage Namespaces
-* Bind one or more Cloud Foundry applications to a bucket or namespace, with unique credentials and permissions for each application
-* Support quota enforced plans for buckets to limit the amount of capacity
-* Support for encryption and retention of namespaces
-* Change plans of an existing bucket
-* Browse Cloud Foundry instance and binding metadata through an internal bucket
-* Specify an ECS namespace and replication group for provisioning
-* Provide a string prefix for bucket and user names
-* Support a self-signed SSL certificate for the ECS management API
-* Configure offered services & plans through a YAML based configuration
-* Support file system mounts of file access enabled buckets via NFS
+* Create and delete object storage buckets.
+* Create and delete object storage namespaces.
+* Bind one or more Cloud Foundry apps to a bucket or namespace, with unique credentials and permissions for each app.
+* Support quota-enforced plans for buckets to limit the amount of capacity.
+* Support encryption and retention of namespaces.
+* Change plans of an existing bucket.
+* Browse Cloud Foundry instance and binding metadata through an internal bucket.
+* Specify an ECS namespace and replication group for provisioning.
+* Provide a string prefix for bucket and user names.
+* Support a self-signed SSL certificate for the ECS management API.
+* Configure offered services and plans through a tile or YAML based configuration.
+* Support file system mounts of file access enabled buckets via NFS.
 
 ## <a id="snapshot"></a>Product Snapshot
 
@@ -46,24 +32,24 @@ ECS BROKER for PCF includes the following key features:
     <th>Element</th>
     <th>Details</th>
     <tr>
-        <td>Version</td>
-        <td>v0.5.0</td>
+        <td>Tile Version</td>
+        <td>v1.0.1</td>
     </tr>
     <tr>
         <td>Release date</td>
-        <td>May 15, 2017</td>
+        <td>September 5, 2017</td>
     </tr>
     <tr>
         <td>Software component version</td>
-        <td>v0.5.0</td>
+        <td>v1.0.1</td>
     </tr>
     <tr>
         <td>Compatible Ops Manager version(s)</td>
-        <td>v1.8.x, v1.9.x, v1.10.x</td>
+        <td>v1.10.x and later</td>
     </tr>
     <tr>
         <td>Compatible Elastic Runtime version(s)</td>
-        <td>v1.8.x, v1.9.x, v1.10.x</td>
+        <td>v1.10.x and later</td>
     </tr>
     <tr>
         <td>IaaS support</td>
@@ -77,11 +63,11 @@ ECS BROKER for PCF includes the following key features:
 
 ## <a id="reqs"></a>Requirements
 
-ECS BROKER for PCF has the following requirements:
+ECS Service Broker for PCF has the following requirements:
 
 + [Elastic Runtime](https://network.pivotal.io/products/elastic-runtime)  v1.10
 
 ## <a id="feedback"></a>Feedback
 
 Report bugs, make feature requests, or ask questions on the
-[Pivotal Cloud Foundry Feedback](mailto:pivotal-cf-feedback@pivotal.io) list, or send an email to [Altoros Customer Support](mailto:ecstiles-support@dell.com).
+[Pivotal Cloud Foundry Feedback](mailto:pivotal-cf-feedback@pivotal.io) list, or send an email to [ECS Customer Support](mailto:ecstiles-support@dell.com).
