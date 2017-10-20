@@ -1,5 +1,5 @@
 ---
-name: ecs-broker-tile
+name: ecs-service-broker
 icon_file: resources/icon.png
 label: DELL EMC ECS Broker
 description: ECS Broker for Pivotal CF
@@ -1550,7 +1550,7 @@ packages:
       release: ecs_broker
     lifecycle: errand
     pre_delete: true
-    run_pre_delete_errand_default: when-changed
+    run_post_delete_errand_default: on
     resource_definitions:
     - name: ram
       type: integer
