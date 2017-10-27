@@ -229,9 +229,7 @@ forms:
     label: Tags
     configurable: true
     description: Tags for service. These can be used by applications or cloud services (such as Spring Cloud) to identify service offerings & instances
-    default:
-    - s3
-    - bucket
+    default: "s3,bucket"
   - name: service1_support_url
     label: Support URL
     type: http_url
@@ -356,11 +354,36 @@ forms:
       label: Cost Unit
       configurable: true
       description: The unit for each to charge. By convention is should be in ALL CAPS. Examples include MONTHLY, PER_GB, PER_GB_PER_MONTH
-    - name: bullets
-      type: string_list
-      label: Bullet Points
+    - name: bullet_1
+      type: string
+      label: Bullet 1
       configurable: true
-      description: Bullet points to show up about the plan in the PCF Marketplace.
+      description: Bullet point to show up about the plan in the PCF Marketplace.
+      optional: true
+    - name: bullet_2
+      type: string
+      label: Bullet 2
+      configurable: true
+      description: Bullet point to show up about the plan in the PCF Marketplace.
+      optional: true
+    - name: bullet_3
+      type: string
+      label: Bullet 3
+      configurable: true
+      description: Bullet point to show up about the plan in the PCF Marketplace.
+      optional: true
+    - name: bullet_4
+      type: string
+      label: Bullet 4
+      configurable: true
+      description: Bullet point to show up about the plan in the PCF Marketplace.
+      optional: true
+    - name: bullet_5
+      type: string
+      label: Bullet 5
+      configurable: true
+      description: Bullet point to show up about the plan in the PCF Marketplace.
+      optional: true
     - name: quota_limit
       type: integer
       label: Quota Limit (GB)
@@ -399,20 +422,18 @@ forms:
       quota_limit: 5
       quota_warn: 4
       free: true
-      bullets:
-      - Shared Object Storage
-      - 5 GB Storage Limit
-      - S3 Protocol Access
+      bullet_1: Shared Object Storage
+      bullet_2: 5 GB Storage Limit
+      bullet_3: S3 Protocol Access
     - plan_guid: a0d743cf-e0ce-4ed9-b71b-5829530e72b7
       name: unlimited
       repository_plan: true
       description: Usage based billing
       cost_usd: 0.03
       cost_unit: PER_GB_PER_MONTH
-      bullets:
-      - Shared Object Storage
-      - Unlimited Storage
-      - S3 Protocol Access
+      bullet_1: Shared Object Storage
+      bullet_2: Unlimited Storage
+      bullet_3: S3 Protocol Access
 - name: service2
   label: Catalog Service 2
   description: Configure Catalog Service 2
@@ -470,9 +491,7 @@ forms:
     label: Tags
     configurable: true
     description: Tags for service. These can be used by applications or cloud services (such as Spring Cloud) to identify service offerings & instances
-    default:
-    - s3
-    - namespace
+    default: "s3,namespace"
   - name: service2_support_url
     label: Support URL
     type: http_url
@@ -597,11 +616,36 @@ forms:
       label: Cost Unit
       configurable: true
       description: The unit for each to charge. By convention is should be in ALL CAPS. Examples include MONTHLY, PER_GB, PER_GB_PER_MONTH
-    - name: bullets
-      type: string_list
-      label: Bullet Points
+    - name: bullet_1
+      type: string
+      label: Bullet 1
+      configurable: true
+      description: Bullet point to show up about the plan in the PCF Marketplace.
+      optional: true
+    - name: bullet_2
+      type: string
+      label: Bullet 2
+      configurable: true
+      description: Bullet point to show up about the plan in the PCF Marketplace.
+      optional: true
+    - name: bullet_3
+      type: string
+      label: Bullet 3
+      configurable: true
+      description: Bullet point to show up about the plan in the PCF Marketplace.
+      optional: true
+    - name: bullet_4
+      type: string
+      label: Bullet 4
       configurable: true
       description: Bullet points to show up about the plan in the PCF Marketplace.
+      optional: true
+    - name: bullet_5
+      type: string
+      label: Bullet 5
+      configurable: true
+      description: Bullet points to show up about the plan in the PCF Marketplace.
+      optional: true
     - name: quota_limit
       type: integer
       label: Quota Limit (GB)
@@ -640,19 +684,17 @@ forms:
       quota_limit: 5
       quota_warn: 4
       free: true
-      bullets:
-      - Shared Object Storage
-      - 5 GB Storage Limit
-      - S3 Protocol Access
+      bullet_1: Shared Object Storage
+      bullet_2: 5 GB Storage Limit
+      bullet_3: S3 Protocol Access
     - plan_guid: eff5c23e-b838-4500-918a-a8196ede36df
       name: unlimited
       description: Usage based billing
       cost_usd: 0.03
       cost_unit: PER_GB_PER_MONTH
-      bullets:
-      - Shared Object Storage
-      - Unlimited Storage
-      - S3 Protocol Access
+      bullet_1: Shared Object Storage
+      bullet_2: Unlimited Storage
+      bullet_3: S3 Protocol Access
 - name: service3
   label: Catalog Service 3
   description: Configure Catalog Service 3
@@ -710,11 +752,7 @@ forms:
     label: Tags
     configurable: true
     description: Tags for service. These can be used by applications or cloud services (such as Spring Cloud) to identify service offerings & instances
-    default:
-    - s3
-    - bucket
-    - nfs
-    - hdfs
+    default: "s3,bucket,nfs,hdfs"
   - name: service3_support_url
     label: Support URL
     type: http_url
@@ -839,11 +877,36 @@ forms:
       label: Cost Unit
       configurable: true
       description: The unit for each to charge. By convention is should be in ALL CAPS. Examples include MONTHLY, PER_GB, PER_GB_PER_MONTH
-    - name: bullets
-      type: string_list
-      label: Bullet Points
+    - name: bullet_1
+      type: string
+      label: Bullet 1
       configurable: true
-      description: Bullet points to show up about the plan in the PCF Marketplace.
+      description: Bullet point to show up about the plan in the PCF Marketplace.
+      optional: true
+    - name: bullet_2
+      type: string
+      label: Bullet 2
+      configurable: true
+      description: Bullet point to show up about the plan in the PCF Marketplace.
+      optional: true
+    - name: bullet_3
+      type: string
+      label: Bullet 3
+      configurable: true
+      description: Bullet point to show up about the plan in the PCF Marketplace.
+      optional: true
+    - name: bullet_4
+      type: string
+      label: Bullet 4
+      configurable: true
+      description: Bullet point to show up about the plan in the PCF Marketplace.
+      optional: true
+    - name: bullet_5
+      type: string
+      label: Bullet 5
+      configurable: true
+      description: Bullet point to show up about the plan in the PCF Marketplace.
+      optional: true
     - name: quota_limit
       type: integer
       label: Quota Limit (GB)
@@ -882,25 +945,21 @@ forms:
       quota_limit: 5
       quota_warn: 4
       free: true
-      bullets:
-      - Shared Object Storage
-      - 5 GB Storage Limit
-      - S3 Protocol Access
-      - NFS Access
-      - HDFS Access
-      - Support for Persistent Volume Mounts via NFS
+      bullet_1: Shared Object Storage
+      bullet_2: 5 GB Storage Limit
+      bullet_3: S3 Protocol Access
+      bullet_4: NFS Access, with PCF persistent volumes
+      bullet_5: HDFS Access
     - plan_guid: 26960f32-bc6f-4724-8f77-c3c181634d09
       name: unlimited
       description: Usage based billing
       cost_usd: 0.03
       cost_unit: PER_GB_PER_MONTH
-      bullets:
-      - Shared Object Storage
-      - Unlimited Storage
-      - S3 Protocol Access
-      - NFS Access
-      - HDFS Access
-      - Support for Persistent Volume Mounts via NFS
+      bullet_1: Shared Object Storage
+      bullet_2: Unlimited Storage
+      bullet_3: S3 Protocol Access
+      bullet_4: NFS Access, with PCF persistent volumes
+      bullet_5: HDFS Access
 - name: service4
   label: Catalog Service 4
   description: Configure Catalog Service 4
@@ -958,7 +1017,7 @@ forms:
     label: Tags
     configurable: true
     description: Tags for service. These can be used by applications or cloud services (such as Spring Cloud) to identify service offerings & instances
-    optional: true
+    default: "s3"
   - name: service4_support_url
     label: Support URL
     type: http_url
@@ -1084,11 +1143,36 @@ forms:
       label: Cost Unit
       configurable: true
       description: The unit for each to charge. By convention is should be in ALL CAPS. Examples include MONTHLY, PER_GB, PER_GB_PER_MONTH
-    - name: bullets
-      type: string_list
-      label: Bullet Points
+    - name: bullet_1
+      type: string
+      label: Bullet 1
       configurable: true
-      description: Bullet points to show up about the plan in the PCF Marketplace.
+      description: Bullet point to show up about the plan in the PCF Marketplace.
+      optional: true
+    - name: bullet_2
+      type: string
+      label: Bullet 2
+      configurable: true
+      description: Bullet point to show up about the plan in the PCF Marketplace.
+      optional: true
+    - name: bullet_3
+      type: string
+      label: Bullet 3
+      configurable: true
+      description: Bullet point to show up about the plan in the PCF Marketplace.
+      optional: true
+    - name: bullet_4
+      type: string
+      label: Bullet 4
+      configurable: true
+      description: Bullet point to show up about the plan in the PCF Marketplace.
+      optional: true
+    - name: bullet_5
+      type: string
+      label: Bullet 5
+      configurable: true
+      description: Bullet point to show up about the plan in the PCF Marketplace.
+      optional: true
     - name: quota_limit
       type: integer
       label: Quota Limit (GB)
@@ -1175,8 +1259,7 @@ forms:
     label: Tags
     configurable: true
     description: Tags for service. These can be used by applications or cloud services (such as Spring Cloud) to identify service offerings & instances
-    default:
-    - s3
+    default: "s3"
   - name: service5_support_url
     label: Support URL
     type: http_url
@@ -1302,11 +1385,36 @@ forms:
       label: Cost Unit
       configurable: true
       description: The unit for each to charge. By convention is should be in ALL CAPS. Examples include MONTHLY, PER_GB, PER_GB_PER_MONTH
-    - name: bullets
-      type: string_list
-      label: Bullet Points
+    - name: bullet_1
+      type: string
+      label: Bullet 1
       configurable: true
-      description: Bullet points to show up about the plan in the PCF Marketplace.
+      description: Bullet point to show up about the plan in the PCF Marketplace.
+      optional: true
+    - name: bullet_2
+      type: string
+      label: Bullet 2
+      configurable: true
+      description: Bullet point to show up about the plan in the PCF Marketplace.
+      optional: true
+    - name: bullet_3
+      type: string
+      label: Bullet 3
+      configurable: true
+      description: Bullet point to show up about the plan in the PCF Marketplace.
+      optional: true
+    - name: bullet_4
+      type: string
+      label: Bullet 4
+      configurable: true
+      description: Bullet point to show up about the plan in the PCF Marketplace.
+      optional: true
+    - name: bullet_5
+      type: string
+      label: Bullet 5
+      configurable: true
+      description: Bullet point to show up about the plan in the PCF Marketplace.
+      optional: true
     - name: quota_limit
       type: integer
       label: Quota Limit (GB)
@@ -1385,7 +1493,7 @@ packages:
         repository_service: (( .properties.service1_service_type.bucket_option.repository_service.value ))
         description: (( .properties.service1_description.value ))
         bindable: (( .properties.service1_bindable.value ))
-        tags: (( .properties.service1_tags.value ))
+        tags: (( .properties.service1_tags.parsed_strings ))
         display_name: (( .properties.service1_display_name.value ))
         image_url: (( .properties.service1_image_url.value ))
         long_description: (( .properties.service1_long_description.value ))
@@ -1409,7 +1517,7 @@ packages:
         repository_service: (( .properties.service2_service_type.bucket_option.repository_service.value ))
         description: (( .properties.service2_description.value ))
         bindable: (( .properties.service2_bindable.value ))
-        tags: (( .properties.service2_tags.value ))
+        tags: (( .properties.service2_tags.parsed_strings ))
         display_name: (( .properties.service2_display_name.value ))
         image_url: (( .properties.service2_image_url.value ))
         long_description: (( .properties.service2_long_description.value ))
@@ -1433,7 +1541,7 @@ packages:
         repository_service: (( .properties.service3_service_type.bucket_option.repository_service.value ))
         description: (( .properties.service3_description.value ))
         bindable: (( .properties.service3_bindable.value ))
-        tags: (( .properties.service3_tags.value ))
+        tags: (( .properties.service3_tags.parsed_strings ))
         display_name: (( .properties.service3_display_name.value ))
         image_url: (( .properties.service3_image_url.value ))
         long_description: (( .properties.service3_long_description.value ))
@@ -1457,7 +1565,7 @@ packages:
         repository_service: (( .properties.service4_service_type.bucket_option.repository_service.value ))
         description: (( .properties.service4_description.value ))
         bindable: (( .properties.service4_bindable.value ))
-        tags: (( .properties.service4_tags.value ))
+        tags: (( .properties.service4_tags.parsed_strings ))
         display_name: (( .properties.service4_display_name.value ))
         image_url: (( .properties.service4_image_url.value ))
         long_description: (( .properties.service4_long_description.value ))
@@ -1481,7 +1589,7 @@ packages:
         repository_service: (( .properties.service5_service_type.bucket_option.repository_service.value ))
         description: (( .properties.service5_description.value ))
         bindable: (( .properties.service5_bindable.value ))
-        tags: (( .properties.service5_tags.value ))
+        tags: (( .properties.service5_tags.parsed_strings ))
         display_name: (( .properties.service5_display_name.value ))
         image_url: (( .properties.service5_image_url.value ))
         long_description: (( .properties.service5_long_description.value ))
