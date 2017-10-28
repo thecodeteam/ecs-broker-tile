@@ -1447,7 +1447,7 @@ forms:
 packages:
 - name: ecs-broker
   type: bosh-release
-  path: resources/ecs-broker-1.5.1.tgz
+  path: resources/ecs-broker-1.5.2.tgz
   jobs:
   - name: deploy-service-broker
     resource_label: Deploy Ecs Service Broker
