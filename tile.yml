@@ -7,7 +7,7 @@ metadata_version: 1.8
 rank: 50
 stemcell_criteria:
   os: ubuntu-trusty
-  version: '3363.15'
+  version: '3541.2'
   requires_cpi: false
 properties:
 - name: service1_guid
