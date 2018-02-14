@@ -294,18 +294,6 @@ forms:
         optional: true
         configurable: true
         description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services
-  - name: service1_quota_limit
-    type: integer
-    label: Quota Limit (GB)
-    optional: true
-    configurable: true
-    description: The capacity quota limit in gigabytes. A user will not be able to store more than this amount in a provisioned bucket or namespace
-  - name: service1_quota_warn
-    type: integer
-    label: Quota Warning (GB)
-    optional: true
-    configurable: true
-    description: The capacity quota warning in gigabytes. A ECS warning notification will be generated when a user consumes this amount of storage
   - name: service1_encrypted
     label: Enable Encryption
     type: boolean
@@ -556,18 +544,6 @@ forms:
         optional: true
         configurable: true
         description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services
-  - name: service2_quota_limit
-    type: integer
-    label: Quota Limit (GB)
-    optional: true
-    configurable: true
-    description: The capacity quota limit in gigabytes. A user will not be able to store more than this amount in a provisioned bucket or namespace
-  - name: service2_quota_warn
-    type: integer
-    label: Quota Warning (GB)
-    optional: true
-    configurable: true
-    description: The capacity quota warning in gigabytes. A ECS warning notification will be generated when a user consumes this amount of storage
   - name: service2_encrypted
     label: Enable Encryption
     type: boolean
@@ -817,18 +793,6 @@ forms:
         optional: true
         configurable: true
         description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services
-  - name: service3_quota_limit
-    type: integer
-    label: Quota Limit (GB)
-    optional: true
-    configurable: true
-    description: The capacity quota limit in gigabytes. A user will not be able to store more than this amount in a provisioned bucket or namespace
-  - name: service3_quota_warn
-    type: integer
-    label: Quota Warning (GB)
-    optional: true
-    configurable: true
-    description: The capacity quota warning in gigabytes. A ECS warning notification will be generated when a user consumes this amount of storage
   - name: service3_encrypted
     label: Enable Encryption
     type: boolean
@@ -1082,18 +1046,6 @@ forms:
         optional: true
         configurable: true
         description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services
-  - name: service4_quota_limit
-    type: integer
-    label: Quota Limit (GB)
-    optional: true
-    configurable: true
-    description: The capacity quota limit in gigabytes. A user will not be able to store more than this amount in a provisioned bucket or namespace
-  - name: service4_quota_warn
-    type: integer
-    label: Quota Warning (GB)
-    optional: true
-    configurable: true
-    description: The capacity quota warning in gigabytes. A ECS warning notification will be generated when a user consumes this amount of storage
   - name: service4_encrypted
     label: Enable Encryption
     type: boolean
@@ -1324,18 +1276,6 @@ forms:
         optional: true
         configurable: true
         description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services
-  - name: service5_quota_limit
-    type: integer
-    label: Quota Limit (GB)
-    optional: true
-    configurable: true
-    description: The capacity quota limit in gigabytes. A user will not be able to store more than this amount in a provisioned bucket or namespace
-  - name: service5_quota_warn
-    type: integer
-    label: Quota Warning (GB)
-    optional: true
-    configurable: true
-    description: The capacity quota warning in gigabytes. A ECS warning notification will be generated when a user consumes this amount of storage
   - name: service5_encrypted
     label: Enable Encryption
     type: boolean
