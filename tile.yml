@@ -293,7 +293,7 @@ forms:
         label: Default Retention (Seconds)
         optional: true
         configurable: true
-        description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services
+        description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services. Setting default retention in the service will _override_ default retention at within a plan.
   - name: service1_encrypted
     label: Enable Encryption
     type: boolean
@@ -305,7 +305,7 @@ forms:
     type: boolean
     default: true
     configurable: true
-    description: This allows a bucket or namespace to remain online even if the primary site is offline. This is typically enabled, but can be disabled if strict data consistency is required, since actual replication is asynchronous
+    description: This allows a bucket or namespace to remain online even if the primary site is offline. This is typically enabled, but can be disabled if strict data consistency is required, since actual replication is asynchronous. Setting access during outage in the service will _override_ access during outage at within a plan.
   - name: service1_plans
     type: collection
     label: Customize Plans for this Service
@@ -543,7 +543,7 @@ forms:
         label: Default Retention (Seconds)
         optional: true
         configurable: true
-        description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services
+        description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services. Setting default retention in the service will _override_ default retention at within a plan.
   - name: service2_encrypted
     label: Enable Encryption
     type: boolean
@@ -555,7 +555,7 @@ forms:
     type: boolean
     default: true
     configurable: true
-    description: This allows a bucket or namespace to remain online even if the primary site is offline. This is typically enabled, but can be disabled if strict data consistency is required, since actual replication is asynchronous
+    description: This allows a bucket or namespace to remain online even if the primary site is offline. This is typically enabled, but can be disabled if strict data consistency is required, since actual replication is asynchronous. Setting access during outage in the service will _override_ access during outage at within a plan.
   - name: service2_plans
     type: collection
     label: Customize Plans for this Service
@@ -792,7 +792,7 @@ forms:
         label: Default Retention (Seconds)
         optional: true
         configurable: true
-        description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services
+        description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services. Setting default retention in the service will _override_ default retention at within a plan.
   - name: service3_encrypted
     label: Enable Encryption
     type: boolean
@@ -804,7 +804,7 @@ forms:
     type: boolean
     default: true
     configurable: true
-    description: This allows a bucket or namespace to remain online even if the primary site is offline. This is typically enabled, but can be disabled if strict data consistency is required, since actual replication is asynchronous
+    description: This allows a bucket or namespace to remain online even if the primary site is offline. This is typically enabled, but can be disabled if strict data consistency is required, since actual replication is asynchronous. Setting access during outage in the service will _override_ access during outage at within a plan.
   - name: service3_plans
     type: collection
     label: Customize Plans for this Service
@@ -1045,7 +1045,7 @@ forms:
         label: Default Retention (Seconds)
         optional: true
         configurable: true
-        description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services
+        description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services. Setting default retention in the service will _override_ default retention at within a plan.
   - name: service4_encrypted
     label: Enable Encryption
     type: boolean
@@ -1057,7 +1057,7 @@ forms:
     type: boolean
     default: true
     configurable: true
-    description: This allows a bucket or namespace to remain online even if the primary site is offline. This is typically enabled, but can be disabled if strict data consistency is required, since actual replication is asynchronous
+    description: This allows a bucket or namespace to remain online even if the primary site is offline. This is typically enabled, but can be disabled if strict data consistency is required, since actual replication is asynchronous. Setting access during outage in the service will _override_ access during outage at within a plan.
   - name: service4_plans
     type: collection
     label: Customize Plans for this Service
@@ -1275,7 +1275,7 @@ forms:
         label: Default Retention (Seconds)
         optional: true
         configurable: true
-        description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services
+        description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services. Setting default retention in the service will _override_ default retention at within a plan.
   - name: service5_encrypted
     label: Enable Encryption
     type: boolean
@@ -1287,7 +1287,7 @@ forms:
     type: boolean
     default: true
     configurable: true
-    description: This allows a bucket or namespace to remain online even if the primary site is offline. This is typically enabled, but can be disabled if strict data consistency is required, since actual replication is asynchronous
+    description: This allows a bucket or namespace to remain online even if the primary site is offline. This is typically enabled, but can be disabled if strict data consistency is required, since actual replication is asynchronous. Setting access during outage in the service will _override_ access during outage at within a plan.
   - name: service5_plans
     type: collection
     label: Customize Plans for this Service
