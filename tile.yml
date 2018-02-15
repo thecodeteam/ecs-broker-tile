@@ -316,11 +316,6 @@ forms:
       label: Name
       configurable: true
       description: Name of this service plan to show in Cloud Foundry marketplace
-    - name: plan_guid
-      type: string
-      label: GUID
-      configurable: true
-      description: Unique Identifier for this Plan
     - name: description
       type: string
       label: Description
@@ -402,8 +397,7 @@ forms:
       configurable: true
       description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services
     default:
-    - plan_guid: 47ed6eaa-4fb1-4202-8256-21b0947d2154
-      name: 5gb
+    - name: 5gb
       description: 5 GB free trial
       cost_usd: 0.00
       cost_unit: MONTHLY
@@ -413,8 +407,7 @@ forms:
       bullet_1: Shared Object Storage
       bullet_2: 5 GB Storage Limit
       bullet_3: S3 Protocol Access
-    - plan_guid: a0d743cf-e0ce-4ed9-b71b-5829530e72b7
-      name: unlimited
+    - name: unlimited
       repository_plan: true
       description: Usage based billing
       cost_usd: 0.03
@@ -566,11 +559,6 @@ forms:
       label: Name
       configurable: true
       description: Name of this service plan to show in Cloud Foundry marketplace
-    - name: plan_guid
-      type: string
-      label: GUID
-      configurable: true
-      description: Unique Identifier for this Plan
     - name: description
       type: string
       label: Description
@@ -652,8 +640,7 @@ forms:
       configurable: true
       description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services
     default:
-    - plan_guid: 07745f74-d969-4d05-8c60-b66f0c0a80bc
-      name: 5gb
+    - name: 5gb
       description: 5 GB free trial
       cost_usd: 0.00
       cost_unit: MONTHLY
@@ -663,8 +650,7 @@ forms:
       bullet_1: Shared Object Storage
       bullet_2: 5 GB Storage Limit
       bullet_3: S3 Protocol Access
-    - plan_guid: eff5c23e-b838-4500-918a-a8196ede36df
-      name: unlimited
+    - name: unlimited
       description: Usage based billing
       cost_usd: 0.03
       cost_unit: PER_GB_PER_MONTH
@@ -815,11 +801,6 @@ forms:
       label: Name
       configurable: true
       description: Name of this service plan to show in Cloud Foundry marketplace
-    - name: plan_guid
-      type: string
-      label: GUID
-      configurable: true
-      description: Unique Identifier for this Plan
     - name: description
       type: string
       label: Description
@@ -901,8 +882,7 @@ forms:
       configurable: true
       description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services
     default:
-    - plan_guid: b00dc5b0-716f-4dd8-9324-5e75d80f67ab
-      name: 5gb
+    - name: 5gb
       description: 5 GB free trial
       cost_usd: 0.00
       cost_unit: MONTHLY
@@ -914,8 +894,7 @@ forms:
       bullet_3: S3 Protocol Access
       bullet_4: NFS Access, with PCF persistent volumes
       bullet_5: HDFS Access
-    - plan_guid: 26960f32-bc6f-4724-8f77-c3c181634d09
-      name: unlimited
+    - name: unlimited
       description: Usage based billing
       cost_usd: 0.03
       cost_unit: PER_GB_PER_MONTH
@@ -1069,11 +1048,6 @@ forms:
       label: Name
       configurable: true
       description: Name of this service plan to show in Cloud Foundry marketplace
-    - name: plan_guid
-      type: string
-      label: GUID
-      configurable: true
-      description: Unique Identifier for this Plan
     - name: description
       type: string
       label: Description
@@ -1299,11 +1273,6 @@ forms:
       label: Name
       configurable: true
       description: Name of this service plan to show in Cloud Foundry marketplace
-    - name: plan_guid
-      type: string
-      label: GUID
-      configurable: true
-      description: Unique Identifier for this Plan
     - name: description
       type: string
       label: Description
