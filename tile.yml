@@ -55,18 +55,6 @@ forms:
       description: Enter the name for the Service Broker App
       configurable: true
       default: ecs-broker
-    - name: app_version
-      label: Service Broker Application version
-      description: Enter the version of the Service Broker App (Final app name would include app version like ${appName}-${appversion}
-      type: string
-      configurable: true
-      default: v1
-    - name: app_uri
-      label: Service Broker Application URI
-      description: Enter the URI/endpoint for the Service Broker app (on push to CF)
-      type: string
-      configurable: true
-      default: ecs-broker
     - name: create_open_security_group
       label: Open up Security Groups
       description: Open up security group on CF for Service Broker to access other apps or CF Cloud Controller
