@@ -51,10 +51,20 @@ forms:
   properties:
     - name: app_name
       type: string
-      label: Service Broker Application Name
+      label: Service Broker App Name
       description: Enter the name for the Service Broker App
       configurable: true
       default: ecs-broker
+    - name: organization
+      type: string
+      label: Service Broker Organization
+      description: CF Organization in which to deploy the Broker App
+      default: ecs-broker-service-org
+    - name: space
+      type: string
+      label: Service Broker Space
+      description: CF Space in which to deploy the Broker App
+      default: ecs-broker-service-space
     - name: create_open_security_group
       label: Open up Security Groups
       description: Open up security group on CF for Service Broker to access other apps or CF Cloud Controller
