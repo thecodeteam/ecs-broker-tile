@@ -55,12 +55,12 @@ forms:
       description: Enter the name for the Service Broker App
       configurable: true
       default: ecs-broker
-    - name: organization
+    - name: app_organization
       type: string
       label: Service Broker Organization
       description: CF Organization in which to deploy the Broker App
       default: ecs-broker-service-org
-    - name: space
+    - name: app_space
       type: string
       label: Service Broker Space
       description: CF Space in which to deploy the Broker App
@@ -1354,10 +1354,10 @@ forms:
 packages:
 - name: ecs-broker
   type: bosh-release
-  path: resources/ecs-broker-1.5.2.tgz
+  path: resources/ecs-broker-1.5.3.tgz
   jobs:
   - name: deploy-service-broker
-    resource_label: Deploy Ecs Service Broker
+    resource_label: Deploy ECS Service Broker
     templates:
     - name: deploy-service-broker
       release: ecs_broker
@@ -1415,8 +1415,6 @@ packages:
         default_retention: (( .properties.service1_service_type.bucket_option.default_retention.value ))
         encrypted: (( .properties.service1_encrypted.value ))
         access_during_outage: (( .properties.service1_access_during_outage.value ))
-        quota_limit: (( .properties.service1_quota_limit.value ))
-        quota_warn: (( .properties.service1_quota_warn.value ))
         plans: (( .properties.service1_plans.value ))
       - active: (( .properties.service2_active.value ))
         service_guid: (( .properties.service2_guid.value ))
@@ -1439,8 +1437,6 @@ packages:
         default_retention: (( .properties.service2_service_type.bucket_option.default_retention.value ))
         encrypted: (( .properties.service2_encrypted.value ))
         access_during_outage: (( .properties.service2_access_during_outage.value ))
-        quota_limit: (( .properties.service2_quota_limit.value ))
-        quota_warn: (( .properties.service2_quota_warn.value ))
         plans: (( .properties.service2_plans.value ))
       - active: (( .properties.service3_active.value ))
         service_guid: (( .properties.service3_guid.value ))
@@ -1463,8 +1459,6 @@ packages:
         default_retention: (( .properties.service3_service_type.bucket_option.default_retention.value ))
         encrypted: (( .properties.service3_encrypted.value ))
         access_during_outage: (( .properties.service3_access_during_outage.value ))
-        quota_limit: (( .properties.service3_quota_limit.value ))
-        quota_warn: (( .properties.service3_quota_warn.value ))
         plans: (( .properties.service3_plans.value ))
       - active: (( .properties.service4_active.value ))
         service_guid: (( .properties.service4_guid.value ))
@@ -1487,8 +1481,6 @@ packages:
         default_retention: (( .properties.service4_service_type.bucket_option.default_retention.value ))
         encrypted: (( .properties.service4_encrypted.value ))
         access_during_outage: (( .properties.service4_access_during_outage.value ))
-        quota_limit: (( .properties.service4_quota_limit.value ))
-        quota_warn: (( .properties.service4_quota_warn.value ))
         plans: (( .properties.service4_plans.value ))
       - active: (( .properties.service5_active.value ))
         service_guid: (( .properties.service5_guid.value ))
@@ -1511,15 +1503,13 @@ packages:
         default_retention: (( .properties.service5_service_type.bucket_option.default_retention.value ))
         encrypted: (( .properties.service5_encrypted.value ))
         access_during_outage: (( .properties.service5_access_during_outage.value ))
-        quota_limit: (( .properties.service5_quota_limit.value ))
-        quota_warn: (( .properties.service5_quota_warn.value ))
         plans: (( .properties.service5_plans.value ))
       vm_credentials:
         type: salted_credentials
         default:
           identity: vcap
   - name: register-broker
-    resource_label: Register Ecs Service Broker
+    resource_label: Register ECS Service Broker
     templates:
     - name: register-broker
       release: ecs_broker
@@ -1559,7 +1549,7 @@ packages:
         default:
           identity: vcap
   - name: destroy-broker
-    resource_label: Remove Ecs Service Broker
+    resource_label: Remove ECS Service Broker
     templates:
     - name: destroy-broker
       release: ecs_broker
@@ -1606,7 +1596,7 @@ requires_product_versions:
   version: "~> 1.0"
 provides_product_versions:
 - name: ecs-broker
-  version: '1.5.2'
+  version: '1.5.4+dev.25'
 post_deploy_errands:
 - name: deploy-service-broker
 - name: register-broker
