@@ -7,7 +7,7 @@ metadata_version: 1.8
 rank: 50
 stemcell_criteria:
   os: ubuntu-trusty
-  version: '3363.15'
+  version: '3541.2'
   requires_cpi: false
 properties:
 - name: service1_guid
@@ -51,22 +51,20 @@ forms:
   properties:
     - name: app_name
       type: string
-      label: Service Broker Application Name
+      label: Service Broker App Name
       description: Enter the name for the Service Broker App
       configurable: true
       default: ecs-broker
-    - name: app_version
-      label: Service Broker Application version
-      description: Enter the version of the Service Broker App (Final app name would include app version like ${appName}-${appversion}
+    - name: app_organization
       type: string
-      configurable: true
-      default: v1
-    - name: app_uri
-      label: Service Broker Application URI
-      description: Enter the URI/endpoint for the Service Broker app (on push to CF)
+      label: Service Broker Organization
+      description: CF Organization in which to deploy the Broker App
+      default: ecs-broker-service-org
+    - name: app_space
       type: string
-      configurable: true
-      default: ecs-broker
+      label: Service Broker Space
+      description: CF Space in which to deploy the Broker App
+      default: ecs-broker-service-space
     - name: create_open_security_group
       label: Open up Security Groups
       description: Open up security group on CF for Service Broker to access other apps or CF Cloud Controller
@@ -293,19 +291,7 @@ forms:
         label: Default Retention (Seconds)
         optional: true
         configurable: true
-        description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services
-  - name: service1_quota_limit
-    type: integer
-    label: Quota Limit (GB)
-    optional: true
-    configurable: true
-    description: The capacity quota limit in gigabytes. A user will not be able to store more than this amount in a provisioned bucket or namespace
-  - name: service1_quota_warn
-    type: integer
-    label: Quota Warning (GB)
-    optional: true
-    configurable: true
-    description: The capacity quota warning in gigabytes. A ECS warning notification will be generated when a user consumes this amount of storage
+        description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services. Setting default retention in the service will _override_ default retention at within a plan.
   - name: service1_encrypted
     label: Enable Encryption
     type: boolean
@@ -317,7 +303,7 @@ forms:
     type: boolean
     default: true
     configurable: true
-    description: This allows a bucket or namespace to remain online even if the primary site is offline. This is typically enabled, but can be disabled if strict data consistency is required, since actual replication is asynchronous
+    description: This allows a bucket or namespace to remain online even if the primary site is offline. This is typically enabled, but can be disabled if strict data consistency is required, since actual replication is asynchronous. Setting access during outage in the service will _override_ access during outage at within a plan.
   - name: service1_plans
     type: collection
     label: Customize Plans for this Service
@@ -328,11 +314,6 @@ forms:
       label: Name
       configurable: true
       description: Name of this service plan to show in Cloud Foundry marketplace
-    - name: plan_guid
-      type: string
-      label: GUID
-      configurable: true
-      description: Unique Identifier for this Plan
     - name: description
       type: string
       label: Description
@@ -414,8 +395,7 @@ forms:
       configurable: true
       description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services
     default:
-    - plan_guid: 47ed6eaa-4fb1-4202-8256-21b0947d2154
-      name: 5gb
+    - name: 5gb
       description: 5 GB free trial
       cost_usd: 0.00
       cost_unit: MONTHLY
@@ -425,8 +405,7 @@ forms:
       bullet_1: Shared Object Storage
       bullet_2: 5 GB Storage Limit
       bullet_3: S3 Protocol Access
-    - plan_guid: a0d743cf-e0ce-4ed9-b71b-5829530e72b7
-      name: unlimited
+    - name: unlimited
       repository_plan: true
       description: Usage based billing
       cost_usd: 0.03
@@ -555,19 +534,7 @@ forms:
         label: Default Retention (Seconds)
         optional: true
         configurable: true
-        description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services
-  - name: service2_quota_limit
-    type: integer
-    label: Quota Limit (GB)
-    optional: true
-    configurable: true
-    description: The capacity quota limit in gigabytes. A user will not be able to store more than this amount in a provisioned bucket or namespace
-  - name: service2_quota_warn
-    type: integer
-    label: Quota Warning (GB)
-    optional: true
-    configurable: true
-    description: The capacity quota warning in gigabytes. A ECS warning notification will be generated when a user consumes this amount of storage
+        description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services. Setting default retention in the service will _override_ default retention at within a plan.
   - name: service2_encrypted
     label: Enable Encryption
     type: boolean
@@ -579,7 +546,7 @@ forms:
     type: boolean
     default: true
     configurable: true
-    description: This allows a bucket or namespace to remain online even if the primary site is offline. This is typically enabled, but can be disabled if strict data consistency is required, since actual replication is asynchronous
+    description: This allows a bucket or namespace to remain online even if the primary site is offline. This is typically enabled, but can be disabled if strict data consistency is required, since actual replication is asynchronous. Setting access during outage in the service will _override_ access during outage at within a plan.
   - name: service2_plans
     type: collection
     label: Customize Plans for this Service
@@ -590,11 +557,6 @@ forms:
       label: Name
       configurable: true
       description: Name of this service plan to show in Cloud Foundry marketplace
-    - name: plan_guid
-      type: string
-      label: GUID
-      configurable: true
-      description: Unique Identifier for this Plan
     - name: description
       type: string
       label: Description
@@ -676,8 +638,7 @@ forms:
       configurable: true
       description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services
     default:
-    - plan_guid: 07745f74-d969-4d05-8c60-b66f0c0a80bc
-      name: 5gb
+    - name: 5gb
       description: 5 GB free trial
       cost_usd: 0.00
       cost_unit: MONTHLY
@@ -687,8 +648,7 @@ forms:
       bullet_1: Shared Object Storage
       bullet_2: 5 GB Storage Limit
       bullet_3: S3 Protocol Access
-    - plan_guid: eff5c23e-b838-4500-918a-a8196ede36df
-      name: unlimited
+    - name: unlimited
       description: Usage based billing
       cost_usd: 0.03
       cost_unit: PER_GB_PER_MONTH
@@ -816,19 +776,7 @@ forms:
         label: Default Retention (Seconds)
         optional: true
         configurable: true
-        description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services
-  - name: service3_quota_limit
-    type: integer
-    label: Quota Limit (GB)
-    optional: true
-    configurable: true
-    description: The capacity quota limit in gigabytes. A user will not be able to store more than this amount in a provisioned bucket or namespace
-  - name: service3_quota_warn
-    type: integer
-    label: Quota Warning (GB)
-    optional: true
-    configurable: true
-    description: The capacity quota warning in gigabytes. A ECS warning notification will be generated when a user consumes this amount of storage
+        description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services. Setting default retention in the service will _override_ default retention at within a plan.
   - name: service3_encrypted
     label: Enable Encryption
     type: boolean
@@ -840,7 +788,7 @@ forms:
     type: boolean
     default: true
     configurable: true
-    description: This allows a bucket or namespace to remain online even if the primary site is offline. This is typically enabled, but can be disabled if strict data consistency is required, since actual replication is asynchronous
+    description: This allows a bucket or namespace to remain online even if the primary site is offline. This is typically enabled, but can be disabled if strict data consistency is required, since actual replication is asynchronous. Setting access during outage in the service will _override_ access during outage at within a plan.
   - name: service3_plans
     type: collection
     label: Customize Plans for this Service
@@ -851,11 +799,6 @@ forms:
       label: Name
       configurable: true
       description: Name of this service plan to show in Cloud Foundry marketplace
-    - name: plan_guid
-      type: string
-      label: GUID
-      configurable: true
-      description: Unique Identifier for this Plan
     - name: description
       type: string
       label: Description
@@ -937,8 +880,7 @@ forms:
       configurable: true
       description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services
     default:
-    - plan_guid: b00dc5b0-716f-4dd8-9324-5e75d80f67ab
-      name: 5gb
+    - name: 5gb
       description: 5 GB free trial
       cost_usd: 0.00
       cost_unit: MONTHLY
@@ -950,8 +892,7 @@ forms:
       bullet_3: S3 Protocol Access
       bullet_4: NFS Access, with PCF persistent volumes
       bullet_5: HDFS Access
-    - plan_guid: 26960f32-bc6f-4724-8f77-c3c181634d09
-      name: unlimited
+    - name: unlimited
       description: Usage based billing
       cost_usd: 0.03
       cost_unit: PER_GB_PER_MONTH
@@ -1081,19 +1022,7 @@ forms:
         label: Default Retention (Seconds)
         optional: true
         configurable: true
-        description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services
-  - name: service4_quota_limit
-    type: integer
-    label: Quota Limit (GB)
-    optional: true
-    configurable: true
-    description: The capacity quota limit in gigabytes. A user will not be able to store more than this amount in a provisioned bucket or namespace
-  - name: service4_quota_warn
-    type: integer
-    label: Quota Warning (GB)
-    optional: true
-    configurable: true
-    description: The capacity quota warning in gigabytes. A ECS warning notification will be generated when a user consumes this amount of storage
+        description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services. Setting default retention in the service will _override_ default retention at within a plan.
   - name: service4_encrypted
     label: Enable Encryption
     type: boolean
@@ -1105,7 +1034,7 @@ forms:
     type: boolean
     default: true
     configurable: true
-    description: This allows a bucket or namespace to remain online even if the primary site is offline. This is typically enabled, but can be disabled if strict data consistency is required, since actual replication is asynchronous
+    description: This allows a bucket or namespace to remain online even if the primary site is offline. This is typically enabled, but can be disabled if strict data consistency is required, since actual replication is asynchronous. Setting access during outage in the service will _override_ access during outage at within a plan.
   - name: service4_plans
     type: collection
     label: Customize Plans for this Service
@@ -1117,11 +1046,6 @@ forms:
       label: Name
       configurable: true
       description: Name of this service plan to show in Cloud Foundry marketplace
-    - name: plan_guid
-      type: string
-      label: GUID
-      configurable: true
-      description: Unique Identifier for this Plan
     - name: description
       type: string
       label: Description
@@ -1323,19 +1247,7 @@ forms:
         label: Default Retention (Seconds)
         optional: true
         configurable: true
-        description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services
-  - name: service5_quota_limit
-    type: integer
-    label: Quota Limit (GB)
-    optional: true
-    configurable: true
-    description: The capacity quota limit in gigabytes. A user will not be able to store more than this amount in a provisioned bucket or namespace
-  - name: service5_quota_warn
-    type: integer
-    label: Quota Warning (GB)
-    optional: true
-    configurable: true
-    description: The capacity quota warning in gigabytes. A ECS warning notification will be generated when a user consumes this amount of storage
+        description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services. Setting default retention in the service will _override_ default retention at within a plan.
   - name: service5_encrypted
     label: Enable Encryption
     type: boolean
@@ -1347,7 +1259,7 @@ forms:
     type: boolean
     default: true
     configurable: true
-    description: This allows a bucket or namespace to remain online even if the primary site is offline. This is typically enabled, but can be disabled if strict data consistency is required, since actual replication is asynchronous
+    description: This allows a bucket or namespace to remain online even if the primary site is offline. This is typically enabled, but can be disabled if strict data consistency is required, since actual replication is asynchronous. Setting access during outage in the service will _override_ access during outage at within a plan.
   - name: service5_plans
     type: collection
     label: Customize Plans for this Service
@@ -1359,11 +1271,6 @@ forms:
       label: Name
       configurable: true
       description: Name of this service plan to show in Cloud Foundry marketplace
-    - name: plan_guid
-      type: string
-      label: GUID
-      configurable: true
-      description: Unique Identifier for this Plan
     - name: description
       type: string
       label: Description
@@ -1447,10 +1354,10 @@ forms:
 packages:
 - name: ecs-broker
   type: bosh-release
-  path: resources/ecs-broker-1.5.2.tgz
+  path: resources/ecs-broker-1.5.3.tgz
   jobs:
   - name: deploy-service-broker
-    resource_label: Deploy Ecs Service Broker
+    resource_label: Deploy ECS Service Broker
     templates:
     - name: deploy-service-broker
       release: ecs_broker
@@ -1508,8 +1415,6 @@ packages:
         default_retention: (( .properties.service1_service_type.bucket_option.default_retention.value ))
         encrypted: (( .properties.service1_encrypted.value ))
         access_during_outage: (( .properties.service1_access_during_outage.value ))
-        quota_limit: (( .properties.service1_quota_limit.value ))
-        quota_warn: (( .properties.service1_quota_warn.value ))
         plans: (( .properties.service1_plans.value ))
       - active: (( .properties.service2_active.value ))
         service_guid: (( .properties.service2_guid.value ))
@@ -1532,8 +1437,6 @@ packages:
         default_retention: (( .properties.service2_service_type.bucket_option.default_retention.value ))
         encrypted: (( .properties.service2_encrypted.value ))
         access_during_outage: (( .properties.service2_access_during_outage.value ))
-        quota_limit: (( .properties.service2_quota_limit.value ))
-        quota_warn: (( .properties.service2_quota_warn.value ))
         plans: (( .properties.service2_plans.value ))
       - active: (( .properties.service3_active.value ))
         service_guid: (( .properties.service3_guid.value ))
@@ -1556,8 +1459,6 @@ packages:
         default_retention: (( .properties.service3_service_type.bucket_option.default_retention.value ))
         encrypted: (( .properties.service3_encrypted.value ))
         access_during_outage: (( .properties.service3_access_during_outage.value ))
-        quota_limit: (( .properties.service3_quota_limit.value ))
-        quota_warn: (( .properties.service3_quota_warn.value ))
         plans: (( .properties.service3_plans.value ))
       - active: (( .properties.service4_active.value ))
         service_guid: (( .properties.service4_guid.value ))
@@ -1580,8 +1481,6 @@ packages:
         default_retention: (( .properties.service4_service_type.bucket_option.default_retention.value ))
         encrypted: (( .properties.service4_encrypted.value ))
         access_during_outage: (( .properties.service4_access_during_outage.value ))
-        quota_limit: (( .properties.service4_quota_limit.value ))
-        quota_warn: (( .properties.service4_quota_warn.value ))
         plans: (( .properties.service4_plans.value ))
       - active: (( .properties.service5_active.value ))
         service_guid: (( .properties.service5_guid.value ))
@@ -1604,15 +1503,13 @@ packages:
         default_retention: (( .properties.service5_service_type.bucket_option.default_retention.value ))
         encrypted: (( .properties.service5_encrypted.value ))
         access_during_outage: (( .properties.service5_access_during_outage.value ))
-        quota_limit: (( .properties.service5_quota_limit.value ))
-        quota_warn: (( .properties.service5_quota_warn.value ))
         plans: (( .properties.service5_plans.value ))
       vm_credentials:
         type: salted_credentials
         default:
           identity: vcap
   - name: register-broker
-    resource_label: Register Ecs Service Broker
+    resource_label: Register ECS Service Broker
     templates:
     - name: register-broker
       release: ecs_broker
@@ -1652,7 +1549,7 @@ packages:
         default:
           identity: vcap
   - name: destroy-broker
-    resource_label: Remove Ecs Service Broker
+    resource_label: Remove ECS Service Broker
     templates:
     - name: destroy-broker
       release: ecs_broker
@@ -1699,7 +1596,7 @@ requires_product_versions:
   version: "~> 1.0"
 provides_product_versions:
 - name: ecs-broker
-  version: '1.5.2'
+  version: '1.5.4+dev.25'
 post_deploy_errands:
 - name: deploy-service-broker
 - name: register-broker
