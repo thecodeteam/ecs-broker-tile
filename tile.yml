@@ -47,8 +47,17 @@ packages:
 # Add properties you want to pass to your applications.
 # Properties specified here will not be configurable by the user.
 #
-# properties:
-# - name: example_property
+ properties:
+ - name: catalog_services[0]_guid
+   type: uuid
+ - name: catalog_services[1]_guid
+   type: uuid
+ - name: catalog_services[2]_guid
+   type: uuid
+ - name: catalog_services[3]_guid
+   type: uuid
+ - name: catalog_services[4]_guid
+   type: uuid
 #   type: string
 #   default: specify a value
 #   label: Label for the field on the GUI
@@ -166,77 +175,77 @@ forms:
       type: string
       configurable: true
       optional: true
-- name: catalog_service_1
+- name: catalog_service_0
   label: Catalog Service 1
   description: Configure Catalog Service 1
   properties:
-  - name: catalog_services_1_active
+  - name: catalog_services[0]_active
     default: true
     label: Enable Catalog Service 1
     description: If enabled, this service will be included in the broker catalog, which supplies the Cloud Foundry marketplace.
     configurable: true
     type: boolean
-  - name: catalog_services_1_name
+  - name: catalog_services[0]_name
     label: Name
     type: string
     configurable: true
     description: Service named used in the Cloud Foundry marketplace. This should be kept fairly short
     default: ecs-bucket
-  - name: catalog_services_1_description
+  - name: catalog_services[0]_description
     label: Description
     type: string
     configurable: true
     description: Full description of the service appearing in the marketplace
     default: Dell EMC ECS private object storage bucket
-  - name: catalog_services_1_metadata_display_name
+  - name: catalog_services[0]_metadata[displayName]
     default: ECS Bucket
     label: Display Name
     type: string
     configurable: true
     description: The name that will show in the PCF Apps Manager Marketplace
-  - name: catalog_services_1_metadata_image_url
+  - name: catalog_services[0]_metadata[imageUrl]
     label: Image URL
     type: http_url
     configurable: true
     default: https://avatars.githubusercontent.com/u/12926680
     description: The image that will show in the PCF Apps Manager Marketplace
-  - name: catalog_services_1_metadata_long_description
+  - name: catalog_services[0]_metadata[longDescription]
     default: Dell EMC Elastic Cloud Storage (ECS) private object storage Bucket
     type: text
     label: Long Description
     configurable: true
     description: A long description to use for the service, which will show in the PCF Apps Manager Marketplace
-  - name: catalog_services_1_metadata_provider_display_name
+  - name: catalog_services[0]_metadata[providerDisplayName]
     label: Provider Display Name
     type: string
     default: Dell EMC
     configurable: true
     description: Provider name that will show in the PCF Apps Manager Marketplace
-  - name: catalog_services_1_metadata_documentation_url
+  - name: catalog_services[0]_metadata[documentationUrl]
     label: Documentation URL
     type: http_url
     configurable: true
     default: https://community.emc.com/docs/DOC-45012
     description: The documentation link that will show in the PCF Apps Manager Marketplace
-  - name: catalog_services_1_tags
+  - name: catalog_services[0]_tags
     type: string_list
     label: Tags
     configurable: true
     description: Tags for service. These can be used by applications or cloud services (such as Spring Cloud) to identify service offerings & instances
     default: "s3,bucket"
-  - name: catalog_services_1_metadata_support_url
+  - name: catalog_services[0]_metadata[supportUrl]
     label: Support URL
     type: http_url
     configurable: true
     default: http://www.emc.com/products-solutions/trial-software-download/ecs.htm
     description: The support link that will show in the PCF Apps Manager Marketplace
-  - name: catalog_services_1_bindable
+  - name: catalog_services[0]_bindable
     label: Binable
     type: boolean
     default: true
     configurable: true
     description: Determines if this service can be bound to user applications. This should typically be enabled, but could be disabled for internal-only services
-  - name: service1_service_settings_service_type
+  - name: catalog_services[0]_service_type_selector
     type: selector
     label: Service Type
     configurable: true
@@ -246,13 +255,13 @@ forms:
     - name: namespace_option
       select_value: Namespace
       property_blueprints:
-      - name: catalog_services_1_service_settings_compliance-enabled
+      - name: compliance_enabled
         type: boolean
         label: Enable Compliance
         default: false
         configurable: true
         description: Strongly enforce object retention for compliance. This only applies to namespace services
-      - name: catalog_services_1_service_settings_default-bucket-quota
+      - name: default_bucket_quota
         type: integer
         label: Default Bucket Quota (GB)
         optional: true
@@ -270,37 +279,31 @@ forms:
         options:
         - name: s3
           label: S3
-      - name: catalog_services_1_repository_service
+      - name: repository_service
         type: boolean
         label: Enable as Repository Service
         description: Use this service for the internal metadata of the broker. This should only be enabled for one service, as the broker may pick from repository enabled services at random on startup.
         configurable: true
         default: true
-      - name: catalog_services_1_service_settings_file-accessible
+      - name: file_accessible
         label: Enable File Access
         type: boolean
         default: false
         configurable: true
         description: Enable NFS and HDFS access for provisioned buckets. This also enables volume mount services for the service, so a bucket can be used as an application mount point. File access cannot be changed after creation, so this setting cannot be changed by plan upgrades. This only applies to bucket services
-      - name: catalog_services_1_service_settings_default-retention
+      - name: default_retention
         type: integer
         label: Default Retention (Seconds)
         optional: true
         configurable: true
         description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services. Setting default retention in the service will _override_ default retention at within a plan.
-  - name: catalog_services_1_service_settings_encrypted
+  - name: encrypted
     label: Enable Encryption
     type: boolean
     default: false
     configurable: true
     description: Enabled encryption on this service. Encryption cannot be changed after creation, so this setting cannot be changed by plan upgrades
-  - name: catalog_services_1_service_settings_access_during_outage
-    label: Enable Access During Outage
-    type: boolean
-    default: true
-    configurable: true
-    description: This allows a bucket or namespace to remain online even if the primary site is offline. This is typically enabled, but can be disabled if strict data consistency is required, since actual replication is asynchronous. Setting access during outage in the service will _override_ access during outage at within a plan.
-  - name: catalog_services_1_plans
+  - name: catalog_services[0]_plans
     type: collection
     label: Customize Plans for this Service
     configurable: true
