@@ -47,16 +47,16 @@ packages:
 # Add properties you want to pass to your applications.
 # Properties specified here will not be configurable by the user.
 #
- properties:
- - name: catalog_services[0]_guid
+properties:
+ - name: catalog_services_1_guid
    type: uuid
- - name: catalog_services[1]_guid
+ - name: catalog_services_2_guid
    type: uuid
- - name: catalog_services[2]_guid
+ - name: catalog_services_3_guid
    type: uuid
- - name: catalog_services[3]_guid
+ - name: catalog_services_4_guid
    type: uuid
- - name: catalog_services[4]_guid
+ - name: catalog_services_5_guid
    type: uuid
 #   type: string
 #   default: specify a value
@@ -175,85 +175,140 @@ forms:
       type: string
       configurable: true
       optional: true
-- name: catalog_service_0
+- name: catalog_service_1
   label: Catalog Service 1
   description: Configure Catalog Service 1
   properties:
-  - name: catalog_services[0]_active
+  - name: catalog_service_1_active
     default: true
     label: Enable Catalog Service 1
     description: If enabled, this service will be included in the broker catalog, which supplies the Cloud Foundry marketplace.
     configurable: true
     type: boolean
-  - name: catalog_services[0]_name
+  - name: catalog_service_name
     label: Name
     type: string
     configurable: true
     description: Service named used in the Cloud Foundry marketplace. This should be kept fairly short
     default: ecs-bucket
-  - name: catalog_services[0]_description
-    label: Description
-    type: string
-    configurable: true
-    description: Full description of the service appearing in the marketplace
-    default: Dell EMC ECS private object storage bucket
-  - name: catalog_services[0]_metadata[displayName]
-    default: ECS Bucket
-    label: Display Name
-    type: string
-    configurable: true
-    description: The name that will show in the PCF Apps Manager Marketplace
-  - name: catalog_services[0]_metadata[imageUrl]
-    label: Image URL
-    type: http_url
-    configurable: true
-    default: https://avatars.githubusercontent.com/u/12926680
-    description: The image that will show in the PCF Apps Manager Marketplace
-  - name: catalog_services[0]_metadata[longDescription]
-    default: Dell EMC Elastic Cloud Storage (ECS) private object storage Bucket
-    type: text
-    label: Long Description
-    configurable: true
-    description: A long description to use for the service, which will show in the PCF Apps Manager Marketplace
-  - name: catalog_services[0]_metadata[providerDisplayName]
-    label: Provider Display Name
-    type: string
-    default: Dell EMC
-    configurable: true
-    description: Provider name that will show in the PCF Apps Manager Marketplace
-  - name: catalog_services[0]_metadata[documentationUrl]
-    label: Documentation URL
-    type: http_url
-    configurable: true
-    default: https://community.emc.com/docs/DOC-45012
-    description: The documentation link that will show in the PCF Apps Manager Marketplace
-  - name: catalog_services[0]_tags
+  - name: catalog_service_1_tags
     type: string_list
     label: Tags
     configurable: true
     description: Tags for service. These can be used by applications or cloud services (such as Spring Cloud) to identify service offerings & instances
     default: "s3,bucket"
-  - name: catalog_services[0]_metadata[supportUrl]
-    label: Support URL
-    type: http_url
-    configurable: true
-    default: http://www.emc.com/products-solutions/trial-software-download/ecs.htm
-    description: The support link that will show in the PCF Apps Manager Marketplace
-  - name: catalog_services[0]_bindable
-    label: Binable
+  - name: catalog_service_1_bindable
+    label: Bindable
     type: boolean
     default: true
     configurable: true
     description: Determines if this service can be bound to user applications. This should typically be enabled, but could be disabled for internal-only services
-  - name: catalog_services[0]_service_type_selector
+  - name: catalog_service_1_details
+    label: Customize catalog presentation
+    description: Customize the catalog presentation of a service for customer specific image, descriptions, URL, etc.
+    default: "No"
+    configurable: true
+    type: selector
+    option_templates:
+    - name: default_service_presentation
+      select_value: "No"
+      property_blueprints:
+      - name: description
+        label: Description
+        type: string
+        configurable: false
+        description: Full description of the service appearing in the marketplace
+        default: Dell EMC ECS private object storage bucket
+      - name: display_name
+        default: ECS Bucket
+        label: Display Name
+        type: string
+        configurable: false
+        description: The name that will show in the PCF Apps Manager Marketplace
+      - name: image_url
+        label: Image URL
+        type: http_url
+        configurable: false
+        default: https://avatars.githubusercontent.com/u/12926680
+        description: The image that will show in the PCF Apps Manager Marketplace
+      - name: long_description
+        default: Dell EMC Elastic Cloud Storage (ECS) private object storage Bucket
+        type: text
+        label: Long Description
+        configurable: false
+        description: A long description to use for the service, which will show in the PCF Apps Manager Marketplace
+      - name: provider_display_name
+        label: Provider Display Name
+        type: string
+        default: Dell EMC
+        configurable: false
+        description: Provider name that will show in the PCF Apps Manager Marketplace
+      - name: documentation_url
+        label: Documentation URL
+        type: http_url
+        configurable: false
+        default: https://community.emc.com/docs/DOC-45012
+        description: The documentation link that will show in the PCF Apps Manager Marketplace
+      - name: support_url
+        label: Support URL
+        type: http_url
+        configurable: false
+        default: http://www.emc.com/products-solutions/trial-software-download/ecs.htm
+        description: The support link that will show in the PCF Apps Manager Marketplace
+    - name: custom_service_presentation
+      select_value: "Yes"
+      property_blueprints:
+      - name: description
+        label: Description
+        type: string
+        configurable: true
+        description: Full description of the service appearing in the marketplace
+        default: Dell EMC ECS private object storage bucket
+      - name: display_name
+        default: ECS Bucket
+        label: Display Name
+        type: string
+        configurable: true
+        description: The name that will show in the PCF Apps Manager Marketplace
+      - name: image_url
+        label: Image URL
+        type: http_url
+        configurable: true
+        default: https://avatars.githubusercontent.com/u/12926680
+        description: The image that will show in the PCF Apps Manager Marketplace
+      - name: long_description
+        default: Dell EMC Elastic Cloud Storage (ECS) private object storage Bucket
+        type: text
+        label: Long Description
+        configurable: true
+        description: A long description to use for the service, which will show in the PCF Apps Manager Marketplace
+      - name: provider_display_name
+        label: Provider Display Name
+        type: string
+        default: Dell EMC
+        configurable: true
+        description: Provider name that will show in the PCF Apps Manager Marketplace
+      - name: documentation_url
+        label: Documentation URL
+        type: http_url
+        configurable: true
+        default: https://community.emc.com/docs/DOC-45012
+        description: The documentation link that will show in the PCF Apps Manager Marketplace
+      - name: support_url
+        label: Support URL
+        type: http_url
+        configurable: true
+        default: http://www.emc.com/products-solutions/trial-software-download/ecs.htm
+        description: The support link that will show in the PCF Apps Manager Marketplace
+  - name: catalog_service_1_service_type_selector
     type: selector
     label: Service Type
     configurable: true
-    default: Bucket
+    default: bucket
     description: Set the type of service to be available in the marketplace. A bucket provides a single bucket per service. A namespace provides a tentant "area" where multiple buckets can be provisioned
     option_templates:
     - name: namespace_option
-      select_value: Namespace
+      select_value: namespace
       property_blueprints:
       - name: compliance_enabled
         type: boolean
@@ -267,8 +322,14 @@ forms:
         optional: true
         configurable: true
         description: Default quota applied to all buckets created within this namespacedefault_bucket_quota. This only applies to namespace services
+      - name: encrypted
+        label: Enable Encryption
+        type: boolean
+        default: false
+        configurable: true
+        description: Enabled encryption on this service. Encryption cannot be changed after creation, so this setting cannot be changed by plan upgrades
     - name: bucket_option
-      select_value: Bucket
+      select_value: bucket
       property_blueprints:
       - name: head_type
         label: Object Head Type
@@ -297,13 +358,13 @@ forms:
         optional: true
         configurable: true
         description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services. Setting default retention in the service will _override_ default retention at within a plan.
-  - name: encrypted
-    label: Enable Encryption
-    type: boolean
-    default: false
-    configurable: true
-    description: Enabled encryption on this service. Encryption cannot be changed after creation, so this setting cannot be changed by plan upgrades
-  - name: catalog_services[0]_plans
+      - name: encrypted
+        label: Enable Encryption
+        type: boolean
+        default: false
+        configurable: true
+        description: Enabled encryption on this service. Encryption cannot be changed after creation, so this setting cannot be changed by plan upgrades
+  - name: catalog_service_1_plans
     type: collection
     label: Customize Plans for this Service
     configurable: true
