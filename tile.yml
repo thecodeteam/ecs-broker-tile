@@ -34,8 +34,13 @@ packages:
       CATALOG_SERVICES[0]_ID: (( .properties.catalog_service_1_guid.value ))
       CATALOG_SERVICES[0]_ACTIVE: (( .properties.catalog_service_1_active.value ))
       CATALOG_SERVICES[0]_NAME: (( .properties.catalog_service_1_name.value ))
-      BROKER_REPOSITORY_SERVICE_ID: f3cbab6a-5172-4ff1-a5c7-72990f0ce2aa
-      BROKER_REPOSITORY_PLAN_ID: 8e777d49-0a78-4cf4-810a-b5f5173b019d
+      CATALOG_SERVICES[0]_DESCRIPTION: (( .properties.catalog_service_1_description.value ))
+      CATALOG_SERVICES[0]_TAGS: (( .properties.catalog_service_1_tags.value ))
+      CATALOG_SERVICES[0]_BINDABLE: (( .properties.catalog_service_1_bindable.value ))
+      CATALOG_SERVICES[0]_PRESENTATION_SELECTOR: (( .properties.catalog_service_1_presentation.value ))
+      CATALOG_SERVICES[0]_SETTINGS_SELECTOR: (( .properties.catalog_service_1_settings.value ))
+      CATALOG_SERVICES[0]_PLAN_COLLECTION: (( .properties.catalog_service_1_plans.value ))
+      CATALOG_SERVICES[0]_REPOSITORY_SERVICE: (( .properties.catalog_service_1_repository_service.value ))
 
 # Include stemcell criteria if you don't want to accept the default.
 # Since this stemcell is only used to run pre and post errands, we
@@ -194,6 +199,12 @@ forms:
     configurable: true
     description: Service named used in the Cloud Foundry marketplace. This should be kept fairly short
     default: ecs-bucket
+  - name: catalog_service_1_description
+    label: Description
+    type: string
+    configurable: false
+    description: Full description of the service appearing in the marketplace
+    default: Dell EMC ECS private object storage bucket
   - name: catalog_service_1_tags
     type: string_list
     label: Tags
@@ -206,7 +217,13 @@ forms:
     default: true
     configurable: true
     description: Determines if this service can be bound to user applications. This should typically be enabled, but could be disabled for internal-only services
-  - name: catalog_service_1_details
+  - name: catalog_service_1_repository_service
+    type: boolean
+    label: Enable as Repository Service
+    description: Use this service for the internal metadata of the broker. This should only be enabled for one service, as the broker may pick from repository enabled services at random on startup.
+    configurable: true
+    default: true
+  - name: catalog_service_1_presentation
     label: Customize catalog presentation
     description: Customize the catalog presentation of a service for customer specific image, descriptions, URL, etc.
     default: "No"
@@ -216,12 +233,6 @@ forms:
     - name: default_service_presentation
       select_value: "No"
       property_blueprints:
-      - name: description
-        label: Description
-        type: string
-        configurable: false
-        description: Full description of the service appearing in the marketplace
-        default: Dell EMC ECS private object storage bucket
       - name: display_name
         default: ECS Bucket
         label: Display Name
@@ -267,52 +278,90 @@ forms:
         configurable: true
         description: Full description of the service appearing in the marketplace
         default: Dell EMC ECS private object storage bucket
-      - name: display_name
+      - name: displayName
         default: ECS Bucket
         label: Display Name
         type: string
         configurable: true
         description: The name that will show in the PCF Apps Manager Marketplace
-      - name: image_url
+      - name: imageUrl
         label: Image URL
         type: http_url
         configurable: true
         default: https://avatars.githubusercontent.com/u/12926680
         description: The image that will show in the PCF Apps Manager Marketplace
-      - name: long_description
+      - name: longDescription
         default: Dell EMC Elastic Cloud Storage (ECS) private object storage Bucket
         type: text
         label: Long Description
         configurable: true
         description: A long description to use for the service, which will show in the PCF Apps Manager Marketplace
-      - name: provider_display_name
+      - name: providerDisplayName
         label: Provider Display Name
         type: string
         default: Dell EMC
         configurable: true
         description: Provider name that will show in the PCF Apps Manager Marketplace
-      - name: documentation_url
+      - name: documentationUrl
         label: Documentation URL
         type: http_url
         configurable: true
         default: https://community.emc.com/docs/DOC-45012
         description: The documentation link that will show in the PCF Apps Manager Marketplace
-      - name: support_url
+      - name: supportUrl
         label: Support URL
         type: http_url
         configurable: true
         default: http://www.emc.com/products-solutions/trial-software-download/ecs.htm
         description: The support link that will show in the PCF Apps Manager Marketplace
-  - name: catalog_service_1_service_type_selector
+  - name: catalog_service_1_settings
     type: selector
     label: Service Type
     configurable: true
     default: bucket
     description: Set the type of service to be available in the marketplace. A bucket provides a single bucket per service. A namespace provides a tentant "area" where multiple buckets can be provisioned
     option_templates:
-    - name: namespace_option
-      select_value: namespace
+   - name: bucket_option
+      select_value: Bucket
       property_blueprints:
+      - name: service_type
+        type: string
+        default: bucket
+        configurable: false
+      - name: head_type
+        label: Object Head Type
+        type: dropdown_select
+        default: s3
+        configurable: false
+        description: Object protocol to use for the provisioned bucket. Today the broker only supports S3, but will support Swift, Atmos & CAS in the future. This only applies to bucket services
+        options:
+        - name: s3
+          label: S3
+     - name: file_accessible
+        label: Enable File Access
+        type: boolean
+        default: false
+        configurable: true
+        description: Enable NFS and HDFS access for provisioned buckets. This also enables volume mount services for the service, so a bucket can be used as an application mount point. File access cannot be changed after creation, so this setting cannot be changed by plan upgrades. This only applies to bucket services
+      - name: default_retention
+        type: integer
+        label: Default Retention (Seconds)
+        optional: true
+        configurable: true
+        description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services. Setting default retention in the service will _override_ default retention at within a plan.
+      - name: encrypted
+        label: Enable Encryption
+        type: boolean
+        default: false
+        configurable: true
+        description: Enabled encryption on this service. Encryption cannot be changed after creation, so this setting cannot be changed by plan upgrades
+    - name: namespace_option
+      select_value: Namespace
+      property_blueprints:
+      - name: service_type
+        type: string
+        default: namespace
+        configurable: false
       - name: compliance_enabled
         type: boolean
         label: Enable Compliance
@@ -331,43 +380,7 @@ forms:
         default: false
         configurable: true
         description: Enabled encryption on this service. Encryption cannot be changed after creation, so this setting cannot be changed by plan upgrades
-    - name: bucket_option
-      select_value: bucket
-      property_blueprints:
-      - name: head_type
-        label: Object Head Type
-        type: dropdown_select
-        default: s3
-        configurable: false
-        description: Object protocol to use for the provisioned bucket. Today the broker only supports S3, but will support Swift, Atmos & CAS in the future. This only applies to bucket services
-        options:
-        - name: s3
-          label: S3
-      - name: repository_service
-        type: boolean
-        label: Enable as Repository Service
-        description: Use this service for the internal metadata of the broker. This should only be enabled for one service, as the broker may pick from repository enabled services at random on startup.
-        configurable: true
-        default: true
-      - name: file_accessible
-        label: Enable File Access
-        type: boolean
-        default: false
-        configurable: true
-        description: Enable NFS and HDFS access for provisioned buckets. This also enables volume mount services for the service, so a bucket can be used as an application mount point. File access cannot be changed after creation, so this setting cannot be changed by plan upgrades. This only applies to bucket services
-      - name: default_retention
-        type: integer
-        label: Default Retention (Seconds)
-        optional: true
-        configurable: true
-        description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services. Setting default retention in the service will _override_ default retention at within a plan.
-      - name: encrypted
-        label: Enable Encryption
-        type: boolean
-        default: false
-        configurable: true
-        description: Enabled encryption on this service. Encryption cannot be changed after creation, so this setting cannot be changed by plan upgrades
-  - name: catalog_service_1_plans
+   - name: catalog_service_1_plans
     type: collection
     label: Customize Plans for this Service
     configurable: true
@@ -387,7 +400,6 @@ forms:
       label: Enable as Repository Plan
       description: Use this plan for the internal metadata of the broker. This should only be enabled for one service, as the broker may pick from repository enabled plans at random on startup.
       configurable: true
-      description: Description of this service plan to show in Cloud Foundry marketplace
     - name: cost_usd
       type: string
       label: Cost in US Dollars
