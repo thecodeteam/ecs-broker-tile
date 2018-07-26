@@ -31,6 +31,9 @@ packages:
     buildpack: java_buildpack_offline
     memory: 1G
     env:
+      CATALOG_SERVICES[0]_ID: (( .properties.catalog_service_1_guid.value ))
+      CATALOG_SERVICES[0]_ACTIVE: (( .properties.catalog_service_1_active.value ))
+      CATALOG_SERVICES[0]_NAME: (( .properties.catalog_service_1_name.value ))
       BROKER_REPOSITORY_SERVICE_ID: f3cbab6a-5172-4ff1-a5c7-72990f0ce2aa
       BROKER_REPOSITORY_PLAN_ID: 8e777d49-0a78-4cf4-810a-b5f5173b019d
 
@@ -48,15 +51,15 @@ packages:
 # Properties specified here will not be configurable by the user.
 #
 properties:
- - name: catalog_services_1_guid
+ - name: catalog_service_1_guid
    type: uuid
- - name: catalog_services_2_guid
+ - name: catalog_service_2_guid
    type: uuid
- - name: catalog_services_3_guid
+ - name: catalog_service_3_guid
    type: uuid
- - name: catalog_services_4_guid
+ - name: catalog_service_4_guid
    type: uuid
- - name: catalog_services_5_guid
+ - name: catalog_service_5_guid
    type: uuid
 #   type: string
 #   default: specify a value
@@ -185,7 +188,7 @@ forms:
     description: If enabled, this service will be included in the broker catalog, which supplies the Cloud Foundry marketplace.
     configurable: true
     type: boolean
-  - name: catalog_service_name
+  - name: catalog_service_1_name
     label: Name
     type: string
     configurable: true
