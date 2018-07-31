@@ -45,13 +45,6 @@ packages:
       CATALOG_SERVICES[0]_METADATA[providerDisplayName]: (( .properties.catalog_services_0_provider_display_name.value ))
       CATALOG_SERVICES[0]_METADATA[documentationUrl]: (( .properties.catalog_services_0_documentation_url.value ))
       CATALOG_SERVICES[0]_METADATA[supportUrl]: (( .properties.catalog_services_0_support_url.value ))
-      CATALOG_SERVICES[0]_SERVICE_SETTINGS[service-type]: (( .properties.catalog_services_0_settings_selector.selected_option.parsed_manifest(manifest_snippet)['service_type'] ))
-      CATALOG_SERVICES[0]_SERVICE_SETTINGS[head-type]: (( .properties.catalog_services_0_settings_selector.selected_option.parsed_manifest(manifest_snippet)['head_type'] ))
-      CATALOG_SERVICES[0]_SERVICE_SETTINGS[file-accessible]: (( .properties.catalog_services_0_settings_selector.selected_option.parsed_manifest(manifest_snippet)['file_accessible'] ))
-      CATALOG_SERVICES[0]_SERVICE_SETTINGS[default-retention]: (( .properties.catalog_services_0_settings_selector.selected_option.parsed_manifest(manifest_snippet)['default_retention'] ))
-      CATALOG_SERVICES[0]_SERVICE_SETTINGS[encrypted]: (( .properties.catalog_services_0_settings_selector.selected_option.parsed_manifest(manifest_snippet)['encrypted'] ))
-      CATALOG_SERVICES[0]_SERVICE_SETTINGS[comliance-enabled]: (( .properties.catalog_services_0_settings_selector.selected_option.parsed_manifest(manifest_snippet)['compliance_enabled'] ))
-      CATALOG_SERVICES[0]_SERVICE_SETTINGS[default-bucket-quota]: (( .properties.catalog_services_0_settings_selector.selected_option.parsed_manifest(manifest_snippet)['default_bucket_quota'] ))
 
 # Include stemcell criteria if you don't want to accept the default.
 # Since this stemcell is only used to run pre and post errands, we
@@ -257,7 +250,7 @@ forms:
     type: http_url
     default: http://www.emc.com/products-solutions/trial-software-download/ecs.htm
     description: The support link that will show in the PCF Apps Manager Marketplace
-  - name: catalog_services_0_settings_selector
+  - name: catalog_service_settings_0
     label: Type of Service
     type: selector
     configurable: true
