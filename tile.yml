@@ -45,6 +45,7 @@ packages:
       CATALOG_SERVICES[0]_METADATA[providerDisplayName]: (( .properties.catalog_services_0_provider_display_name.value ))
       CATALOG_SERVICES[0]_METADATA[documentationUrl]: (( .properties.catalog_services_0_documentation_url.value ))
       CATALOG_SERVICES[0]_METADATA[supportUrl]: (( .properties.catalog_services_0_support_url.value ))
+  enable_global_access_to_plans: (( .properties.enable_global_access_to_plans.value ))
 
 # Include stemcell criteria if you don't want to accept the default.
 # Since this stemcell is only used to run pre and post errands, we
@@ -250,11 +251,11 @@ forms:
     type: http_url
     default: http://www.emc.com/products-solutions/trial-software-download/ecs.htm
     description: The support link that will show in the PCF Apps Manager Marketplace
-  - name: catalog_service_settings_0
+  - name: catalog_service_settings0
     label: Type of Service
     type: selector
     configurable: true
-    default: bucket
+    default: Bucket
     description: Set the type of service to be available in the marketplace. A bucket provides a single bucket per service. A namespace provides a tentant "area" where multiple buckets can be provisioned
     option_templates:
     - name: bucket_option
@@ -329,7 +330,7 @@ forms:
         default: false
         configurable: true
         description: Enabled encryption on this service. Encryption cannot be changed after creation, so this setting cannot be changed by plan upgrades
-  - name: catalog_plan_collection_0
+  - name: catalog_plan_collection0
     label: Customize Plans for this Service
     type: collection
     configurable: true
