@@ -1,6 +1,11 @@
 exports.migrate = function (input) {
     var current_version = getCurrentProductVersion();
 
+    if (current_version === "1.0.1") {
+        migrateTags(input)
+        migrateBullets(input)
+    }
+
     if (current_version === "1.0.1" || current_version == "1.0.2") {
         // rename properties in latest release
         renameSimpleProps(input)
@@ -9,6 +14,16 @@ exports.migrate = function (input) {
 
     return input;
 };
+
+function migrateTags(input) {
+    // TODO actually migrate the tags
+    return;
+}
+
+function migrateBullets(input) {
+    // TODO actually migrate the bullets
+    return;
+}
 
 function renameSimpleProps(input) {
     var changed_props = {
