@@ -293,17 +293,6 @@ forms:
         default: false
         configurable: true
         description: Enabled encryption on this service. Encryption cannot be changed after creation, so this setting cannot be changed by plan upgrades
-      - name: compliance_enabled
-        label: Enable Compliance
-        type: boolean
-        configurable: false
-        default: null
-      - name: default_bucket_quota
-        label: Default Bucket Quota (GB)
-        type: integer
-        optional: true
-        configurable: false
-        default: null
     - name: namespace_option
       select_value: Namespace
       property_blueprints:
