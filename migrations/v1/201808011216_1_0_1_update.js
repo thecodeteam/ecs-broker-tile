@@ -1,29 +1,22 @@
 exports.migrate = function (input) {
     var current_version = getCurrentProductVersion();
 
-    if (current_version === "1.0.1") {
-        migrateTags(input)
-        migrateBullets(input)
+    if (current_version === "1.0.1" || current_version === "1.0.2") {
+        // rename properties in latest release
+        renameSimpleProps(input);
+        updateCatalogServices(input);
     }
 
-    if (current_version === "1.0.1" || current_version == "1.0.2") {
-        // rename properties in latest release
-        renameSimpleProps(input)
-        updateCatalogServices(input)
-    }
+//    if (
+//        typeof input.properties[".properties.broker_certificate_selector"] !== "undefined" &&
+//        input.properties[".properties.broker_certificate_selector"] !== null &&
+//        input.properties[".properties.broker_certificate_selector"] === "No"
+//       ) {
+//        input.properties[".properties.broker_certificate_selector.untrusted_ssl.certificate"] = input.properties[".properties.certificate_selector.untrusted_ssl.certificate"];
+//    }
 
     return input;
 };
-
-function migrateTags(input) {
-    // TODO actually migrate the tags
-    return;
-}
-
-function migrateBullets(input) {
-    // TODO actually migrate the bullets
-    return;
-}
 
 function renameSimpleProps(input) {
     var changed_props = {
@@ -31,7 +24,8 @@ function renameSimpleProps(input) {
         ".properties.broker_replication_group":   ".properties.replication_group",
         ".properties.broker_namespace": ".properties.namespace",
         ".properties.broker_username": ".properties.api_username",
-        ".properties.broker_password": ".properties.api_password",
+//        ".properties.broker_password": ".properties.api_password",
+//        ".properties.broker_certificate_selector": ".properties.certificate_selector",
         ".properties.broker_object_endpoint": ".properties.object_endpoint",
         ".properties.broker_base_url": ".properties.base_url",
         ".properties.broker_prefix": ".properties.prefix",
@@ -40,18 +34,17 @@ function renameSimpleProps(input) {
         ".properties.broker_repository_user": ".properties.repository_user",
         ".properties.security_user_name": ".properties.broker_credentials.identity",
         ".properties.security_user_password": ".properties.broker_credentials.password",
-        ".properties.catalog_service_settings0": ".properties.service1_service_type",
-        ".properties.catalog_service_settings1": ".properties.service2_service_type",
-        ".properties.catalog_service_settings2": ".properties.service3_service_type",
-        ".properties.catalog_service_settings3": ".properties.service4_service_type",
-        ".properties.catalog_service_settings4": ".properties.service5_service_type"
+//        ".properties.catalog_service_settings0": ".properties.service1_service_type",
+//        ".properties.catalog_service_settings1": ".properties.service2_service_type",
+//        ".properties.catalog_service_settings2": ".properties.service3_service_type",
+//        ".properties.catalog_service_settings3": ".properties.service4_service_type",
+//        ".properties.catalog_service_settings4": ".properties.service5_service_type"
     };
-
-    for (var i in changed_props) {
-        var v = changed_props[i];
-        if (typeof input.properties[v] !== "undefined" && input.properties[v] !== null) {
-            input.properties[i] = input.properties[v];
-            delete input.properties[v];
+    for (var key in changed_props) {
+        var value = changed_props[key];
+        if (typeof input.properties[value] !== "undefined" && input.properties[value] !== null) {
+            input.properties[key] = input.properties[value];
+            delete input.properties[value];
         }
     }
 }
@@ -75,8 +68,8 @@ function updateCatalogServices(input) {
     for (var service_index = 0; service_index < 5; service_index++) {
         renameSimpleServiceProps(simple_service_props, service_index, input);
         renamePlanCollection(service_index, input);
-        overridePlanProperties(service_index, input)
-        renameServiceSettings(service_index, input);
+        overridePlanProperties(service_index, input);
+//        renameServiceSettings(service_index, input);
     }
 }
 
@@ -203,10 +196,11 @@ function reformatNamespaceSelector(service_index, input) {
 }
 
 function moveServiceSettingsToSelector(service_index, option, input, prop) {
-    old_name = ".properties.service" + (service_index + 1) + "_" + prop;
-    new_name = ".properties.catalog_service_settings" + service_index + "." + option + "_option." + prop;
-    input.properties[new_name] = input.properties[old_name];
-    delete input.properties[old_name];
+    var old_name = ".properties.service" + (service_index + 1) + "_" + prop;
+    var new_name = ".properties.catalog_service_settings" + service_index + "." + option + "_option." + prop;
+    if (typeof input.properties[old_name] !== "undefined" && input.properties[old_name] !== null) {
+        input.properties[new_name] = input.properties[old_name];
+        delete input.properties[old_name];
+    }
 }
-
 

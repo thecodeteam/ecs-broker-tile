@@ -1,6 +1,7 @@
 const migration = require('./201808011216_1_0_1_update');
 
 describe("migration from 1.0.1", function() {
+
     beforeAll(function() {
         window.getCurrentProductVersion = function() { return "1.0.1"; }
     });
@@ -263,6 +264,7 @@ describe("migration from 1.0.1", function() {
             expect(output.properties[".properties.catalog_service_settings1.bucket_option.access_during_outage"].value).
                 toBe("SERVICE2_ACCESS_DURING_OUTAGE");
         });
+
     });
 
     describe("renamed namespace props", function() {
@@ -334,6 +336,9 @@ function changedPropsInput() {
             },
             ".properties.object_endpoint": {
                 value: "OBJECTENDPOINT"
+            },
+            ".properties.catalog_service_settings0": {
+                value: "Bucket"
             }
         }
     };

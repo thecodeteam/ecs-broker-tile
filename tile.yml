@@ -1,8 +1,9 @@
 ---
 # The high-level description of your tile.
 # Replace these properties with real values.
-#
-name: ecs-broker-tile # By convention lowercase with dashes
+
+# name: ecs-service-broker
+name: ecs-service-broker
 icon_file: resources/icon.png
 label: DELL EMC ECS Broker
 description: ECS Broker for Pivotal CF
@@ -12,8 +13,8 @@ allow_paid_service_plans: true
 
 # Global defaults (all optional)
 #
-# org: test-org                         # Name of org to create for your apps
-# space: test-space                     # Name of space to create for your apps
+org: ecs-broker-service-org
+space: ecs-broker-service-space
 # apply_open_security_group: true       # Apply open security group, default: false
 
 # Specify the packages to be included in your tile.
@@ -101,10 +102,6 @@ packages:
       CATALOG_SERVICES[4]_METADATA[providerDisplayName]: (( .properties.catalog_services_4_provider_display_name.value ))
       CATALOG_SERVICES[4]_METADATA[documentationUrl]: (( .properties.catalog_services_4_documentation_url.value ))
       CATALOG_SERVICES[4]_METADATA[supportUrl]: (( .properties.catalog_services_4_support_url.value ))
-
-
-
-
   enable_global_access_to_plans: (( .properties.enable_global_access_to_plans.value ))
 
 # Include stemcell criteria if you don't want to accept the default.

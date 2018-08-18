@@ -28,16 +28,16 @@ exports.migrate = function (input) {
         input.properties['.properties.broker_repository_user'] = input.properties['.properties.repositoryuser'];
         delete input.properties['.properties.repositoryuser'];
 
-        input.properties['.properties.security_user_name'] = input.properties['.properties.securityuser']
+        input.properties['.properties.security_user_name'] = input.properties['.properties.securityuser'];
         delete input.properties['.properties.securityuser'];
 
-        input.properties['.properties.security_user_password'] = input.properties['.properties.securitypassword']
+        input.properties['.properties.security_user_password'] = input.properties['.properties.securitypassword'];
         delete input.properties['.properties.password'];
 
-        input.properties['.properties.broker_username'] = input.properties['.properties.username']
+        input.properties['.properties.broker_username'] = input.properties['.properties.username'];
         delete input.properties['.properties.username'];
 
-        input.properties['.properties.broker_password'] = input.properties['.properties.password']
+        input.properties['.properties.broker_password'] = input.properties['.properties.password'];
         delete input.properties['.properties.password'];
 
         if (input.properties['.properties.certificate']) {
