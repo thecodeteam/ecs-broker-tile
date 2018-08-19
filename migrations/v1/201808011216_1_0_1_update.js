@@ -3,6 +3,7 @@ exports.migrate = function (input) {
 
     if (current_version === "1.0.1" || current_version === "1.0.2") {
         // rename properties in latest release
+        moveServiceSettingsToSelector(input)
         renameSimpleProps(input);
         updateCatalogServices(input);
     }
@@ -25,7 +26,7 @@ function renameSimpleProps(input) {
         ".properties.broker_namespace": ".properties.namespace",
         ".properties.broker_username": ".properties.api_username",
 //        ".properties.broker_password": ".properties.api_password",
-//        ".properties.broker_certificate_selector": ".properties.certificate_selector",
+//         ".properties.broker_certificate_selector.untrusted_ssl": ".properties.certificate_selector.untrusted_ssl",
         ".properties.broker_object_endpoint": ".properties.object_endpoint",
         ".properties.broker_base_url": ".properties.base_url",
         ".properties.broker_prefix": ".properties.prefix",
@@ -40,6 +41,39 @@ function renameSimpleProps(input) {
 //        ".properties.catalog_service_settings3": ".properties.service4_service_type",
 //        ".properties.catalog_service_settings4": ".properties.service5_service_type"
     };
+
+
+
+    // input.properties[".properties.broker_certificate_selector.untrusted_ssl"] =
+    //     input.properties[".properties.certificate_selector.untrusted_ssl"];
+    // delete input.properties[".properties.certificate_selector.untrusted_ssl"];
+    //
+    // input.properties[".properties.broker_certificate_selector.trusted_ssl"] =
+    //     input.properties[".properties.certificate_selector.trusted_ssl"];
+    // delete input.properties[".properties.certificate_selector.trusted_ssl"];
+
+
+    // if (".properties.certificate_selector.untrusted_ssl.certificate" in input.properties) {
+    //     input.properties[".properties.broker_certificate_selector.untrusted_ssl.certificate"] =
+    //         input.properties[".properties.certificate_selector.untrusted_ssl.certificate"];
+    //     delete input.properties[".properties.certificate_selector.untrusted_ssl.certificate"]
+    // }
+
+    // if (typeof input.properties[".properties.broker_certificate_selector"] !== "undefined" &&
+    //     input.properties[".properties.broker_certificate_selector"] !== null) {
+    //     var broker_certificate = ".properties.broker_certificate_selector";
+    // }
+
+    input.properties[".properties.broker_certificate_selector"] = input.properties[".properties.certificate_selector"];
+
+
+    if (typeof input.properties[".properties.certificate_selector.trusted_ssl"] === "undefined") {
+        input.properties[".properties.broker_certificate_selector.untrusted_ssl.certificate"] =
+            input.properties[".properties.certificate_selector.untrusted_ssl.certificate"];
+    }
+
+    input.properties[".properties.broker_password"] = input.properties[".properties.api_password."].toString();
+
     for (var key in changed_props) {
         var value = changed_props[key];
         if (typeof input.properties[value] !== "undefined" && input.properties[value] !== null) {
@@ -195,12 +229,38 @@ function reformatNamespaceSelector(service_index, input) {
     moveServiceSettingsToSelector(service_index, "namespace", input, "access_during_outage");
 }
 
-function moveServiceSettingsToSelector(service_index, option, input, prop) {
-    var old_name = ".properties.service" + (service_index + 1) + "_" + prop;
-    var new_name = ".properties.catalog_service_settings" + service_index + "." + option + "_option." + prop;
-    if (typeof input.properties[old_name] !== "undefined" && input.properties[old_name] !== null) {
-        input.properties[new_name] = input.properties[old_name];
-        delete input.properties[old_name];
+// function moveServiceSettingsToSelector(service_index, option, input, prop) {
+//     var old_name = ".properties.service" + (service_index + 1) + "_" + prop;
+//     var new_name = ".properties.catalog_service_settings" + service_index + "." + option + "_option." + prop;
+//     if (typeof input.properties[old_name] !== "undefined" && input.properties[old_name] !== null) {
+//         input.properties[new_name] = input.properties[old_name];
+//         delete input.properties[old_name];
+//     }
+// }
+
+function moveServiceSettingsToSelector(input) {
+    for (var i = 0; i < 5; i++) {
+        // Bucket stuff
+        input.properties[(".properties.catalog_service_settings" + i)] =
+            input.properties[(".properties.service" + (i+1) +"_service_type")];
+
+        input.properties[(".properties.catalog_service_settings" + i +".bucket_option.file_accessible")] =
+            input.properties[(".properties.service" + (i+1) +"_service_type.bucket_option.file_accessible")];
+
+        input.properties[(".properties.catalog_service_settings" + i + ".bucket_option.encrypted")] =
+            input.properties[(".properties.service" + (i+1) +"_encrypted")];
+
+        input.properties[(".properties.catalog_service_settings" + i + ".bucket_option.default_retention")] =
+            input.properties[(".properties.service" + (i+1) +"_service_type.bucket_option.default_retention")];
+
+        // Namespace stuff
+        input.properties[(".properties.catalog_service_settings" + i + ".namespace_option.compliance_enabled")] =
+            input.properties[(".properties.service" + (i+1) +"_service_type.namespace_option.compliance_enabled")];
+
+        input.properties[(".properties.catalog_service_settings" + i + ".namespace_option.default_bucket_quota")] =
+            input.properties[(".properties.service" + (i+1) +"_service_type.namespace_option.default_bucket_quota")];
+
+        input.properties[(".properties.catalog_service_settings" + i + ".namespace_option.encrypted")] =
+            input.properties[(".properties.service" + (i+1) +"_encrypted")];
     }
 }
-

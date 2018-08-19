@@ -102,6 +102,7 @@ packages:
       CATALOG_SERVICES[4]_METADATA[providerDisplayName]: (( .properties.catalog_services_4_provider_display_name.value ))
       CATALOG_SERVICES[4]_METADATA[documentationUrl]: (( .properties.catalog_services_4_documentation_url.value ))
       CATALOG_SERVICES[4]_METADATA[supportUrl]: (( .properties.catalog_services_4_support_url.value ))
+
   enable_global_access_to_plans: (( .properties.enable_global_access_to_plans.value ))
 
 # Include stemcell criteria if you don't want to accept the default.
