@@ -72,7 +72,12 @@ function renameSimpleProps(input) {
             input.properties[".properties.certificate_selector.untrusted_ssl.certificate"];
     }
 
-    input.properties[".properties.broker_password"] = input.properties[".properties.api_password."].toString();
+    if (
+        typeof input.properties[".properties.broker_password"] !== 'undefined' &&
+        input.properties[".properties.broker_password"] !== null
+    ) {
+        input.properties[".properties.broker_password"] = input.properties[".properties.api_password."].toString();
+    }
 
     for (var key in changed_props) {
         var value = changed_props[key];
