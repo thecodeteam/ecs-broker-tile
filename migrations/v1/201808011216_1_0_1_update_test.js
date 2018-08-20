@@ -255,16 +255,6 @@ describe("migration from 1.0.1", function() {
                 toBe("SERVICE2_ENCRYPTED");
         });
 
-        test("moves service1 access_during_outage into bucket option", function() {
-            expect(output.properties[".properties.catalog_service_settings0.bucket_option.access_during_outage"].value).
-                toBe("SERVICE1_ACCESS_DURING_OUTAGE");
-        });
-
-        test("moves service2 access_during_outage into bucket option", function() {
-            expect(output.properties[".properties.catalog_service_settings1.bucket_option.access_during_outage"].value).
-                toBe("SERVICE2_ACCESS_DURING_OUTAGE");
-        });
-
     });
 
     describe("renamed namespace props", function() {
@@ -300,16 +290,6 @@ describe("migration from 1.0.1", function() {
         test("moves service2 encrypted into namespace option", function() {
             expect(output.properties[".properties.catalog_service_settings1.namespace_option.encrypted"].value).
                 toBe("SERVICE2_ENCRYPTED");
-        });
-
-        test("moves service1 access_during_outage into namespace option", function() {
-            expect(output.properties[".properties.catalog_service_settings0.namespace_option.access_during_outage"].value).
-                toBe("SERVICE1_ACCESS_DURING_OUTAGE");
-        });
-
-        test("moves service2 access_during_outage into namespace option", function() {
-            expect(output.properties[".properties.catalog_service_settings1.namespace_option.access_during_outage"].value).
-                toBe("SERVICE2_ACCESS_DURING_OUTAGE");
         });
 
     });
