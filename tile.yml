@@ -762,7 +762,7 @@ forms:
     label: Enable as Repository Service
     type: boolean
     description: Use this service for the internal metadata of the broker. This should only be enabled for one service, as the broker may pick from repository enabled services at random on startup.
-    configurable: false
+    configurable: true
     default: true
   - name: catalog_services_2_display_name
     label: Display Name
@@ -1009,7 +1009,7 @@ forms:
     label: Enable as Repository Service
     type: boolean
     description: Use this service for the internal metadata of the broker. This should only be enabled for one service, as the broker may pick from repository enabled services at random on startup.
-    configurable: false
+    configurable: true
     default: true
   - name: catalog_services_3_display_name
     label: Display Name
@@ -1256,7 +1256,7 @@ forms:
     label: Enable as Repository Service
     type: boolean
     description: Use this service for the internal metadata of the broker. This should only be enabled for one service, as the broker may pick from repository enabled services at random on startup.
-    configurable: false
+    configurable: true
     default: true
   - name: catalog_services_4_display_name
     label: Display Name
