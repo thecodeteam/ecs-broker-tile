@@ -22,6 +22,9 @@ packages:
   type: app-broker
   label: ECS Broker Application      # Package name for use in human-readable labels in OpsManager
   enable_global_access_to_plans: (( .properties.enable_global_access_to_plans.value ))
+  pre_deploy: |
+    PREV_BROKER=`cf service-brokers |grep ecs-broker | awk '{print $1}'`
+    cf rename-service-broker $PREV_BROKER ecs-broker
   manifest:
     path: resources/ecs-cf-service-broker-1.1.0.jar
     buildpack: java_buildpack_offline
