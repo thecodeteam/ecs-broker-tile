@@ -102,12 +102,12 @@ describe("migration from 1.0.1", function() {
         })
 
         test("it converts each service1 plan1 guid", function() {
-            expect(output.properties[".properties.catalog_plan_collection0"].value[0].guid.value)
+            expect(output.properties[".properties.catalog_plan_collection0"].value[0].id.value)
                 .toBe("SERVICE1_PLAN1_GUID");
         });
 
         test("it converts each service1 plan2 guid", function() {
-            expect(output.properties[".properties.catalog_plan_collection0"].value[1].guid.value)
+            expect(output.properties[".properties.catalog_plan_collection0"].value[1].id.value)
                 .toBe("SERVICE1_PLAN2_GUID");
         });
 

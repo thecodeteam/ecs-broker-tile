@@ -18,13 +18,17 @@ allow_paid_service_plans: true
 # http://docs.pivotal.io/tiledev/tile-generator.html
 #
 packages:
-- name: ecs-broker
+- name: ecs_broker
   type: app-broker
   label: ECS Broker Application      # Package name for use in human-readable labels in OpsManager
   enable_global_access_to_plans: (( .properties.enable_global_access_to_plans.value ))
   pre_deploy: |
-    PREV_BROKER=`cf service-brokers |grep ecs-broker | awk '{print $1}'`
-    cf rename-service-broker $PREV_BROKER ecs-broker
+    export PATH="/var/vcap/packages/cf_cli:$PATH"
+    export CF=`which cf`
+    export PREV_APP=`$CF apps | grep -e "^ecs.*broker" | awk '{print $1}'`
+    export PREV_BROKER=`$CF service-brokers | grep -e "^ecs.*broker" | awk '{print $1}'`
+    if [ -n "$PREV_APP" ]; then $CF rename $PREV_APP ecs_broker_v1; fi
+    if [ -n "$PREV_BROKER" ]; then $CF rename-service-broker $PREV_BROKER ecs_broker; fi
   manifest:
     path: resources/ecs-cf-service-broker-1.1.0.jar
     buildpack: java_buildpack_offline

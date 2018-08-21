@@ -92,6 +92,12 @@ function renamePlanCollection(service_index, input) {
     if (typeof input.properties[old_name] !== "undefined" && input.properties[old_name] !== null) {
         input.properties[".properties.catalog_plan_collection" + service_index] =
             input.properties[old_name];
+
+            for (var plan_index = 0; plan_index < input.properties[old_name].value.length; plan_index++) {
+                input.properties[".properties.catalog_plan_collection" + service_index].value[plan_index].guid =
+                    input.properties[old_name].value[plan_index].plan_guid;
+            }
+
         delete input.properties[old_name];
     }
 }
@@ -106,8 +112,6 @@ function overridePlanProperties(service_index, input) {
     if (typeof input.properties[plan_key] !== "undefined" && input.properties[plan_key] !== null) {
         for (var plan_index in input.properties[plan_key].value) {
             var plan = input.properties[plan_key].value[plan_index];
-            // fix the plan's id
-            input.properties[plan_key].value[plan_index].id = input.properties[plan_key].value[plan_index].plan_guid;
 
             // fix other props
             for(var overridable_index in overridables) {
