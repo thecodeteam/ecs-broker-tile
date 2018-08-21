@@ -106,8 +106,8 @@ function overridePlanProperties(service_index, input) {
     if (typeof input.properties[plan_key] !== "undefined" && input.properties[plan_key] !== null) {
         for (var plan_index in input.properties[plan_key].value) {
             var plan = input.properties[plan_key].value[plan_index];
-            // fix the plan's guid
-            input.properties[plan_key].value[plan_index].guid = input.properties[plan_key].value[plan_index].plan_guid
+            // fix the plan's id
+            input.properties[plan_key].value[plan_index].id = input.properties[plan_key].value[plan_index].plan_guid;
 
             // fix other props
             for(var overridable_index in overridables) {
