@@ -37,7 +37,7 @@ describe("migration from 1.0.1", function() {
         });
 
         test("it converts password", function() {
-            expect(output.properties[".properties.broker_password"].value)
+            expect(output.properties[".properties.broker_password"].value.secret)
                 .toBe("PASSWORD");
         });
 
@@ -355,14 +355,14 @@ function changedServicePlansInput() {
             ".properties.service1_plans": {
                 value: [
                     {
-                        guid:                 {value: "SERVICE1_PLAN1_GUID"},
+                        plan_guid:            {value: "SERVICE1_PLAN1_GUID"},
                         name:                 {value: "SERVICE1_PLAN1_NAME"},
                         quota_limit:          {value: "SERVICE1_PLAN1_QUOTA_LIMIT"},
                         quota_warn:           {value: "SERVICE1_PLAN1_QUOTA_WARN"},
                         access_during_outage: {value: "SERVICE1_PLAN1_ACCESS_DURING_OUTAGE"}
                     },
                     {
-                        guid:                 {value: "SERVICE1_PLAN2_GUID"},
+                        plan_guid:            {value: "SERVICE1_PLAN2_GUID"},
                         name:                 {value: "SERVICE1_PLAN2_NAME"},
                         quota_limit:          {value: "SERVICE1_PLAN2_QUOTA_LIMIT"},
                         quota_warn:           {value: "SERVICE1_PLAN2_QUOTA_WARN"},

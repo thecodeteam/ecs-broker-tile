@@ -2,7 +2,6 @@
 # The high-level description of your tile.
 # Replace these properties with real values.
 
-# name: ecs-service-broker
 name: ecs-service-broker
 icon_file: resources/icon.png
 label: DELL EMC ECS Broker
@@ -10,12 +9,6 @@ description: ECS Broker for Pivotal CF
 metadata_version: 1.8                 # Optional, defaults to 1.8
 rank: 50
 allow_paid_service_plans: true
-
-# Global defaults (all optional)
-#
-org: ecs-broker-service-org
-space: ecs-broker-service-space
-# apply_open_security_group: true       # Apply open security group, default: false
 
 # Specify the packages to be included in your tile.
 # The format of the section to include depends on the type
@@ -25,9 +18,10 @@ space: ecs-broker-service-space
 # http://docs.pivotal.io/tiledev/tile-generator.html
 #
 packages:
-- name: ecs_broker
+- name: ecs-broker
   type: app-broker
   label: ECS Broker Application      # Package name for use in human-readable labels in OpsManager
+  enable_global_access_to_plans: (( .properties.enable_global_access_to_plans.value ))
   manifest:
     path: resources/ecs-cf-service-broker-1.1.0.jar
     buildpack: java_buildpack_offline
@@ -102,8 +96,6 @@ packages:
       CATALOG_SERVICES[4]_METADATA[providerDisplayName]: (( .properties.catalog_services_4_provider_display_name.value ))
       CATALOG_SERVICES[4]_METADATA[documentationUrl]: (( .properties.catalog_services_4_documentation_url.value ))
       CATALOG_SERVICES[4]_METADATA[supportUrl]: (( .properties.catalog_services_4_support_url.value ))
-
-  enable_global_access_to_plans: (( .properties.enable_global_access_to_plans.value ))
 
 # Include stemcell criteria if you don't want to accept the default.
 # Since this stemcell is only used to run pre and post errands, we
@@ -1470,5 +1462,6 @@ forms:
 # in this file. If that is your intent, you must do the overwriting
 # explicitly using JavaScript migration functions, like so:
 #
-# migration: |
-#   properties['properties']['.properties.org']['value'] = 'system';
+migration: |
+  properties['properties']['.properties.org']['value'] = 'ecs-broker-service-org';
+  properties['properties']['.properties.space']['value'] = 'ecs-broker-service-space';

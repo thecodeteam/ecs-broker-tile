@@ -3,18 +3,10 @@ exports.migrate = function (input) {
 
     if (current_version === "1.0.1" || current_version === "1.0.2") {
         // rename properties in latest release
-        moveServiceSettingsToSelector(input)
+        renameServiceSettingsInSelector(input)
         renameSimpleProps(input);
         updateCatalogServices(input);
     }
-
-//    if (
-//        typeof input.properties[".properties.broker_certificate_selector"] !== "undefined" &&
-//        input.properties[".properties.broker_certificate_selector"] !== null &&
-//        input.properties[".properties.broker_certificate_selector"] === "No"
-//       ) {
-//        input.properties[".properties.broker_certificate_selector.untrusted_ssl.certificate"] = input.properties[".properties.certificate_selector.untrusted_ssl.certificate"];
-//    }
 
     return input;
 };
@@ -25,8 +17,6 @@ function renameSimpleProps(input) {
         ".properties.broker_replication_group":   ".properties.replication_group",
         ".properties.broker_namespace": ".properties.namespace",
         ".properties.broker_username": ".properties.api_username",
-//        ".properties.broker_password": ".properties.api_password",
-//         ".properties.broker_certificate_selector.untrusted_ssl": ".properties.certificate_selector.untrusted_ssl",
         ".properties.broker_object_endpoint": ".properties.object_endpoint",
         ".properties.broker_base_url": ".properties.base_url",
         ".properties.broker_prefix": ".properties.prefix",
@@ -34,38 +24,10 @@ function renameSimpleProps(input) {
         ".properties.broker_repository_bucket": ".properties.repository_bucket",
         ".properties.broker_repository_user": ".properties.repository_user",
         ".properties.security_user_name": ".properties.broker_credentials.identity",
-        ".properties.security_user_password": ".properties.broker_credentials.password",
-//        ".properties.catalog_service_settings0": ".properties.service1_service_type",
-//        ".properties.catalog_service_settings1": ".properties.service2_service_type",
-//        ".properties.catalog_service_settings2": ".properties.service3_service_type",
-//        ".properties.catalog_service_settings3": ".properties.service4_service_type",
-//        ".properties.catalog_service_settings4": ".properties.service5_service_type"
+        ".properties.security_user_password": ".properties.broker_credentials.password"
     };
 
-
-
-    // input.properties[".properties.broker_certificate_selector.untrusted_ssl"] =
-    //     input.properties[".properties.certificate_selector.untrusted_ssl"];
-    // delete input.properties[".properties.certificate_selector.untrusted_ssl"];
-    //
-    // input.properties[".properties.broker_certificate_selector.trusted_ssl"] =
-    //     input.properties[".properties.certificate_selector.trusted_ssl"];
-    // delete input.properties[".properties.certificate_selector.trusted_ssl"];
-
-
-    // if (".properties.certificate_selector.untrusted_ssl.certificate" in input.properties) {
-    //     input.properties[".properties.broker_certificate_selector.untrusted_ssl.certificate"] =
-    //         input.properties[".properties.certificate_selector.untrusted_ssl.certificate"];
-    //     delete input.properties[".properties.certificate_selector.untrusted_ssl.certificate"]
-    // }
-
-    // if (typeof input.properties[".properties.broker_certificate_selector"] !== "undefined" &&
-    //     input.properties[".properties.broker_certificate_selector"] !== null) {
-    //     var broker_certificate = ".properties.broker_certificate_selector";
-    // }
-
     input.properties[".properties.broker_certificate_selector"] = input.properties[".properties.certificate_selector"];
-
 
     if (typeof input.properties[".properties.certificate_selector.trusted_ssl"] === "undefined") {
         input.properties[".properties.broker_certificate_selector.untrusted_ssl.certificate"] =
@@ -73,10 +35,12 @@ function renameSimpleProps(input) {
     }
 
     if (
-        typeof input.properties[".properties.broker_password"] !== 'undefined' &&
-        input.properties[".properties.broker_password"] !== null
+        typeof input.properties[".properties.api_password"] !== "undefined" &&
+        input.properties[".properties.api_password"] !== null
     ) {
-        input.properties[".properties.broker_password"] = input.properties[".properties.api_password."].toString();
+        input.properties[".properties.broker_password"] = {
+            value: { secret: input.properties[".properties.api_password"].value }
+        };
     }
 
     for (var key in changed_props) {
@@ -108,7 +72,6 @@ function updateCatalogServices(input) {
         renameSimpleServiceProps(simple_service_props, service_index, input);
         renamePlanCollection(service_index, input);
         overridePlanProperties(service_index, input);
-//        renameServiceSettings(service_index, input);
     }
 }
 
@@ -143,6 +106,10 @@ function overridePlanProperties(service_index, input) {
     if (typeof input.properties[plan_key] !== "undefined" && input.properties[plan_key] !== null) {
         for (var plan_index in input.properties[plan_key].value) {
             var plan = input.properties[plan_key].value[plan_index];
+            // fix the plan's guid
+            input.properties[plan_key].value[plan_index].guid = input.properties[plan_key].value[plan_index].plan_guid
+
+            // fix other props
             for(var overridable_index in overridables) {
                 var o = overridables[overridable_index];
                 var old_key = ".properties.service" + (service_index + 1) + "_" + o;
@@ -234,20 +201,20 @@ function reformatNamespaceSelector(service_index, input) {
     moveServiceSettingsToSelector(service_index, "namespace", input, "access_during_outage");
 }
 
-// function moveServiceSettingsToSelector(service_index, option, input, prop) {
-//     var old_name = ".properties.service" + (service_index + 1) + "_" + prop;
-//     var new_name = ".properties.catalog_service_settings" + service_index + "." + option + "_option." + prop;
-//     if (typeof input.properties[old_name] !== "undefined" && input.properties[old_name] !== null) {
-//         input.properties[new_name] = input.properties[old_name];
-//         delete input.properties[old_name];
-//     }
-// }
-
-function moveServiceSettingsToSelector(input) {
+function renameServiceSettingsInSelector(input) {
     for (var i = 0; i < 5; i++) {
         // Bucket stuff
         input.properties[(".properties.catalog_service_settings" + i)] =
             input.properties[(".properties.service" + (i+1) +"_service_type")];
+
+        input.properties[(".properties.catalog_service_settings" + i +".bucket_option.service_type")] =
+            {value: "bucket"};
+
+        input.properties[(".properties.catalog_services_" + i +"_repository_service")] =
+            input.properties[(".properties.service" + (i+1) +"_service_type.bucket_option.repository_service")];
+
+        input.properties[(".properties.catalog_service_settings" + i +".bucket_option.head_type")] =
+            input.properties[(".properties.service" + (i+1) +"_service_type.bucket_option.head_type")];
 
         input.properties[(".properties.catalog_service_settings" + i +".bucket_option.file_accessible")] =
             input.properties[(".properties.service" + (i+1) +"_service_type.bucket_option.file_accessible")];
@@ -261,6 +228,9 @@ function moveServiceSettingsToSelector(input) {
         // Namespace stuff
         input.properties[(".properties.catalog_service_settings" + i + ".namespace_option.compliance_enabled")] =
             input.properties[(".properties.service" + (i+1) +"_service_type.namespace_option.compliance_enabled")];
+
+        input.properties[(".properties.catalog_service_settings" + i +".namespace_option.service_type")] =
+            {value: "namespace"};
 
         input.properties[(".properties.catalog_service_settings" + i + ".namespace_option.default_bucket_quota")] =
             input.properties[(".properties.service" + (i+1) +"_service_type.namespace_option.default_bucket_quota")];
