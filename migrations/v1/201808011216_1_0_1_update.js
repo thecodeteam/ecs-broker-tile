@@ -155,10 +155,6 @@ function reformatBucketSelector(service_index, input) {
         "default_bucket_quota"
     ];
 
-    input.properties[".properties.catalog_service_settings" + service_index + ".bucket_option.service_type"] = {
-        value: "bucket"
-    };
-
     for (var i in bucket_props) {
         var prop = bucket_props[i];
         var old_name = ".properties.service" + (service_index + 1) + "_service_type.bucket_option." + prop;
@@ -211,9 +207,6 @@ function renameServiceSettingsInSelector(input) {
         input.properties[(".properties.catalog_service_settings" + i)] =
             input.properties[(".properties.service" + (i+1) +"_service_type")];
 
-        input.properties[(".properties.catalog_service_settings" + i +".bucket_option.service_type")] =
-            {value: "bucket"};
-
         input.properties[(".properties.catalog_services_" + i +"_repository_service")] =
             input.properties[(".properties.service" + (i+1) +"_service_type.bucket_option.repository_service")];
 
@@ -232,9 +225,6 @@ function renameServiceSettingsInSelector(input) {
         // Namespace stuff
         input.properties[(".properties.catalog_service_settings" + i + ".namespace_option.compliance_enabled")] =
             input.properties[(".properties.service" + (i+1) +"_service_type.namespace_option.compliance_enabled")];
-
-        input.properties[(".properties.catalog_service_settings" + i +".namespace_option.service_type")] =
-            {value: "namespace"};
 
         input.properties[(".properties.catalog_service_settings" + i + ".namespace_option.default_bucket_quota")] =
             input.properties[(".properties.service" + (i+1) +"_service_type.namespace_option.default_bucket_quota")];

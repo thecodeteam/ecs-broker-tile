@@ -308,16 +308,11 @@ forms:
     - name: bucket_option
       select_value: Bucket
       property_blueprints:
-      - name: service_type
-        label: Service Type
-        type: string
-        default: bucket
-        configurable: false
       - name: head_type
         label: Object Head Type
         type: dropdown_select
         default: s3
-        configurable: false
+        configurable: true
         description: Object protocol to use for the provisioned bucket. Today the broker only supports S3, but will support Swift, Atmos & CAS in the future. This only applies to bucket services
         options:
         - name: s3
@@ -343,11 +338,6 @@ forms:
     - name: namespace_option
       select_value: Namespace
       property_blueprints:
-      - name: service_type
-        label: Service Type
-        type: string
-        default: namespace
-        configurable: false
       - name: compliance_enabled
         label: Enable Compliance
         type: boolean
@@ -556,16 +546,11 @@ forms:
     - name: bucket_option
       select_value: Bucket
       property_blueprints:
-      - name: service_type
-        label: Service Type
-        type: string
-        default: bucket
-        configurable: false
       - name: head_type
         label: Object Head Type
         type: dropdown_select
         default: s3
-        configurable: false
+        configurable: true
         description: Object protocol to use for the provisioned bucket. Today the broker only supports S3, but will support Swift, Atmos & CAS in the future. This only applies to bucket services
         options:
         - name: s3
@@ -591,11 +576,6 @@ forms:
     - name: namespace_option
       select_value: Namespace
       property_blueprints:
-      - name: service_type
-        label: Service Type
-        type: string
-        default: namespace
-        configurable: false
       - name: compliance_enabled
         label: Enable Compliance
         type: boolean
@@ -803,16 +783,11 @@ forms:
     - name: bucket_option
       select_value: Bucket
       property_blueprints:
-      - name: service_type
-        label: Service Type
-        type: string
-        default: bucket
-        configurable: false
       - name: head_type
         label: Object Head Type
         type: dropdown_select
         default: s3
-        configurable: false
+        configurable: true
         description: Object protocol to use for the provisioned bucket. Today the broker only supports S3, but will support Swift, Atmos & CAS in the future. This only applies to bucket services
         options:
         - name: s3
@@ -838,11 +813,6 @@ forms:
     - name: namespace_option
       select_value: Namespace
       property_blueprints:
-      - name: service_type
-        label: Service Type
-        type: string
-        default: namespace
-        configurable: false
       - name: compliance_enabled
         label: Enable Compliance
         type: boolean
@@ -1050,16 +1020,11 @@ forms:
     - name: bucket_option
       select_value: Bucket
       property_blueprints:
-      - name: service_type
-        label: Service Type
-        type: string
-        default: bucket
-        configurable: false
       - name: head_type
         label: Object Head Type
         type: dropdown_select
         default: s3
-        configurable: false
+        configurable: true
         description: Object protocol to use for the provisioned bucket. Today the broker only supports S3, but will support Swift, Atmos & CAS in the future. This only applies to bucket services
         options:
         - name: s3
@@ -1085,11 +1050,6 @@ forms:
     - name: namespace_option
       select_value: Namespace
       property_blueprints:
-      - name: service_type
-        label: Service Type
-        type: string
-        default: namespace
-        configurable: false
       - name: compliance_enabled
         label: Enable Compliance
         type: boolean
@@ -1297,16 +1257,11 @@ forms:
     - name: bucket_option
       select_value: Bucket
       property_blueprints:
-      - name: service_type
-        label: Service Type
-        type: string
-        default: bucket
-        configurable: false
       - name: head_type
         label: Object Head Type
         type: dropdown_select
         default: s3
-        configurable: false
+        configurable: true
         description: Object protocol to use for the provisioned bucket. Today the broker only supports S3, but will support Swift, Atmos & CAS in the future. This only applies to bucket services
         options:
         - name: s3
@@ -1332,11 +1287,6 @@ forms:
     - name: namespace_option
       select_value: Namespace
       property_blueprints:
-      - name: service_type
-        label: Service Type
-        type: string
-        default: namespace
-        configurable: false
       - name: compliance_enabled
         label: Enable Compliance
         type: boolean

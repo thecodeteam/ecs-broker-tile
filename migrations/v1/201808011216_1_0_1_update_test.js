@@ -102,12 +102,12 @@ describe("migration from 1.0.1", function() {
         })
 
         test("it converts each service1 plan1 guid", function() {
-            expect(output.properties[".properties.catalog_plan_collection0"].value[0].id.value)
+            expect(output.properties[".properties.catalog_plan_collection0"].value[0].guid.value)
                 .toBe("SERVICE1_PLAN1_GUID");
         });
 
         test("it converts each service1 plan2 guid", function() {
-            expect(output.properties[".properties.catalog_plan_collection0"].value[1].id.value)
+            expect(output.properties[".properties.catalog_plan_collection0"].value[1].guid.value)
                 .toBe("SERVICE1_PLAN2_GUID");
         });
 
@@ -209,16 +209,6 @@ describe("migration from 1.0.1", function() {
 
         test("it renames service1 bucket service_settings", function() {
             expect(output.properties[".properties.catalog_service_settings0"].value).toBe("Bucket");
-        });
-
-        test("it sets service1 bucket service_type", function() {
-            expect(output.properties[".properties.catalog_service_settings0.bucket_option.service_type"].value)
-                .toBe("bucket");
-        });
-
-        test("it sets service2 bucket service_type", function() {
-            expect(output.properties[".properties.catalog_service_settings1.bucket_option.service_type"].value)
-                .toBe("bucket");
         });
 
         test("it renames service1 bucket head_type", function() {
