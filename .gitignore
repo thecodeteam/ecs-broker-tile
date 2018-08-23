@@ -1,2 +1,4 @@
 product/*
+.idea
 release/*
+*.iml

@@ -44,7 +44,7 @@ if [ -n "${VERSION_DIR}" ]; then
 	VERSION=`cat ${VERSION_DIR}/version`
 fi
 
-(cd ${SOURCE_DIR}; $TILE build $DOCKER_DIR $VERSION)
+(cd ${SOURCE_DIR}; $TILE build $VERSION)
 
 VERSION=`grep '^version:' ${SOURCE_DIR}/tile-history.yml | sed 's/^version: //'`
 HISTORY="tile-history-${VERSION}.yml"
