@@ -22,6 +22,8 @@ packages:
   type: app-broker
   label: ECS Broker Application      # Package name for use in human-readable labels in OpsManager
   enable_global_access_to_plans: (( .properties.enable_global_access_to_plans.value ))
+  org: ecs-broker-service-org
+  space: ecs-broker-service-space
   pre_deploy: |
     export PATH="/var/vcap/packages/cf_cli:$PATH"
     export CF=`which cf`
@@ -30,7 +32,7 @@ packages:
     if [ -n "$PREV_APP" ]; then $CF rename $PREV_APP ecs_broker_v1; fi
     if [ -n "$PREV_BROKER" ]; then $CF rename-service-broker $PREV_BROKER ecs_broker; fi
   manifest:
-    path: resources/ecs-cf-service-broker-1.1.0.jar
+    path: resources/ecs-cf-service-broker-1.2.0-RELEASE.jar
     buildpack: java_buildpack_offline
     memory: 1G
     env:
@@ -151,12 +153,12 @@ forms:
       configurable: true
     - name: broker_replication_group
       label: Replication Group
-      description: Enter the name of the ECS "replication group" to be used for created buckets. This can be found in the ECS management UI
+      description: Enter the name of the ECS replication group to be used for created buckets. This can be found in the ECS management UI
       type: string
       configurable: true
     - name: broker_namespace
       label: Namespace
-      description: Enter the name of the ECS "namespace" to be used for created buckets and users. This can be found in the ECS management UI
+      description: Enter the name of the ECS namespace to be used for created buckets and users. This can be found in the ECS management UI
       type: string
       configurable: true
     - name: broker_username
@@ -171,7 +173,7 @@ forms:
       configurable: true
     - name: broker_base_url
       label: ECS Base URL
-      description: (Optional) Enter the name of the ECS configured base URL, to discover the object endpoint. If not provided, the broker will attempt to discover a default base URL. Alternatively, the URI/endpoint can be specified using the "Object Endpoint" parameter
+      description: (Optional) Enter the name of the ECS configured base URL, to discover the object endpoint. If not provided, the broker will attempt to discover a default base URL. Alternatively, the URI/endpoint can be specified using the 'Object Endpoint' parameter
       type: string
       configurable: true
       optional: true
@@ -196,7 +198,7 @@ forms:
         property_blueprints: []
     - name: broker_object_endpoint
       label: ECS Object Endpoint
-      description: (Optional) Manually specify the URI/endpoint of the ECS S3 API, rather than discover from the ECS configured "base URL". This is typically accessed form port 9020 (HTTP) or port 9021 (HTTPS), but may be on a different port if accessed through a load balancer
+      description: (Optional) Manually specify the URI/endpoint of the ECS S3 API, rather than discover from the ECS configured 'base URL'. This is typically accessed form port 9020 (HTTP) or port 9021 (HTTPS), but may be on a different port if accessed through a load balancer
       type: string
       configurable: true
       optional: true
@@ -206,7 +208,7 @@ forms:
   properties:
     - name: broker_prefix
       label: Broker Prefix
-      description: (Optional) Enter a string used to prefix all broker created buckets and users. Defaults to "ecs-cf-broker-"
+      description: (Optional) Enter a string used to prefix all broker created buckets and users. Defaults to 'ecs-cf-broker-'
       type: string
       configurable: true
       optional: true
@@ -218,7 +220,7 @@ forms:
       optional: true
     - name: broker_repository_user
       label: Repository User
-      description: (Optional) Enter the name of the user that should be created/used for managing broker metadata. Defaults to "{prefix}-user"
+      description: (Optional) Enter the name of the user that should be created/used for managing broker metadata. Defaults to '{prefix}-user'
       type: string
       configurable: true
       optional: true
@@ -303,7 +305,7 @@ forms:
     type: selector
     configurable: true
     default: Bucket
-    description: Set the type of service to be available in the marketplace. A bucket provides a single bucket per service. A namespace provides a tentant "area" where multiple buckets can be provisioned
+    description: Set the type of service to be available in the marketplace. A bucket provides a single bucket per service. A namespace provides a tenant 'area' where multiple buckets can be provisioned
     option_templates:
     - name: bucket_option
       select_value: Bucket
@@ -541,7 +543,7 @@ forms:
     type: selector
     configurable: true
     default: Namespace
-    description: Set the type of service to be available in the marketplace. A bucket provides a single bucket per service. A namespace provides a tentant "area" where multiple buckets can be provisioned
+    description: Set the type of service to be available in the marketplace. A bucket provides a single bucket per service. A namespace provides a tentant 'area' where multiple buckets can be provisioned
     option_templates:
     - name: bucket_option
       select_value: Bucket
@@ -778,7 +780,7 @@ forms:
     type: selector
     configurable: true
     default: Bucket
-    description: Set the type of service to be available in the marketplace. A bucket provides a single bucket per service. A namespace provides a tentant "area" where multiple buckets can be provisioned
+    description: Set the type of service to be available in the marketplace. A bucket provides a single bucket per service. A namespace provides a tentant 'area' where multiple buckets can be provisioned
     option_templates:
     - name: bucket_option
       select_value: Bucket
@@ -1015,7 +1017,7 @@ forms:
     type: selector
     configurable: true
     default: Bucket
-    description: Set the type of service to be available in the marketplace. A bucket provides a single bucket per service. A namespace provides a tentant "area" where multiple buckets can be provisioned
+    description: Set the type of service to be available in the marketplace. A bucket provides a single bucket per service. A namespace provides a tentant 'area' where multiple buckets can be provisioned
     option_templates:
     - name: bucket_option
       select_value: Bucket
@@ -1252,7 +1254,7 @@ forms:
     type: selector
     configurable: true
     default: Bucket
-    description: Set the type of service to be available in the marketplace. A bucket provides a single bucket per service. A namespace provides a tentant "area" where multiple buckets can be provisioned
+    description: Set the type of service to be available in the marketplace. A bucket provides a single bucket per service. A namespace provides a tentant 'area' where multiple buckets can be provisioned
     option_templates:
     - name: bucket_option
       select_value: Bucket
@@ -1419,6 +1421,6 @@ forms:
 # in this file. If that is your intent, you must do the overwriting
 # explicitly using JavaScript migration functions, like so:
 #
-migration: |
-  properties['properties']['.properties.org']['value'] = 'ecs-broker-service-org';
-  properties['properties']['.properties.space']['value'] = 'ecs-broker-service-space';
+#migration: |
+#  properties['properties']['.properties.org']['value'] = 'ecs-broker-service-org';
+#  properties['properties']['.properties.space']['value'] = 'ecs-broker-service-space';
