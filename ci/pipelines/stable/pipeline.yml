@@ -281,6 +281,13 @@ jobs:
           OPSMAN_ENV_FILE_NAME: ((opsman_env_file_name))
           CONFIG_FILE_NAME: ((apply_changes_file_name))
 
+      - put: cf-enable-service-access-((cf_foundation_name))
+        resource: ((cf_foundation_name))
+        params:
+          command: enable-service-access
+          service: ecs-bucket
+          access_org: ecs-broker-service-org
+
   - name: test-5gb-bucket
     serial_groups: [((cf_foundation_name))-test-bucket]
     plan:
