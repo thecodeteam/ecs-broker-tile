@@ -1,0 +1,103 @@
+product_version: 1.2.4
+
+product_config: |
+  product-name: ecs-service-broker
+  product-properties:
+    .properties.allow_paid_service_plans:
+      value: true
+    .properties.apply_open_security_group:
+      value: false
+    .properties.broker_base_url:
+      value: 10.1.83.51.xip.io
+    .properties.broker_certificate_selector:
+      value: "No"
+    .properties.broker_certificate_selector.untrusted_ssl.certificate:
+      value: "-----BEGIN CERTIFICATE-----\nMIIDXTCCAkWgAwIBAgIJAJzNJDJuTD3qMA0GCSqGSIb3DQEBCwUAMEUxCzAJBgNV\nBAYTAkRFMRMwEQYDVQQIDApTb21lLVN0YXRlMSEwHwYDVQQKDBhJbnRlcm5ldCBX\naWRnaXRzIFB0eSBMdGQwHhcNMTkwOTAyMTU0OTA2WhcNMTkxMDAyMTU0OTA2WjBF\nMQswCQYDVQQGEwJERTETMBEGA1UECAwKU29tZS1TdGF0ZTEhMB8GA1UECgwYSW50\nZXJuZXQgV2lkZ2l0cyBQdHkgTHRkMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIB\nCgKCAQEAl5W5yHh+Fgn2K8EH59p9ApvC9FOQCWspQlQdk9zFMUB9Qnq7+LBSPmxt\naN+G+tUbnT++ns3DwxjinyiQL1v8iaNhPwZA4c/+7qSpkIPVZW3P2W8DD5TORclj\nPY7qDEfoKLgu6GfNkiDLPOXQ1PFVItbesFUq2IXdKT+hQqyguDgXyqnZBX0jPtf3\nSy8/fBqR/jteBlkdyu+zONfYsU2UhVnVr9lYxwS0tFyRu9hZbpCrNqV+ZPQiDp/u\npQ33/T+ZUd7CADsGO37C3MFyv8yyydfbGHfJi49QgIwb24qbaNb9sPmbWqP6R25l\nK0rntXfItvVyliTr04CeYnmk8GAhtwIDAQABo1AwTjAdBgNVHQ4EFgQUuERq0x6N\ny0kk4xJhrSyWo6CFYUgwHwYDVR0jBBgwFoAUuERq0x6Ny0kk4xJhrSyWo6CFYUgw\nDAYDVR0TBAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAQEAD57MGyHcZlfin9sJUd0j\nIt1tPhurADyTEdmLbCsLlzo//xNatqfs9ZqhJx/8BG4eVnhVh4vdei/QOrW2etGM\nLqFXzG+qCK3OZk7ZzagAatoq8br1B49qO0DcCLHTP1ExKxFia6IGdNrVsh6nTmef\nD14Qqoeqhx2VlzXgCy+8MlRGdPI1DBttTyMVIst+0Y95hXO6fujqFAj2LBLBHhnm\nNHEIWdfShMrvphgpaeXjUUAOYPaB46QblLM/x+gJ0cthNR5iPrzlgEBPKTQweaim\nAW0xAuoaKlsWEiHKD344U0XdgKbDtLX1GwFDbbNI6PlrxSReQg8LRV5jHkGCkOFS\ntA==\n-----END CERTIFICATE-----\n"
+    .properties.catalog_service_settings0:
+      value: Bucket
+    .properties.catalog_service_settings0.bucket_option.encrypted:
+      value: false
+    .properties.catalog_service_settings0.bucket_option.file_accessible:
+      value: false
+    .properties.catalog_service_settings0.bucket_option.head_type:
+      value: s3
+    .properties.broker_management_endpoint:
+      value: https://10.1.83.51:4443
+    .properties.broker_object_endpoint:
+      value: http://10.1.83.51:9020
+    .properties.broker_namespace:
+      value: kenspace-pcf-69
+    .properties.broker_username:
+      value: kenspace-pcf-69-admin
+    .properties.broker_password:
+      value:
+        secret: ChangeMe
+    .properties.broker_prefix:
+      value: kenspace-pcf-69-
+    .properties.broker_replication_group:
+      value: plylab-NR
+    .properties.catalog_services_0_active:
+      value: true
+    .properties.catalog_services_0_name:
+      value: ecs-bucket
+    .properties.catalog_services_0_description:
+      value: "Elastic Cloud S3 Object Storage Bucket"
+    .properties.catalog_services_0_tags:
+      value: "s3, bucket"
+    .properties.catalog_services_0_bindable:
+      value: true
+    .properties.catalog_services_0_repository_service:
+      value: true
+    .properties.catalog_services_0_display_name:
+      value: ecs-bucket
+    .properties.catalog_services_0_image_url:
+      value: "http://www.emc.com/images/products/header-image-icon-ecs.png"
+    .properties.catalog_services_0_long_description:
+      value: "Dell EMC Elastic Cloud Storage (ECS) Object bucket for storing data using Amazon S3."
+    .properties.catalog_services_0_provider_display_name:
+      value: "Dell EMC"
+    .properties.catalog_services_0_documentation_url:
+      value: "https://community.emc.com/docs/DOC-45012"
+    .properties.catalog_services_0_support_url:
+      value: "http://www.emc.com/products-solutions/trial-software-download/ecs.htm"
+    .properties.catalog_plan_collection0:
+      value:
+        - guid: 8e777d49-0a78-4cf4-810a-b5f5173b019d
+          name: 5gb
+          description: Free Trial
+          free: true
+          bullet_1: Shared object storage
+          bullet_2: 5 GB Storage
+          bullet_3: S3 protocol access
+          cost_unit: MONTHLY
+          cost_usd: "0"
+          quota_limit: "5"
+          quota_warn: "4"
+          repository_plan: true
+        - guid: 89d20694-9ab0-4a98-bc6a-868d6d4ecf31
+          name: unlimited
+          description: Pay per GB per Month
+          free: false
+          bullet_1: Shared object storage
+          bullet_2: Unlimited Storage
+          bullet_3: S3 protocol access
+          cost_unit: MONTHLY
+          cost_usd: "0.03"
+          repository_plan: false
+
+apply_changes_config: |
+  ecs-service-broker:
+    deploy-all: true
+    delete-all: false
+  cf:
+    smoke_tests: false
+    push-usage-service: false
+    push-apps-manager: false
+    deploy-notifications: false
+    deploy-notifications-ui: false
+    deploy-autoscaler: false
+    test-autoscaling: false
+    metric_registrar_smoke_test: false
+    nfsbrokerpush: false
+    smbbrokerpush: false
+    rotate_cc_database_key: false

@@ -1,0 +1,50 @@
+product_slug: ecs-service-broker
+
+# The token used to download the repos from GitHub
+git_username:
+git_token:
+
+debug: false
+
+# iaas: [azure|vsphere|aws|openstack|vcloud|google]
+iaas: vsphere
+
+# iaas_type: [azure-hyperv|vsphere-esxi|aws-xen-hvm|openstack-kvm|vcloud-esxi|google-kvm]
+iaas_type: vsphere-esxi
+
+# stemcell_type: xenial|trusty
+stemcell_type: trusty
+
+# Token used to download the product file from Pivotal Network. Find this
+# on your Pivotal Network profile page:
+# https://network.pivotal.io/users/dashboard/edit-profile
+pivnet_token:
+
+artifactory_user:
+artifactory_password:
+
+pipelines_url: https://github.com/spiegela/pcf-concourse-pipelines
+pipelines_branch: master
+
+opsman_config: |
+  target:
+  skip-ssl-validation: true
+  username:
+  password:
+
+cf_foundation_name:
+cf_apps_domain:
+cf_api:
+cf_user:
+cf_password:
+cf_org:
+cf_space:
+cf_skip_cert_check:
+
+opsman_env_file_name: opsman-env.yml
+config_file_name: product-config.yml
+apply_changes_file_name: apply-changes.yml
+
+test_app_repo: https://github.com/spiegela/ecs-broker-test-app.git
+test_app_branch: master
+

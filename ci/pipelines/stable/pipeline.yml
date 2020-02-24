@@ -1,0 +1,420 @@
+---
+resource_types:
+  - name: pivnet
+    type: docker-image
+    source:
+      repository: pivotalcf/pivnet-resource
+      tag: latest-final
+  - name: cf-cli-resource
+    type: docker-image
+    source:
+      repository: nulldriver/cf-cli-resource
+      tag: latest
+
+  - name: artifactory
+    type: docker-image
+    source:
+      repository: pivotalservices/artifactory-resource
+
+resources:
+
+  - name: pipelines-repo
+    type: git
+    source:
+      uri: ((pipelines_url))
+      branch: ((pipelines_branch))
+      access_token: ((git_token))
+
+  - name: om-cli
+    type: github-release
+    source:
+      user: pivotal-cf
+      repository: om
+      access_token: ((git_token))
+
+  - name: pivnet-cli
+    type: github-release
+    source:
+      user: pivotal-cf
+      repository: pivnet-cli
+      access_token: ((git_token))
+
+  - name: jq
+    type: github-release
+    source:
+      user: stedolan
+      repository: jq
+      access_token: ((git_token))
+
+  - name: pivnet-product
+    type: pivnet
+    source:
+      api_token: ((pivnet_token))
+      product_slug: ((product_slug))
+      product_version: ((product_version))
+
+  - name: tile-config-convertor
+    type: github-release
+    source:
+      user: rahul-kj
+      repository: tile-config-convertor
+      access_token: ((git_token))
+
+  - name: ((cf_foundation_name))
+    type: cf-cli-resource
+    source:
+      api: https://((cf_api))
+      org: ((cf_org))
+      space: ((cf_space))
+      username: ((cf_user))
+      password: ((cf_password))
+      skip_cert_check: ((cf_skip_cert_check))
+
+  - name: test-app-repo
+    type: git
+    source:
+      uri: ((test_app_repo))
+      branch: ((test_app_branch))
+      access_token: ((git_token))
+
+jobs:
+
+  - name: upload-product
+    plan:
+      - in_parallel:
+          - get: pivnet-product
+            trigger: true
+          - get: pipelines-repo
+            params:
+              globs: ["*linux*"]
+          - get: om-cli
+            params:
+              globs:
+                - "*linux-?.?.?"
+          - get: jq
+            params:
+              globs:
+                - "*linux64*"
+          - get: pivnet-cli
+            params:
+              globs:
+                - "*linux-amd64*"
+
+      - task: create-opsman-env
+        file: pipelines-repo/tasks/create-yml-file/task.yml
+        output_mapping:
+          output-folder: env
+        params:
+          DEBUG: ((debug))
+          OUTPUT_FILE_NAME: ((opsman_env_file_name))
+          PARAM_NAME: ((opsman_config))
+
+      - task: upload-tile
+        file: pipelines-repo/tasks/upload-product/task.yml
+        input_mapping:
+          env: env
+          pivnet-product: pivnet-product
+        params:
+          DEBUG: ((debug))
+          OPSMAN_ENV_FILE_NAME: ((opsman_env_file_name))
+
+      - task: download-stemcell
+        file: pipelines-repo/tasks/download-stemcell/task.yml
+        params:
+          DEBUG: ((debug))
+          PIVNET_API_TOKEN: ((pivnet_token))
+          IAAS: ((iaas))
+          IAAS_TYPE: ((iaas_type))
+          STEMCELL_TYPE: ((stemcell_type))
+
+      - task: upload-stemcell
+        file: pipelines-repo/tasks/upload-stemcell/task.yml
+        input_mapping:
+          env: env
+          stemcells: stemcells
+        params:
+          DEBUG: ((debug))
+          OPSMAN_ENV_FILE_NAME: ((opsman_env_file_name))
+
+  - name: stage-product
+    plan:
+      - in_parallel:
+          - get: pivnet-product
+            trigger: true
+          - get: pipelines-repo
+          - get: tile-config-convertor
+            params:
+              globs: ["*linux*"]
+          - get: om-cli
+            passed: [upload-product]
+            params:
+              globs:
+                - "*linux-?.?.?"
+          - get: jq
+            params:
+              globs:
+                - "*linux64*"
+          - get: pivnet-cli
+            params:
+              globs:
+                - "*linux-amd64*"
+
+      - task: create-opsman-env
+        file: pipelines-repo/tasks/create-yml-file/task.yml
+        output_mapping:
+          output-folder: env
+        params:
+          DEBUG: ((debug))
+          OUTPUT_FILE_NAME: ((opsman_env_file_name))
+          PARAM_NAME: ((opsman_config))
+
+      - task: stage-product
+        file: pipelines-repo/tasks/stage-product/task.yml
+        input_mapping:
+          env: env
+          pivnet-product: pivnet-product
+        params:
+          PRODUCT_NAME:  ((product_slug))
+          DEBUG: ((debug))
+          OPSMAN_ENV_FILE_NAME: ((opsman_env_file_name))
+
+      - task: generate-config
+        file: pipelines-repo/tasks/generate-config/task.yml
+        input_mapping:
+          env: env
+          pivnet-product: pivnet-product
+        params:
+          PRODUCT_NAME:  ((product_slug))
+          DEBUG: ((debug))
+          OPSMAN_ENV_FILE_NAME: ((opsman_env_file_name))
+
+  - name: config-product
+    plan:
+      - in_parallel:
+          - get: pipelines-repo
+          - get: pivnet-product
+            trigger: true
+            resource: pivnet-product
+            params:
+              globs: []
+          - get: om-cli
+            params:
+              globs:
+                - "*linux-?.?.?"
+            passed: [stage-product]
+          - get: jq
+            params:
+              globs:
+                - "*linux64*"
+
+      - task: create-opsman-env
+        file: pipelines-repo/tasks/create-yml-file/task.yml
+        output_mapping:
+          output-folder: env
+        params:
+          DEBUG: ((debug))
+          OUTPUT_FILE_NAME: ((opsman_env_file_name))
+          PARAM_NAME: ((opsman_config))
+
+      - task: create-product-config
+        file: pipelines-repo/tasks/create-yml-file/task.yml
+        output_mapping:
+          output-folder: config
+        params:
+          DEBUG: ((debug))
+          OUTPUT_FILE_NAME: ((config_file_name))
+          PARAM_NAME: ((product_config))
+
+      - task: config-tile
+        file: pipelines-repo/tasks/config-product/task.yml
+        input_mapping:
+          env: env
+          config: config
+        params:
+          DEBUG: ((debug))
+          OPSMAN_ENV_FILE_NAME: ((opsman_env_file_name))
+          CONFIG_FILE_NAME: ((config_file_name))
+
+  - name: apply-changes
+    plan:
+      - in_parallel:
+          - get: pipelines-repo
+          - get: pivnet-product
+            resource: pivnet-product
+            params:
+              globs: []
+          - get: om-cli
+            params:
+              globs:
+                - "*linux-?.?.?"
+            passed: [config-product]
+          - get: jq
+            params:
+              globs:
+                - "*linux64*"
+
+      - task: create-opsman-env
+        file: pipelines-repo/tasks/create-yml-file/task.yml
+        output_mapping:
+          output-folder: env
+        params:
+          DEBUG: ((debug))
+          OUTPUT_FILE_NAME: ((opsman_env_file_name))
+          PARAM_NAME: ((opsman_config))
+
+      - task: create-apply-changes-config
+        file: pipelines-repo/tasks/create-yml-file/task.yml
+        output_mapping:
+          output-folder: config
+        params:
+          DEBUG: ((debug))
+          OUTPUT_FILE_NAME: ((apply_changes_file_name))
+          PARAM_NAME: ((apply_changes_config))
+
+      - task: apply-changes
+        file: pipelines-repo/tasks/apply-changes/task.yml
+        input_mapping:
+          env: env
+          config: config
+        params:
+          DEBUG: ((debug))
+          OPSMAN_ENV_FILE_NAME: ((opsman_env_file_name))
+          CONFIG_FILE_NAME: ((apply_changes_file_name))
+
+  - name: test-5gb-bucket
+    serial_groups: [((cf_foundation_name))-test-bucket]
+    plan:
+      - in_parallel:
+          - get: pipelines-repo
+            passed: [apply-changes]
+          - get: test-app-repo
+
+      - put: create-service-((cf_foundation_name))
+        resource: ((cf_foundation_name))
+        params:
+          command: create-service
+          service: ecs-bucket
+          plan: 5gb
+          service_instance: ecs-broker-test-bucket
+
+      - put: cf-push-test-app-((cf_foundation_name))
+        resource: ((cf_foundation_name))
+        params:
+          command: push
+          app_name: ecs-broker-test-app
+          memory: 1G
+          path: test-app-repo
+          manifest: test-app-repo/manifest.yml
+
+      - task: put-object
+        file: pipelines-repo/tasks/curl/task.yml
+        input_mapping:
+          pipelines-repo: pipelines-repo
+        params:
+          URL: https://ecs-broker-test-app.((cf_apps_domain))/testobject1
+          METHOD: PUT
+          BODY: test123
+          DEBUG: ((debug))
+          INSECURE: true
+
+      - task: get-object
+        file: pipelines-repo/tasks/curl/task.yml
+        input_mapping:
+          pipelines-repo: pipelines-repo
+        params:
+          URL: https://ecs-broker-test-app.((cf_apps_domain))/testobject1
+          METHOD: GET
+          DEBUG: ((debug))
+          INSECURE: true
+
+      - task: delete-object
+        file: pipelines-repo/tasks/curl/task.yml
+        input_mapping:
+          pipelines-repo: pipelines-repo
+        params:
+          URL: https://ecs-broker-test-app.((cf_apps_domain))/testobject1
+          METHOD: DELETE
+          DEBUG: ((debug))
+          INSECURE: true
+
+      - put: cf-delete-test-app-((cf_foundation_name))
+        resource: ((cf_foundation_name))
+        params:
+          command: delete
+          app_name: ecs-broker-test-app
+          delete_mapped_routes: true
+
+      - put: delete-service-((cf_foundation_name))
+        resource: ((cf_foundation_name))
+        params:
+          command: delete-service
+          service_instance: ecs-broker-test-bucket
+
+  - name: test-unlimited-bucket
+    serial_groups: [((cf_foundation_name))-test-bucket]
+    plan:
+      - in_parallel:
+          - get: pipelines-repo
+            passed: [apply-changes]
+          - get: test-app-repo
+
+      - put: create-service-((cf_foundation_name))
+        resource: ((cf_foundation_name))
+        params:
+          command: create-service
+          service: ecs-bucket
+          plan: unlimited
+          service_instance: ecs-broker-test-bucket
+
+      - put: cf-push-test-app-((cf_foundation_name))
+        resource: ((cf_foundation_name))
+        params:
+          command: push
+          app_name: ecs-broker-test-app
+          memory: 1G
+          path: test-app-repo
+          manifest: test-app-repo/manifest.yml
+
+      - task: put-object
+        file: pipelines-repo/tasks/curl/task.yml
+        input_mapping:
+          pipelines-repo: pipelines-repo
+        params:
+          URL: https://ecs-broker-test-app.((cf_apps_domain))/testobject1
+          METHOD: PUT
+          BODY: test123
+          DEBUG: ((debug))
+          INSECURE: true
+
+      - task: get-object
+        file: pipelines-repo/tasks/curl/task.yml
+        input_mapping:
+          pipelines-repo: pipelines-repo
+        params:
+          URL: https://ecs-broker-test-app.((cf_apps_domain))/testobject1
+          METHOD: GET
+          DEBUG: ((debug))
+          INSECURE: true
+
+      - task: delete-object
+        file: pipelines-repo/tasks/curl/task.yml
+        input_mapping:
+          pipelines-repo: pipelines-repo
+        params:
+          URL: https://ecs-broker-test-app.((cf_apps_domain))/testobject1
+          METHOD: DELETE
+          DEBUG: ((debug))
+          INSECURE: true
+
+      - put: cf-delete-test-app-((cf_foundation_name))
+        resource: ((cf_foundation_name))
+        params:
+          command: delete
+          app_name: ecs-broker-test-app
+          delete_mapped_routes: true
+
+      - put: delete-service-((cf_foundation_name))
+        resource: ((cf_foundation_name))
+        params:
+          command: delete-service
+          service_instance: ecs-broker-test-bucket
