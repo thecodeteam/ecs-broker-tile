@@ -378,11 +378,16 @@ forms:
       type: boolean
       description: Use this plan for the internal metadata of the broker. This should only be enabled for one service, as the broker may pick from repository enabled plans at random on startup.
       configurable: true
-    - name: cost_usd
-      label: Cost in US Dollars
+    - name: cost_value
+      label: Cost
       type: string
       configurable: true
       description: The cost for the plan based on the "Cost Unit". Should be in the form of a float -- 0.00
+    - name: cost_currency
+      label: Cost currency
+      type: string
+      configurable: true
+      description: The currency of a cost for the plan. Should be the three-letter ISO code (USD, EUR)
     - name: cost_unit
       label: Cost Unit
       type: string
@@ -450,7 +455,8 @@ forms:
     default:
     - name: 5gb
       description: 5 GB free trial
-      cost_usd: 0.00
+      cost_value: 0.00
+      cost_currency: USD
       cost_unit: MONTHLY
       quota_limit: 5
       quota_warn: 4
@@ -461,7 +467,8 @@ forms:
     - name: unlimited
       repository_plan: true
       description: Usage based billing
-      cost_usd: 0.03
+      cost_value: 0.03
+      cost_currency: USD
       cost_unit: PER_GB_PER_MONTH
       bullet_1: Shared Object Storage
       bullet_2: Unlimited Storage
@@ -616,11 +623,16 @@ forms:
       type: boolean
       description: Use this plan for the internal metadata of the broker. This should only be enabled for one service, as the broker may pick from repository enabled plans at random on startup.
       configurable: true
-    - name: cost_usd
-      label: Cost in US Dollars
+    - name: cost_value
+      label: Cost
       type: string
       configurable: true
       description: The cost for the plan based on the "Cost Unit". Should be in the form of a float -- 0.00
+    - name: cost_currency
+      label: Cost currency
+      type: string
+      configurable: true
+      description: The currency of a cost for the plan. Should be the three-letter ISO code (USD, EUR)
     - name: cost_unit
       label: Cost Unit
       type: string
@@ -688,7 +700,8 @@ forms:
     default:
     - name: 5gb
       description: 5 GB free trial
-      cost_usd: 0.00
+      cost_value: 0.00
+      cost_currency: USD
       cost_unit: MONTHLY
       quota_limit: 5
       quota_warn: 4
@@ -699,7 +712,8 @@ forms:
     - name: unlimited
       repository_plan: true
       description: Usage based billing
-      cost_usd: 0.03
+      cost_value: 0.03
+      cost_currency: USD
       cost_unit: PER_GB_PER_MONTH
       bullet_1: Shared Object Storage
       bullet_2: Unlimited Storage
@@ -853,11 +867,16 @@ forms:
       type: boolean
       description: Use this plan for the internal metadata of the broker. This should only be enabled for one service, as the broker may pick from repository enabled plans at random on startup.
       configurable: true
-    - name: cost_usd
-      label: Cost in US Dollars
+    - name: cost_value
+      label: Cost
       type: string
       configurable: true
       description: The cost for the plan based on the "Cost Unit". Should be in the form of a float -- 0.00
+    - name: cost_currency
+      label: Cost currency
+      type: string
+      configurable: true
+      description: The currency of a cost for the plan. Should be the three-letter ISO code (USD, EUR)
     - name: cost_unit
       label: Cost Unit
       type: string
@@ -925,7 +944,8 @@ forms:
     default:
     - name: 5gb
       description: 5 GB free trial
-      cost_usd: 0.00
+      cost_value: 0.00
+      cost_currency: USD
       cost_unit: MONTHLY
       quota_limit: 5
       quota_warn: 4
@@ -936,7 +956,8 @@ forms:
     - name: unlimited
       repository_plan: true
       description: Usage based billing
-      cost_usd: 0.03
+      cost_value: 0.03
+      cost_currency: USD
       cost_unit: PER_GB_PER_MONTH
       bullet_1: Shared Object Storage
       bullet_2: Unlimited Storage
@@ -1090,11 +1111,16 @@ forms:
       type: boolean
       description: Use this plan for the internal metadata of the broker. This should only be enabled for one service, as the broker may pick from repository enabled plans at random on startup.
       configurable: true
-    - name: cost_usd
-      label: Cost in US Dollars
+    - name: cost_value
+      label: Cost
       type: string
       configurable: true
       description: The cost for the plan based on the "Cost Unit". Should be in the form of a float -- 0.00
+    - name: cost_currency
+      label: Cost currency
+      type: string
+      configurable: true
+      description: The currency of a cost for the plan. Should be the three-letter ISO code (USD, EUR)
     - name: cost_unit
       label: Cost Unit
       type: string
@@ -1162,7 +1188,8 @@ forms:
     default:
     - name: 5gb
       description: 5 GB free trial
-      cost_usd: 0.00
+      cost_value: 0.00
+      cost_currency: USD
       cost_unit: MONTHLY
       quota_limit: 5
       quota_warn: 4
@@ -1173,7 +1200,8 @@ forms:
     - name: unlimited
       repository_plan: true
       description: Usage based billing
-      cost_usd: 0.03
+      cost_value: 0.03
+      cost_currency: USD
       cost_unit: PER_GB_PER_MONTH
       bullet_1: Shared Object Storage
       bullet_2: Unlimited Storage
@@ -1327,11 +1355,16 @@ forms:
       type: boolean
       description: Use this plan for the internal metadata of the broker. This should only be enabled for one service, as the broker may pick from repository enabled plans at random on startup.
       configurable: true
-    - name: cost_usd
-      label: Cost in US Dollars
+    - name: cost_value
+      label: Cost
       type: string
       configurable: true
       description: The cost for the plan based on the "Cost Unit". Should be in the form of a float -- 0.00
+    - name: cost_currency
+      label: Cost currency
+      type: string
+      configurable: true
+      description: The currency of a cost for the plan. Should be the three-letter ISO code (USD, EUR)
     - name: cost_unit
       label: Cost Unit
       type: string
@@ -1399,7 +1432,8 @@ forms:
     default:
     - name: 5gb
       description: 5 GB free trial
-      cost_usd: 0.00
+      cost_value: 0.00
+      cost_currency: USD
       cost_unit: MONTHLY
       quota_limit: 5
       quota_warn: 4
@@ -1410,7 +1444,8 @@ forms:
     - name: unlimited
       repository_plan: true
       description: Usage based billing
-      cost_usd: 0.03
+      cost_value: 0.03
+      cost_currency: USD
       cost_unit: PER_GB_PER_MONTH
       bullet_1: Shared Object Storage
       bullet_2: Unlimited Storage
