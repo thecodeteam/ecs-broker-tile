@@ -27,8 +27,30 @@ packages:
   pre_deploy: |
     export PATH="/var/vcap/packages/cf_cli:$PATH"
     export CF=`which cf`
+
+    export OLD_ORG="ecs-service-broker-org"
+    export NEW_ORG="ecs-broker-service-org"
+    export OLD_SPACE="ecs-service-broker-space"
+    export NEW_SPACE="ecs-broker-service-space"
+
+    $CF org $OLD_ORG
+    ret1=$?
+    if [ $ret1 -eq 0 ]
+    then
+      $CF target -o $OLD_ORG
+      $CF target -s $OLD_SPACE
+      $CF delete-org "$NEW_ORG" -f
+      $CF rename-org $OLD_ORG $NEW_ORG
+      $CF rename-space $OLD_SPACE $NEW_SPACE
+    fi
+
+    export PREV_ORG=`$CF orgs | grep -e "^ecs.*broker" | awk '{print $1}'`
+    export PREV_SPACE=`$CF spaces | grep -e "^ecs.*broker" | awk '{print $1}'`
     export PREV_APP=`$CF apps | grep -e "^ecs.*broker" | awk '{print $1}'`
     export PREV_BROKER=`$CF service-brokers | grep -e "^ecs.*broker" | awk '{print $1}'`
+
+    if [ -n "$PREV_ORG" ]; then $CF rename-org $PREV_ORG $NEW_ORG; fi
+    if [ -n "$PREV_SPACE" ]; then $CF rename-space $PREV_SPACE $NEW_SPACE; fi
     if [ -n "$PREV_APP" ]; then $CF rename $PREV_APP ecs_broker_v1; fi
     if [ -n "$PREV_BROKER" ]; then $CF rename-service-broker $PREV_BROKER ecs_broker; fi
   manifest:
