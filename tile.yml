@@ -3,6 +3,8 @@
 # Replace these properties with real values.
 
 name: ecs-service-broker
+org: ecs-broker-service-org
+space: ecs-broker-service-space
 icon_file: resources/icon.png
 label: DELL EMC ECS Broker
 description: ECS Broker for Pivotal CF
@@ -22,8 +24,6 @@ packages:
   type: app-broker
   label: ECS Broker Application      # Package name for use in human-readable labels in OpsManager
   enable_global_access_to_plans: (( .properties.enable_global_access_to_plans.value ))
-  org: ecs-broker-service-org
-  space: ecs-broker-service-space
   pre_deploy: |
     export PATH="/var/vcap/packages/cf_cli:$PATH"
     export CF=`which cf`
@@ -45,10 +45,10 @@ packages:
       $CF rename-space $OLD_SPACE $NEW_SPACE
     fi
 
-    export PREV_ORG=`$CF orgs | grep -e "^ecs.*broker" | awk '{print $1}'`
-    export PREV_SPACE=`$CF spaces | grep -e "^ecs.*broker" | awk '{print $1}'`
-    export PREV_APP=`$CF apps | grep -e "^ecs.*broker" | awk '{print $1}'`
-    export PREV_BROKER=`$CF service-brokers | grep -e "^ecs.*broker" | awk '{print $1}'`
+#    export PREV_ORG=`$CF orgs | grep -e "^ecs.*broker" | awk '{print $1}'`
+#    export PREV_SPACE=`$CF spaces | grep -e "^ecs.*broker" | awk '{print $1}'`
+#    export PREV_APP=`$CF apps | grep -e "^ecs.*broker" | awk '{print $1}'`
+#    export PREV_BROKER=`$CF service-brokers | grep -e "^ecs.*broker" | awk '{print $1}'`
 
 #    if [ -n "$PREV_ORG" ]; then $CF rename-org $PREV_ORG $NEW_ORG; fi
 #    if [ -n "$PREV_SPACE" ]; then $CF rename-space $PREV_SPACE $NEW_SPACE; fi
@@ -201,6 +201,13 @@ forms:
       type: string
       configurable: true
       optional: true
+      placeholder: DefaultBaseUrl
+    - name: broker_use_ssl
+      label: Use HTTPS with base url
+      description: When selected, and Base URL is specified, object endpoint connection and S3 bindings will use HTTPS protocol
+      type: boolean
+      default: false
+      configurable: true
     - name: broker_certificate_selector
       label: Is the ECS SSL certificate is signed by a trust authority?
       description: If the ECS does not have a properly signed certificate from a trust authority (a self-signed certificate, for example), then customers will need to provide the SSL certificate.
@@ -1479,7 +1486,7 @@ forms:
 # property values will not be overwritten by new defaults provided
 # in this file. If that is your intent, you must do the overwriting
 # explicitly using JavaScript migration functions, like so:
-#
-#migration: |
-#  properties['properties']['.properties.org']['value'] = 'ecs-broker-service-org';
-#  properties['properties']['.properties.space']['value'] = 'ecs-broker-service-space';
+
+migration: |
+  properties['properties']['.properties.org']['value'] = 'ecs-broker-service-org';
+  properties['properties']['.properties.space']['value'] = 'ecs-broker-service-space';
