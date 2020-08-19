@@ -177,6 +177,13 @@ forms:
       type: string
       configurable: true
       optional: true
+      placeholder: DefaultBaseUrl
+    - name: broker_use_ssl
+      label: Use HTTPS with base url
+      description: When selected, and Base URL is specified, object endpoint connection and S3 bindings will use HTTPS protocol
+      type: boolean
+      default: false
+      configurable: true
     - name: broker_certificate_selector
       label: Is the ECS SSL certificate is signed by a trust authority?
       description: If the ECS does not have a properly signed certificate from a trust authority (a self-signed certificate, for example), then customers will need to provide the SSL certificate.
