@@ -42,7 +42,7 @@ packages:
       $CF target -s $OLD_SPACE
       $CF delete-org "$NEW_ORG" -f
       $CF rename-org $OLD_ORG $NEW_ORG
-      $CF target -o %NEW_ORG
+      $CF target -o $NEW_ORG
       $CF rename-space $OLD_SPACE $NEW_SPACE
       $CF target -s $NEW_SPACE
     fi
