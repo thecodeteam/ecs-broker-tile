@@ -12,6 +12,15 @@ metadata_version: 1.8                 # Optional, defaults to 1.8
 rank: 50
 allow_paid_service_plans: true
 
+# If prior versions of your tile are installed and configured, their
+# property values will not be overwritten by new defaults provided
+# in this file. If that is your intent, you must do the overwriting
+# explicitly using JavaScript migration functions, like so:
+
+migration: |
+  properties['properties']['.properties.org']['value'] = 'ecs-broker-service-org';
+  properties['properties']['.properties.space']['value'] = 'ecs-broker-service-space';
+
 # Specify the packages to be included in your tile.
 # The format of the section to include depends on the type
 # of package you are describing. For fragments of each type
@@ -46,17 +55,6 @@ packages:
       $CF rename-space $OLD_SPACE $NEW_SPACE
       $CF target -s $NEW_SPACE
     fi
-
-#    export PREV_ORG=`$CF orgs | grep -e "^ecs.*broker" | awk '{print $1}'`
-#    export PREV_SPACE=`$CF spaces | grep -e "^ecs.*broker" | awk '{print $1}'`
-#    export PREV_APP=`$CF apps | grep -e "^ecs.*broker" | awk '{print $1}'`
-#    export PREV_BROKER=`$CF service-brokers | grep -e "^ecs.*broker" | awk '{print $1}'`
-
-#    if [ -n "$PREV_ORG" ]; then $CF rename-org $PREV_ORG $NEW_ORG; fi
-#    if [ -n "$PREV_SPACE" ]; then $CF rename-space $PREV_SPACE $NEW_SPACE; fi
-#    #if [ -n "$PREV_APP" ]; then $CF rename $PREV_APP ecs_broker_v1; fi
-#    # how to check if prev broker name is not ecs_broker ?
-#    if [ -n "$PREV_BROKER" ]; then $CF rename-service-broker $PREV_BROKER ecs_broker; fi
   manifest:
     path: resources/ecs-cf-service-broker.jar
     buildpack: java_buildpack_offline
@@ -1483,12 +1481,3 @@ forms:
       bullet_1: Shared Object Storage
       bullet_2: Unlimited Storage
       bullet_3: S3 Protocol Access
-
-# If prior versions of your tile are installed and configured, their
-# property values will not be overwritten by new defaults provided
-# in this file. If that is your intent, you must do the overwriting
-# explicitly using JavaScript migration functions, like so:
-
-migration: |
-  properties['properties']['.properties.org']['value'] = 'ecs-broker-service-org';
-  properties['properties']['.properties.space']['value'] = 'ecs-broker-service-space';
