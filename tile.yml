@@ -3,12 +3,23 @@
 # Replace these properties with real values.
 
 name: ecs-service-broker
+org: ecs-broker-service-org
+space: ecs-broker-service-space
 icon_file: resources/icon.png
 label: DELL EMC ECS Broker
 description: ECS Broker for Pivotal CF
 metadata_version: 1.8                 # Optional, defaults to 1.8
 rank: 50
 allow_paid_service_plans: true
+
+# If prior versions of your tile are installed and configured, their
+# property values will not be overwritten by new defaults provided
+# in this file. If that is your intent, you must do the overwriting
+# explicitly using JavaScript migration functions, like so:
+
+migration: |
+  properties['properties']['.properties.org']['value'] = 'ecs-broker-service-org';
+  properties['properties']['.properties.space']['value'] = 'ecs-broker-service-space';
 
 # Specify the packages to be included in your tile.
 # The format of the section to include depends on the type
@@ -22,15 +33,28 @@ packages:
   type: app-broker
   label: ECS Broker Application      # Package name for use in human-readable labels in OpsManager
   enable_global_access_to_plans: (( .properties.enable_global_access_to_plans.value ))
-  org: ecs-broker-service-org
-  space: ecs-broker-service-space
   pre_deploy: |
     export PATH="/var/vcap/packages/cf_cli:$PATH"
     export CF=`which cf`
-    export PREV_APP=`$CF apps | grep -e "^ecs.*broker" | awk '{print $1}'`
-    export PREV_BROKER=`$CF service-brokers | grep -e "^ecs.*broker" | awk '{print $1}'`
-    if [ -n "$PREV_APP" ]; then $CF rename $PREV_APP ecs_broker_v1; fi
-    if [ -n "$PREV_BROKER" ]; then $CF rename-service-broker $PREV_BROKER ecs_broker; fi
+
+    export OLD_ORG="ecs-service-broker-org"
+    export NEW_ORG="ecs-broker-service-org"
+    export OLD_SPACE="ecs-service-broker-space"
+    export NEW_SPACE="ecs-broker-service-space"
+
+    $CF org $OLD_ORG
+    ret1=$?
+    if [ $ret1 -eq 0 ]
+    then
+      echo "Renaming installation placement $OLD_ORG / $OLD_SPACE to $NEW_ORG / $NEW_SPACE"
+      $CF target -o $OLD_ORG
+      $CF target -s $OLD_SPACE
+      $CF delete-org "$NEW_ORG" -f
+      $CF rename-org $OLD_ORG $NEW_ORG
+      $CF target -o $NEW_ORG
+      $CF rename-space $OLD_SPACE $NEW_SPACE
+      $CF target -s $NEW_SPACE
+    fi
   manifest:
     path: resources/ecs-cf-service-broker.jar
     buildpack: java_buildpack_offline
@@ -1457,12 +1481,3 @@ forms:
       bullet_1: Shared Object Storage
       bullet_2: Unlimited Storage
       bullet_3: S3 Protocol Access
-
-# If prior versions of your tile are installed and configured, their
-# property values will not be overwritten by new defaults provided
-# in this file. If that is your intent, you must do the overwriting
-# explicitly using JavaScript migration functions, like so:
-#
-#migration: |
-#  properties['properties']['.properties.org']['value'] = 'ecs-broker-service-org';
-#  properties['properties']['.properties.space']['value'] = 'ecs-broker-service-space';
