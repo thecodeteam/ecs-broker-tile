@@ -2,7 +2,7 @@
 
 ## Description
 
-This tile is created using the [Pivotal Tile Generator](https://docs.pivotal.io/tiledev/2-2/tile-generator.html) and deploys a service-broker application as a CF app. It deploys a sister project, the [ECS Service Broker](https://github.com/thecodeteam/ecs-cf-service-broker). For more instructions on using the broker once deployed, refer to the [Pivotal Network documentation](https://docs.pivotal.io/partners/ecs-service-broker/index.html).
+This tile is created using the [Pivotal Tile Generator](https://docs.pivotal.io/tiledev/2-10/tile-generator.html) and deploys a service-broker application as a CF app. It deploys a sister project, the [ECS Service Broker](https://github.com/thecodeteam/ecs-cf-service-broker). For more instructions on using the broker once deployed, refer to the [Pivotal Network documentation](https://docs.pivotal.io/partners/ecs-service-broker/).
 
 This tile implements the following tile generator errands:
 
@@ -15,7 +15,7 @@ be configured from the PCF Ops Manager.
 
 ## Current Status
 
-Currently, the Tile version 1.1.0 is availabe for download via the [Pivotal Network product page](https://network.pivotal.io/products/ecs-service-broker/).
+Currently, the Tile version 2.0.3 is available for download via the [Pivotal Network product page](https://network.pivotal.io/products/ecs-service-broker/).
 
 ## Requirement
 
