@@ -60,6 +60,8 @@ packages:
     buildpack: java_buildpack_offline
     memory: 1G
     env:
+      JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 11.+ } }'     # see Configuration at https://github.com/cloudfoundry/java-buildpack
+
       catalog.services[0].id: (( .properties.catalog_services_0_guid.value ))
       catalog.services[0].active: (( .properties.catalog_services_0_active.value ))
       catalog.services[0].name: (( .properties.catalog_services_0_name.value ))
