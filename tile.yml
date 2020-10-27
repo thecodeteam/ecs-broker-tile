@@ -389,18 +389,18 @@ forms:
         default: false
         configurable: true
         description: Strongly enforce object retention for compliance. This only applies to namespace services
-      - name: default_bucket_quota
-        label: Default Bucket Quota (GB)
-        type: integer
-        optional: true
-        configurable: true
-        description: Default quota applied to all buckets created within this namespace. This only applies to namespace services
       - name: encrypted
         label: Enable Encryption
         type: boolean
         default: false
         configurable: true
         description: Enabled encryption on this service. Encryption cannot be changed after creation, so this setting cannot be changed by plan upgrades
+      - name: default_bucket_quota
+        label: Default Bucket Quota (GB)
+        type: integer
+        optional: true
+        configurable: true
+        description: Default quota applied to all buckets created within this namespace. This only applies to namespace services
       - name: replication_group
         label: Replication group
         type: string
@@ -658,18 +658,18 @@ forms:
         default: false
         configurable: true
         description: Strongly enforce object retention for compliance. This only applies to namespace services
-      - name: default_bucket_quota
-        label: Default Bucket Quota (GB)
-        type: integer
-        optional: true
-        configurable: true
-        description: Default quota applied to all buckets created within this namespace. This only applies to namespace services
       - name: encrypted
         label: Enable Encryption
         type: boolean
         default: false
         configurable: true
         description: Enabled encryption on this service. Encryption cannot be changed after creation, so this setting cannot be changed by plan upgrades
+      - name: default_bucket_quota
+        label: Default Bucket Quota (GB)
+        type: integer
+        optional: true
+        configurable: true
+        description: Default quota applied to all buckets created within this namespace. This only applies to namespace services
       - name: replication_group
         label: Replication group
         type: string
@@ -926,18 +926,18 @@ forms:
         default: false
         configurable: true
         description: Strongly enforce object retention for compliance. This only applies to namespace services
-      - name: default_bucket_quota
-        label: Default Bucket Quota (GB)
-        type: integer
-        optional: true
-        configurable: true
-        description: Default quota applied to all buckets created within this namespace. This only applies to namespace services
       - name: encrypted
         label: Enable Encryption
         type: boolean
         default: false
         configurable: true
         description: Enabled encryption on this service. Encryption cannot be changed after creation, so this setting cannot be changed by plan upgrades
+      - name: default_bucket_quota
+        label: Default Bucket Quota (GB)
+        type: integer
+        optional: true
+        configurable: true
+        description: Default quota applied to all buckets created within this namespace. This only applies to namespace services
       - name: replication_group
         label: Replication group
         type: string
@@ -1194,18 +1194,18 @@ forms:
         default: false
         configurable: true
         description: Strongly enforce object retention for compliance. This only applies to namespace services
-      - name: default_bucket_quota
-        label: Default Bucket Quota (GB)
-        type: integer
-        optional: true
-        configurable: true
-        description: Default quota applied to all buckets created within this namespace. This only applies to namespace services
       - name: encrypted
         label: Enable Encryption
         type: boolean
         default: false
         configurable: true
         description: Enabled encryption on this service. Encryption cannot be changed after creation, so this setting cannot be changed by plan upgrades
+      - name: default_bucket_quota
+        label: Default Bucket Quota (GB)
+        type: integer
+        optional: true
+        configurable: true
+        description: Default quota applied to all buckets created within this namespace. This only applies to namespace services
       - name: replication_group
         label: Replication group
         type: string
@@ -1462,18 +1462,18 @@ forms:
         default: false
         configurable: true
         description: Strongly enforce object retention for compliance. This only applies to namespace services
-      - name: default_bucket_quota
-        label: Default Bucket Quota (GB)
-        type: integer
-        optional: true
-        configurable: true
-        description: Default quota applied to all buckets created within this namespace. This only applies to namespace services
       - name: encrypted
         label: Enable Encryption
         type: boolean
         default: false
         configurable: true
         description: Enabled encryption on this service. Encryption cannot be changed after creation, so this setting cannot be changed by plan upgrades
+      - name: default_bucket_quota
+        label: Default Bucket Quota (GB)
+        type: integer
+        optional: true
+        configurable: true
+        description: Default quota applied to all buckets created within this namespace. This only applies to namespace services
       - name: replication_group
         label: Replication group
         type: string
