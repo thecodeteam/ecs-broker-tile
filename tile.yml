@@ -368,6 +368,18 @@ forms:
         default: false
         configurable: true
         description: Enabled encryption on this service. Encryption cannot be changed after creation, so this setting cannot be changed by plan upgrades
+      - name: replication_group
+        label: Replication group
+        type: string
+        optional: true
+        configurable: true
+        description: (Optional) Replication group for buckets. If empty, buckets will be in a replication group specified in ECS Connection Details
+      - name: namespace
+        label: Namespace
+        type: string
+        optional: true
+        configurable: true
+        description: (Optional) Namespace for buckets. If empty, buckets will be created in namespace specified in ECS Connection Details
     - name: namespace_option
       select_value: Namespace
       property_blueprints:
@@ -382,13 +394,25 @@ forms:
         type: integer
         optional: true
         configurable: true
-        description: Default quota applied to all buckets created within this namespacedefault_bucket_quota. This only applies to namespace services
+        description: Default quota applied to all buckets created within this namespace. This only applies to namespace services
       - name: encrypted
         label: Enable Encryption
         type: boolean
         default: false
         configurable: true
         description: Enabled encryption on this service. Encryption cannot be changed after creation, so this setting cannot be changed by plan upgrades
+      - name: replication_group
+        label: Replication group
+        type: string
+        optional: true
+        configurable: true
+        description: (Optional) Replication group for namespace. If empty, namespace will use group specified in ECS Connection Details
+      - name: base_url
+        label: BaseURL
+        type: string
+        optional: true
+        configurable: true
+        description: (Optional) BaseURL name to use for namespace access url construction. If empty, value specified in ECS Connection Details will be used
   - name: catalog_plan_collection0
     label: Customize Plans for this Service
     type: collection
@@ -613,6 +637,18 @@ forms:
         default: false
         configurable: true
         description: Enabled encryption on this service. Encryption cannot be changed after creation, so this setting cannot be changed by plan upgrades
+      - name: replication_group
+        label: Replication group
+        type: string
+        optional: true
+        configurable: true
+        description: (Optional) Replication group for buckets. If empty, buckets will be in a replication group specified in ECS Connection Details
+      - name: namespace
+        label: Namespace
+        type: string
+        optional: true
+        configurable: true
+        description: (Optional) Namespace for buckets. If empty, buckets will be created in namespace specified in ECS Connection Details
     - name: namespace_option
       select_value: Namespace
       property_blueprints:
@@ -627,13 +663,25 @@ forms:
         type: integer
         optional: true
         configurable: true
-        description: Default quota applied to all buckets created within this namespacedefault_bucket_quota. This only applies to namespace services
+        description: Default quota applied to all buckets created within this namespace. This only applies to namespace services
       - name: encrypted
         label: Enable Encryption
         type: boolean
         default: false
         configurable: true
         description: Enabled encryption on this service. Encryption cannot be changed after creation, so this setting cannot be changed by plan upgrades
+      - name: replication_group
+        label: Replication group
+        type: string
+        optional: true
+        configurable: true
+        description: (Optional) Replication group for namespace. If empty, namespace will use group specified in ECS Connection Details
+      - name: base_url
+        label: BaseURL
+        type: string
+        optional: true
+        configurable: true
+        description: (Optional) BaseURL name to use for namespace access url construction. If empty, value specified in ECS Connection Details will be used
   - name: catalog_plan_collection1
     label: Customize Plans for this Service
     type: collection
@@ -857,6 +905,18 @@ forms:
         default: false
         configurable: true
         description: Enabled encryption on this service. Encryption cannot be changed after creation, so this setting cannot be changed by plan upgrades
+      - name: replication_group
+        label: Replication group
+        type: string
+        optional: true
+        configurable: true
+        description: (Optional) Replication group for buckets. If empty, buckets will be in a replication group specified in ECS Connection Details
+      - name: namespace
+        label: Namespace
+        type: string
+        optional: true
+        configurable: true
+        description: (Optional) Namespace for buckets. If empty, buckets will be created in namespace specified in ECS Connection Details
     - name: namespace_option
       select_value: Namespace
       property_blueprints:
@@ -871,13 +931,25 @@ forms:
         type: integer
         optional: true
         configurable: true
-        description: Default quota applied to all buckets created within this namespacedefault_bucket_quota. This only applies to namespace services
+        description: Default quota applied to all buckets created within this namespace. This only applies to namespace services
       - name: encrypted
         label: Enable Encryption
         type: boolean
         default: false
         configurable: true
         description: Enabled encryption on this service. Encryption cannot be changed after creation, so this setting cannot be changed by plan upgrades
+      - name: replication_group
+        label: Replication group
+        type: string
+        optional: true
+        configurable: true
+        description: (Optional) Replication group for namespace. If empty, namespace will use group specified in ECS Connection Details
+      - name: base_url
+        label: BaseURL
+        type: string
+        optional: true
+        configurable: true
+        description: (Optional) BaseURL name to use for namespace access url construction. If empty, value specified in ECS Connection Details will be used
   - name: catalog_plan_collection2
     label: Customize Plans for this Service
     type: collection
@@ -1101,6 +1173,18 @@ forms:
         default: false
         configurable: true
         description: Enabled encryption on this service. Encryption cannot be changed after creation, so this setting cannot be changed by plan upgrades
+      - name: replication_group
+        label: Replication group
+        type: string
+        optional: true
+        configurable: true
+        description: (Optional) Replication group for buckets. If empty, buckets will be in a replication group specified in ECS Connection Details
+      - name: namespace
+        label: Namespace
+        type: string
+        optional: true
+        configurable: true
+        description: (Optional) Namespace for buckets. If empty, buckets will be created in namespace specified in ECS Connection Details
     - name: namespace_option
       select_value: Namespace
       property_blueprints:
@@ -1115,13 +1199,25 @@ forms:
         type: integer
         optional: true
         configurable: true
-        description: Default quota applied to all buckets created within this namespacedefault_bucket_quota. This only applies to namespace services
+        description: Default quota applied to all buckets created within this namespace. This only applies to namespace services
       - name: encrypted
         label: Enable Encryption
         type: boolean
         default: false
         configurable: true
         description: Enabled encryption on this service. Encryption cannot be changed after creation, so this setting cannot be changed by plan upgrades
+      - name: replication_group
+        label: Replication group
+        type: string
+        optional: true
+        configurable: true
+        description: (Optional) Replication group for namespace. If empty, namespace will use group specified in ECS Connection Details
+      - name: base_url
+        label: BaseURL
+        type: string
+        optional: true
+        configurable: true
+        description: (Optional) BaseURL name to use for namespace access url construction. If empty, value specified in ECS Connection Details will be used
   - name: catalog_plan_collection3
     label: Customize Plans for this Service
     type: collection
@@ -1345,6 +1441,18 @@ forms:
         default: false
         configurable: true
         description: Enabled encryption on this service. Encryption cannot be changed after creation, so this setting cannot be changed by plan upgrades
+      - name: replication_group
+        label: Replication group
+        type: string
+        optional: true
+        configurable: true
+        description: (Optional) Replication group for buckets. If empty, buckets will be in a replication group specified in ECS Connection Details
+      - name: namespace
+        label: Namespace
+        type: string
+        optional: true
+        configurable: true
+        description: (Optional) Namespace for buckets. If empty, buckets will be created in namespace specified in ECS Connection Details
     - name: namespace_option
       select_value: Namespace
       property_blueprints:
@@ -1359,13 +1467,25 @@ forms:
         type: integer
         optional: true
         configurable: true
-        description: Default quota applied to all buckets created within this namespacedefault_bucket_quota. This only applies to namespace services
+        description: Default quota applied to all buckets created within this namespace. This only applies to namespace services
       - name: encrypted
         label: Enable Encryption
         type: boolean
         default: false
         configurable: true
         description: Enabled encryption on this service. Encryption cannot be changed after creation, so this setting cannot be changed by plan upgrades
+      - name: replication_group
+        label: Replication group
+        type: string
+        optional: true
+        configurable: true
+        description: (Optional) Replication group for namespace. If empty, namespace will use group specified in ECS Connection Details
+      - name: base_url
+        label: BaseURL
+        type: string
+        optional: true
+        configurable: true
+        description: (Optional) BaseURL name to use for namespace access url construction. If empty, value specified in ECS Connection Details will be used
   - name: catalog_plan_collection4
     label: Customize Plans for this Service
     type: collection
