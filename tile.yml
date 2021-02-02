@@ -261,6 +261,12 @@ forms:
       type: string
       configurable: true
       optional: true
+    - name: broker_path_style_access
+      label: S3 Path style access
+      description: Path style access for S3 URL, using host style access if false
+      type: boolean
+      default: true
+      configurable: true
 - name: catalog_services_1
   label: Catalog Service 1
   description: Configure Catalog Service 1
