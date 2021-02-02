@@ -507,6 +507,18 @@ forms:
       optional: true
       configurable: true
       description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services
+    - name: replication_group
+      label: Replication group
+      type: string
+      optional: true
+      configurable: true
+      description: (Optional) Replication group. If empty, instances are created in a replication group specified in ECS Connection Details or in service config.
+    - name: namespace
+      label: Namespace
+      type: string
+      optional: true
+      configurable: true
+      description: (Optional) Namespace for new buckets. If empty, buckets are created in namespace specified in ECS Connection Details or in service config.
     default:
     - name: 5gb
       description: 5 GB free trial
@@ -776,6 +788,18 @@ forms:
       optional: true
       configurable: true
       description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services
+    - name: replication_group
+      label: Replication group
+      type: string
+      optional: true
+      configurable: true
+      description: (Optional) Replication group. If empty, instances are created in a replication group specified in ECS Connection Details or in service config.
+    - name: namespace
+      label: Namespace
+      type: string
+      optional: true
+      configurable: true
+      description: (Optional) Namespace for new buckets. If empty, buckets are created in namespace specified in ECS Connection Details or in service config.
     default:
     - name: 5gb
       description: 5 GB free trial
@@ -1044,6 +1068,18 @@ forms:
       optional: true
       configurable: true
       description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services
+    - name: replication_group
+      label: Replication group
+      type: string
+      optional: true
+      configurable: true
+      description: (Optional) Replication group. If empty, instances are created in a replication group specified in ECS Connection Details or in service config.
+    - name: namespace
+      label: Namespace
+      type: string
+      optional: true
+      configurable: true
+      description: (Optional) Namespace for new buckets. If empty, buckets are created in namespace specified in ECS Connection Details or in service config.
     default:
     - name: 5gb
       description: 5 GB free trial
@@ -1312,6 +1348,18 @@ forms:
       optional: true
       configurable: true
       description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services
+    - name: replication_group
+      label: Replication group
+      type: string
+      optional: true
+      configurable: true
+      description: (Optional) Replication group. If empty, instances are created in a replication group specified in ECS Connection Details or in service config.
+    - name: namespace
+      label: Namespace
+      type: string
+      optional: true
+      configurable: true
+      description: (Optional) Namespace for new buckets. If empty, buckets are created in namespace specified in ECS Connection Details or in service config.
     default:
     - name: 5gb
       description: 5 GB free trial
@@ -1580,6 +1628,18 @@ forms:
       optional: true
       configurable: true
       description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services
+    - name: replication_group
+      label: Replication group
+      type: string
+      optional: true
+      configurable: true
+      description: (Optional) Replication group. If empty, instances are created in a replication group specified in ECS Connection Details or in service config.
+    - name: namespace
+      label: Namespace
+      type: string
+      optional: true
+      configurable: true
+      description: (Optional) Namespace for new buckets. If empty, buckets are created in namespace specified in ECS Connection Details or in service config.
     default:
     - name: 5gb
       description: 5 GB free trial
