@@ -144,16 +144,16 @@ packages:
 # Properties specified here will not be configurable by the user.
 #
 properties:
- - name: catalog_services_0_guid
-   type: uuid
- - name: catalog_services_1_guid
-   type: uuid
- - name: catalog_services_2_guid
-   type: uuid
- - name: catalog_services_3_guid
-   type: uuid
- - name: catalog_services_4_guid
-   type: uuid
+- name: catalog_services_0_guid
+  type: uuid
+- name: catalog_services_1_guid
+  type: uuid
+- name: catalog_services_2_guid
+  type: uuid
+- name: catalog_services_3_guid
+  type: uuid
+- name: catalog_services_4_guid
+  type: uuid
 #   type: string
 #   default: specify a value
 #   label: Label for the field on the GUI
@@ -386,6 +386,19 @@ forms:
         optional: true
         configurable: true
         description: (Optional) Namespace for buckets. If empty, buckets will be created in namespace specified in ECS Connection Details
+      - name: bucket_tags
+        label: Bucket Tags
+        type: string
+        optional: true
+        configurable: true
+        description: (Optional) Tags for buckets. Represented as key-value pairs in format 'key1=value1,key2=value2'
+        constraints:
+          - must_match_regex: '^[\w\d\+\-\.\_\:\/\@\s\=\,]*$'
+            error_message: 'Allowed characters are letters, numbers, and spaces representable in UTF-8, and the following characters: + - . _ : / @'
+          - must_match_regex: '^(.{0,128}\s?=\s?.{0,256}\s?,\s?)*.{0,128}\s?=\s?.{0,256}$|^$'
+            error_message: 'A tag key can be up to 128 Unicode characters in length, and tag values can be up to 256 Unicode characters in length'
+          - must_match_regex: '^([\w\d\+\-\.\_\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\:\/\@\s]{0,256}\s?,\s?)*[\w\d\+\-\.\_\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\:\/\@\s]{0,256}$|^$'
+            error_message: Tag pairs should be presented in format 'key1=value1,key2=value2'
     - name: namespace_option
       select_value: Namespace
       property_blueprints:
@@ -525,6 +538,19 @@ forms:
       optional: true
       configurable: true
       description: (Optional) Namespace for new buckets. If empty, buckets are created in namespace specified in ECS Connection Details or in service config.
+    - name: bucket_tags
+      label: Bucket Tags
+      type: string
+      optional: true
+      configurable: true
+      description: (Optional) Tags for buckets. Represented as key-value pairs in format 'key1=value1,key2=value2'
+      constraints:
+        - must_match_regex: '^[\w\d\+\-\.\_\:\/\@\s\=\,]*$'
+          error_message: 'Allowed characters are letters, numbers, and spaces representable in UTF-8, and the following characters: + - . _ : / @'
+        - must_match_regex: '^(.{0,128}\s?=\s?.{0,256}\s?,\s?)*.{0,128}\s?=\s?.{0,256}$|^$'
+          error_message: 'A tag key can be up to 128 Unicode characters in length, and tag values can be up to 256 Unicode characters in length'
+        - must_match_regex: '^([\w\d\+\-\.\_\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\:\/\@\s]{0,256}\s?,\s?)*[\w\d\+\-\.\_\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\:\/\@\s]{0,256}$|^$'
+          error_message: Tag pairs should be presented in format 'key1=value1,key2=value2'
     default:
     - name: 5gb
       description: 5 GB free trial
@@ -667,6 +693,19 @@ forms:
         optional: true
         configurable: true
         description: (Optional) Namespace for buckets. If empty, buckets will be created in namespace specified in ECS Connection Details
+      - name: bucket_tags
+        label: Bucket Tags
+        type: string
+        optional: true
+        configurable: true
+        description: (Optional) Tags for buckets. Represented as key-value pairs in format 'key1=value1,key2=value2'
+        constraints:
+          - must_match_regex: '^[\w\d\+\-\.\_\:\/\@\s\=\,]*$'
+            error_message: 'Allowed characters are letters, numbers, and spaces representable in UTF-8, and the following characters: + - . _ : / @'
+          - must_match_regex: '^(.{0,128}\s?=\s?.{0,256}\s?,\s?)*.{0,128}\s?=\s?.{0,256}$|^$'
+            error_message: 'A tag key can be up to 128 Unicode characters in length, and tag values can be up to 256 Unicode characters in length'
+          - must_match_regex: '^([\w\d\+\-\.\_\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\:\/\@\s]{0,256}\s?,\s?)*[\w\d\+\-\.\_\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\:\/\@\s]{0,256}$|^$'
+            error_message: Tag pairs should be presented in format 'key1=value1,key2=value2'
     - name: namespace_option
       select_value: Namespace
       property_blueprints:
@@ -806,6 +845,19 @@ forms:
       optional: true
       configurable: true
       description: (Optional) Namespace for new buckets. If empty, buckets are created in namespace specified in ECS Connection Details or in service config.
+    - name: bucket_tags
+      label: Bucket Tags
+      type: string
+      optional: true
+      configurable: true
+      description: (Optional) Tags for buckets. Represented as key-value pairs in format 'key1=value1,key2=value2'
+      constraints:
+        - must_match_regex: '^[\w\d\+\-\.\_\:\/\@\s\=\,]*$'
+          error_message: 'Allowed characters are letters, numbers, and spaces representable in UTF-8, and the following characters: + - . _ : / @'
+        - must_match_regex: '^(.{0,128}\s?=\s?.{0,256}\s?,\s?)*.{0,128}\s?=\s?.{0,256}$|^$'
+          error_message: 'A tag key can be up to 128 Unicode characters in length, and tag values can be up to 256 Unicode characters in length'
+        - must_match_regex: '^([\w\d\+\-\.\_\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\:\/\@\s]{0,256}\s?,\s?)*[\w\d\+\-\.\_\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\:\/\@\s]{0,256}$|^$'
+          error_message: Tag pairs should be presented in format 'key1=value1,key2=value2'
     default:
     - name: 5gb
       description: 5 GB free trial
@@ -947,6 +999,19 @@ forms:
         optional: true
         configurable: true
         description: (Optional) Namespace for buckets. If empty, buckets will be created in namespace specified in ECS Connection Details
+      - name: bucket_tags
+        label: Bucket Tags
+        type: string
+        optional: true
+        configurable: true
+        description: (Optional) Tags for buckets. Represented as key-value pairs in format 'key1=value1,key2=value2'
+        constraints:
+          - must_match_regex: '^[\w\d\+\-\.\_\:\/\@\s\=\,]*$'
+            error_message: 'Allowed characters are letters, numbers, and spaces representable in UTF-8, and the following characters: + - . _ : / @'
+          - must_match_regex: '^(.{0,128}\s?=\s?.{0,256}\s?,\s?)*.{0,128}\s?=\s?.{0,256}$|^$'
+            error_message: 'A tag key can be up to 128 Unicode characters in length, and tag values can be up to 256 Unicode characters in length'
+          - must_match_regex: '^([\w\d\+\-\.\_\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\:\/\@\s]{0,256}\s?,\s?)*[\w\d\+\-\.\_\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\:\/\@\s]{0,256}$|^$'
+            error_message: Tag pairs should be presented in format 'key1=value1,key2=value2'
     - name: namespace_option
       select_value: Namespace
       property_blueprints:
@@ -1086,6 +1151,19 @@ forms:
       optional: true
       configurable: true
       description: (Optional) Namespace for new buckets. If empty, buckets are created in namespace specified in ECS Connection Details or in service config.
+    - name: bucket_tags
+      label: Bucket Tags
+      type: string
+      optional: true
+      configurable: true
+      description: (Optional) Tags for buckets. Represented as key-value pairs in format 'key1=value1,key2=value2'
+      constraints:
+        - must_match_regex: '^[\w\d\+\-\.\_\:\/\@\s\=\,]*$'
+          error_message: 'Allowed characters are letters, numbers, and spaces representable in UTF-8, and the following characters: + - . _ : / @'
+        - must_match_regex: '^(.{0,128}\s?=\s?.{0,256}\s?,\s?)*.{0,128}\s?=\s?.{0,256}$|^$'
+          error_message: 'A tag key can be up to 128 Unicode characters in length, and tag values can be up to 256 Unicode characters in length'
+        - must_match_regex: '^([\w\d\+\-\.\_\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\:\/\@\s]{0,256}\s?,\s?)*[\w\d\+\-\.\_\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\:\/\@\s]{0,256}$|^$'
+          error_message: Tag pairs should be presented in format 'key1=value1,key2=value2'
     default:
     - name: 5gb
       description: 5 GB free trial
@@ -1227,6 +1305,19 @@ forms:
         optional: true
         configurable: true
         description: (Optional) Namespace for buckets. If empty, buckets will be created in namespace specified in ECS Connection Details
+      - name: bucket_tags
+        label: Bucket Tags
+        type: string
+        optional: true
+        configurable: true
+        description: (Optional) Tags for buckets. Represented as key-value pairs in format 'key1=value1,key2=value2'
+        constraints:
+          - must_match_regex: '^[\w\d\+\-\.\_\:\/\@\s\=\,]*$'
+            error_message: 'Allowed characters are letters, numbers, and spaces representable in UTF-8, and the following characters: + - . _ : / @'
+          - must_match_regex: '^(.{0,128}\s?=\s?.{0,256}\s?,\s?)*.{0,128}\s?=\s?.{0,256}$|^$'
+            error_message: 'A tag key can be up to 128 Unicode characters in length, and tag values can be up to 256 Unicode characters in length'
+          - must_match_regex: '^([\w\d\+\-\.\_\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\:\/\@\s]{0,256}\s?,\s?)*[\w\d\+\-\.\_\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\:\/\@\s]{0,256}$|^$'
+            error_message: Tag pairs should be presented in format 'key1=value1,key2=value2'
     - name: namespace_option
       select_value: Namespace
       property_blueprints:
@@ -1366,6 +1457,19 @@ forms:
       optional: true
       configurable: true
       description: (Optional) Namespace for new buckets. If empty, buckets are created in namespace specified in ECS Connection Details or in service config.
+    - name: bucket_tags
+      label: Bucket Tags
+      type: string
+      optional: true
+      configurable: true
+      description: (Optional) Tags for buckets. Represented as key-value pairs in format 'key1=value1,key2=value2'
+      constraints:
+        - must_match_regex: '^[\w\d\+\-\.\_\:\/\@\s\=\,]*$'
+          error_message: 'Allowed characters are letters, numbers, and spaces representable in UTF-8, and the following characters: + - . _ : / @'
+        - must_match_regex: '^(.{0,128}\s?=\s?.{0,256}\s?,\s?)*.{0,128}\s?=\s?.{0,256}$|^$'
+          error_message: 'A tag key can be up to 128 Unicode characters in length, and tag values can be up to 256 Unicode characters in length'
+        - must_match_regex: '^([\w\d\+\-\.\_\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\:\/\@\s]{0,256}\s?,\s?)*[\w\d\+\-\.\_\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\:\/\@\s]{0,256}$|^$'
+          error_message: Tag pairs should be presented in format 'key1=value1,key2=value2'
     default:
     - name: 5gb
       description: 5 GB free trial
@@ -1507,6 +1611,19 @@ forms:
         optional: true
         configurable: true
         description: (Optional) Namespace for buckets. If empty, buckets will be created in namespace specified in ECS Connection Details
+      - name: bucket_tags
+        label: Bucket Tags
+        type: string
+        optional: true
+        configurable: true
+        description: (Optional) Tags for buckets. Represented as key-value pairs in format 'key1=value1,key2=value2'
+        constraints:
+          - must_match_regex: '^[\w\d\+\-\.\_\:\/\@\s\=\,]*$'
+            error_message: 'Allowed characters are letters, numbers, and spaces representable in UTF-8, and the following characters: + - . _ : / @'
+          - must_match_regex: '^(.{0,128}\s?=\s?.{0,256}\s?,\s?)*.{0,128}\s?=\s?.{0,256}$|^$'
+            error_message: 'A tag key can be up to 128 Unicode characters in length, and tag values can be up to 256 Unicode characters in length'
+          - must_match_regex: '^([\w\d\+\-\.\_\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\:\/\@\s]{0,256}\s?,\s?)*[\w\d\+\-\.\_\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\:\/\@\s]{0,256}$|^$'
+            error_message: Tag pairs should be presented in format 'key1=value1,key2=value2'
     - name: namespace_option
       select_value: Namespace
       property_blueprints:
@@ -1646,6 +1763,19 @@ forms:
       optional: true
       configurable: true
       description: (Optional) Namespace for new buckets. If empty, buckets are created in namespace specified in ECS Connection Details or in service config.
+    - name: bucket_tags
+      label: Bucket Tags
+      type: string
+      optional: true
+      configurable: true
+      description: (Optional) Tags for buckets. Represented as key-value pairs in format 'key1=value1,key2=value2'
+      constraints:
+        - must_match_regex: '^[\w\d\+\-\.\_\:\/\@\s\=\,]*$'
+          error_message: 'Allowed characters are letters, numbers, and spaces representable in UTF-8, and the following characters: + - . _ : / @'
+        - must_match_regex: '^(.{0,128}\s?=\s?.{0,256}\s?,\s?)*.{0,128}\s?=\s?.{0,256}$|^$'
+          error_message: 'A tag key can be up to 128 Unicode characters in length, and tag values can be up to 256 Unicode characters in length'
+        - must_match_regex: '^([\w\d\+\-\.\_\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\:\/\@\s]{0,256}\s?,\s?)*[\w\d\+\-\.\_\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\:\/\@\s]{0,256}$|^$'
+          error_message: Tag pairs should be presented in format 'key1=value1,key2=value2'
     default:
     - name: 5gb
       description: 5 GB free trial
