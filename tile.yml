@@ -432,6 +432,46 @@ forms:
         optional: true
         configurable: true
         description: (Optional) BaseURL name to use for namespace access url construction. If empty, value specified in ECS Connection Details will be used
+  - name: catalog_search_metadata_collection0
+    label: Customize Search Metadata for this Service
+    type: collection
+    configurable: true
+    optional: true
+    property_blueprints:
+    - name: name
+      label: Name
+      type: string
+      configurable: true
+      description: "Name of Search Metadata. Name of User provided metadata should start with prefix 'x-amz-meta-', while System metadata should be one of following: ObjectName, Owner, Size, CreateTime, LastModified"
+      constraints:
+      - must_match_regex: '^ObjectName$|^Owner$|^Size$|^CreateTime$|^LastModified$|^x-amz-meta-.*$'
+        error_message: "Name of User provided metadata should start with prefix 'x-amz-meta-', while System metadata should be one of following: ObjectName, Owner, Size, CreateTime, LastModified"
+    - name: type
+      label: Type
+      type: dropdown_select
+      default: system
+      configurable: true
+      description: Type of Search Metadata
+      options:
+      - name: System
+        label: System
+      - name: User
+        label: User
+    - name: datatype
+      label: Data Type
+      type: dropdown_select
+      default: string
+      configurable: true
+      description: "Data Type of Search Metadata. Provided System Metadata have stated data type: ObjectName - String, Owner - String, Size - Integer, CreateTime - DateTime, LastModified - DateTime"
+      options:
+      - name: String
+        label: String
+      - name: Integer
+        label: Integer
+      - name: Decimal
+        label: Decimal
+      - name: DateTime
+        label: DateTime
   - name: catalog_plan_collection0
     label: Customize Plans for this Service
     type: collection
@@ -739,6 +779,46 @@ forms:
         optional: true
         configurable: true
         description: (Optional) BaseURL name to use for namespace access url construction. If empty, value specified in ECS Connection Details will be used
+  - name: catalog_search_metadata_collection1
+    label: Customize Search Metadata for this Service
+    type: collection
+    configurable: true
+    optional: true
+    property_blueprints:
+      - name: name
+        label: Name
+        type: string
+        configurable: true
+        description: "Name of Search Metadata. Name of User provided metadata should start with prefix 'x-amz-meta-', while System metadata should be one of following: ObjectName, Owner, Size, CreateTime, LastModified"
+        constraints:
+        - must_match_regex: '^ObjectName$|^Owner$|^Size$|^CreateTime$|^LastModified$|^x-amz-meta-.*$'
+          error_message: "Name of User provided metadata should start with prefix 'x-amz-meta-', while System metadata should be one of following: ObjectName, Owner, Size, CreateTime, LastModified"
+      - name: type
+        label: Type
+        type: dropdown_select
+        default: system
+        configurable: true
+        description: Type of Search Metadata
+        options:
+          - name: System
+            label: System
+          - name: User
+            label: User
+      - name: datatype
+        label: Data Type
+        type: dropdown_select
+        default: string
+        configurable: true
+        description: "Data Type of Search Metadata. Provided System Metadata have stated data type: ObjectName - String, Owner - String, Size - Integer, CreateTime - DateTime, LastModified - DateTime"
+        options:
+          - name: String
+            label: String
+          - name: Integer
+            label: Integer
+          - name: Decimal
+            label: Decimal
+          - name: DateTime
+            label: DateTime
   - name: catalog_plan_collection1
     label: Customize Plans for this Service
     type: collection
@@ -1045,6 +1125,46 @@ forms:
         optional: true
         configurable: true
         description: (Optional) BaseURL name to use for namespace access url construction. If empty, value specified in ECS Connection Details will be used
+  - name: catalog_search_metadata_collection2
+    label: Customize Search Metadata for this Service
+    type: collection
+    configurable: true
+    optional: true
+    property_blueprints:
+      - name: name
+        label: Name
+        type: string
+        configurable: true
+        description: "Name of Search Metadata. Name of User provided metadata should start with prefix 'x-amz-meta-', while System metadata should be one of following: ObjectName, Owner, Size, CreateTime, LastModified"
+        constraints:
+          - must_match_regex: '^ObjectName$|^Owner$|^Size$|^CreateTime$|^LastModified$|^x-amz-meta-.*$'
+            error_message: "Name of User provided metadata should start with prefix 'x-amz-meta-', while System metadata should be one of following: ObjectName, Owner, Size, CreateTime, LastModified"
+      - name: type
+        label: Type
+        type: dropdown_select
+        default: system
+        configurable: true
+        description: Type of Search Metadata
+        options:
+          - name: System
+            label: System
+          - name: User
+            label: User
+      - name: datatype
+        label: Data Type
+        type: dropdown_select
+        default: string
+        configurable: true
+        description: "Data Type of Search Metadata. Provided System Metadata have stated data type: ObjectName - String, Owner - String, Size - Integer, CreateTime - DateTime, LastModified - DateTime"
+        options:
+          - name: String
+            label: String
+          - name: Integer
+            label: Integer
+          - name: Decimal
+            label: Decimal
+          - name: DateTime
+            label: DateTime
   - name: catalog_plan_collection2
     label: Customize Plans for this Service
     type: collection
@@ -1351,6 +1471,46 @@ forms:
         optional: true
         configurable: true
         description: (Optional) BaseURL name to use for namespace access url construction. If empty, value specified in ECS Connection Details will be used
+  - name: catalog_search_metadata_collection3
+    label: Customize Search Metadata for this Service
+    type: collection
+    configurable: true
+    optional: true
+    property_blueprints:
+      - name: name
+        label: Name
+        type: string
+        configurable: true
+        description: "Name of Search Metadata. Name of User provided metadata should start with prefix 'x-amz-meta-', while System metadata should be one of following: ObjectName, Owner, Size, CreateTime, LastModified"
+        constraints:
+          - must_match_regex: '^ObjectName$|^Owner$|^Size$|^CreateTime$|^LastModified$|^x-amz-meta-.*$'
+            error_message: "Name of User provided metadata should start with prefix 'x-amz-meta-', while System metadata should be one of following: ObjectName, Owner, Size, CreateTime, LastModified"
+      - name: type
+        label: Type
+        type: dropdown_select
+        default: system
+        configurable: true
+        description: Type of Search Metadata
+        options:
+          - name: System
+            label: System
+          - name: User
+            label: User
+      - name: datatype
+        label: Data Type
+        type: dropdown_select
+        default: string
+        configurable: true
+        description: "Data Type of Search Metadata. Provided System Metadata have stated data type: ObjectName - String, Owner - String, Size - Integer, CreateTime - DateTime, LastModified - DateTime"
+        options:
+          - name: String
+            label: String
+          - name: Integer
+            label: Integer
+          - name: Decimal
+            label: Decimal
+          - name: Datetime
+            label: Datetime
   - name: catalog_plan_collection3
     label: Customize Plans for this Service
     type: collection
@@ -1657,6 +1817,46 @@ forms:
         optional: true
         configurable: true
         description: (Optional) BaseURL name to use for namespace access url construction. If empty, value specified in ECS Connection Details will be used
+  - name: catalog_search_metadata_collection4
+    label: Customize Search Metadata for this Service
+    type: collection
+    configurable: true
+    optional: true
+    property_blueprints:
+      - name: name
+        label: Name
+        type: string
+        configurable: true
+        description: "Name of Search Metadata. Name of User provided metadata should start with prefix 'x-amz-meta-', while System metadata should be one of following: ObjectName, Owner, Size, CreateTime, LastModified"
+        constraints:
+          - must_match_regex: '^ObjectName$|^Owner$|^Size$|^CreateTime$|^LastModified$|^x-amz-meta-.*$'
+            error_message: "Name of User provided metadata should start with prefix 'x-amz-meta-', while System metadata should be one of following: ObjectName, Owner, Size, CreateTime, LastModified"
+      - name: type
+        label: Type
+        type: dropdown_select
+        default: system
+        configurable: true
+        description: Type of Search Metadata
+        options:
+          - name: System
+            label: System
+          - name: User
+            label: User
+      - name: datatype
+        label: Data Type
+        type: dropdown_select
+        default: string
+        configurable: true
+        description: "Data Type of Search Metadata. Provided System Metadata have stated data type: ObjectName - String, Owner - String, Size - Integer, CreateTime - DateTime, LastModified - DateTime"
+        options:
+          - name: String
+            label: String
+          - name: Integer
+            label: Integer
+          - name: Decimal
+            label: Decimal
+          - name: DateTime
+            label: DateTime
   - name: catalog_plan_collection4
     label: Customize Plans for this Service
     type: collection
