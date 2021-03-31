@@ -368,6 +368,12 @@ forms:
         optional: true
         configurable: true
         description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services. Setting default retention in the service will _override_ default retention at within a plan.
+      - name: expiration
+        label: Expiration (Days)
+        type: integer
+        optional: true
+        configurable: true
+        description: The default object number of days an object should be retained before removal. If the lifecycle expires before the retention period expires, the object will not be deleted until the retention period is over. This only applies to bucket services.
       - name: encrypted
         label: Enable Encryption
         type: boolean
@@ -715,6 +721,12 @@ forms:
         optional: true
         configurable: true
         description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services. Setting default retention in the service will _override_ default retention at within a plan.
+      - name: expiration
+        label: Expiration (Days)
+        type: integer
+        optional: true
+        configurable: true
+        description: The default object number of days an object should be retained before removal. If the lifecycle expires before the retention period expires, the object will not be deleted until the retention period is over. This only applies to bucket services.
       - name: encrypted
         label: Enable Encryption
         type: boolean
@@ -1061,6 +1073,12 @@ forms:
         optional: true
         configurable: true
         description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services. Setting default retention in the service will _override_ default retention at within a plan.
+      - name: expiration
+        label: Expiration (Days)
+        type: integer
+        optional: true
+        configurable: true
+        description: The default object number of days an object should be retained before removal. If the lifecycle expires before the retention period expires, the object will not be deleted until the retention period is over. This only applies to bucket services.
       - name: encrypted
         label: Enable Encryption
         type: boolean
@@ -1407,6 +1425,12 @@ forms:
         optional: true
         configurable: true
         description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services. Setting default retention in the service will _override_ default retention at within a plan.
+      - name: expiration
+        label: Expiration (Days)
+        type: integer
+        optional: true
+        configurable: true
+        description: The default object number of days an object should be retained before removal. If the lifecycle expires before the retention period expires, the object will not be deleted until the retention period is over. This only applies to bucket services.
       - name: encrypted
         label: Enable Encryption
         type: boolean
@@ -1753,6 +1777,12 @@ forms:
         optional: true
         configurable: true
         description: The default object number of seconds an object should be retained. The object cannot be deleted until that time has elapsed. This can be set to -1 for infinite retention. This only applies to bucket services. Setting default retention in the service will _override_ default retention at within a plan.
+      - name: expiration
+        label: Expiration (Days)
+        type: integer
+        optional: true
+        configurable: true
+        description: The default object number of days an object should be retained before removal. If the lifecycle expires before the retention period expires, the object will not be deleted until the retention period is over. This only applies to bucket services.
       - name: encrypted
         label: Enable Encryption
         type: boolean
