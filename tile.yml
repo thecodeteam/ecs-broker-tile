@@ -2,11 +2,11 @@
 # The high-level description of your tile.
 # Replace these properties with real values.
 
-name: ecs-service-broker-pre-release-2-2-0
+name: ecs-service-broker
 org: ecs-broker-service-org
 space: ecs-broker-service-space
 icon_file: resources/icon.png
-label: ECS Broker pre-release 2.2.0
+label: DELL EMC ECS Broker
 description: ECS Broker for VMware Tanzu
 metadata_version: 1.8                 # Optional, defaults to 1.8
 rank: 50
