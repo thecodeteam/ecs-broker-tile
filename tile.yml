@@ -61,7 +61,7 @@ packages:
     memory: 1G
     env:
       JBP_CONFIG_OPEN_JDK_JRE: "{ jre: { version: '11.+' } }"
-      BROKER_IGNORE_SSL_VALIDATION: 'true'
+      BROKER_IGNORE_SSL_VALIDATION: 'false'
 
       catalog.services[0].id: (( .properties.catalog_services_0_guid.value ))
       catalog.services[0].active: (( .properties.catalog_services_0_active.value ))
