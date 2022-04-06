@@ -236,16 +236,25 @@ forms:
       type: string
       configurable: true
       optional: true
+    - name: broker_use_v4_signer
+      label: AWS Signature Version 4
+      description: Use AWS Signature Version 4 for authentication (using version 2 if not set)
+      type: boolean
+      default: false
+      configurable: true
 - name: broker_service_details
   label: Service Broker Settings
   description: Service Broker Webservice Settings
   properties:
     - name: broker_prefix
       label: Broker Prefix
-      description: (Optional) Enter a string used to prefix all broker created buckets and users. Defaults to 'ecs-cf-broker-'
       type: string
       configurable: true
       optional: true
+      description: (Optional) Enter a string used to prefix all broker created buckets and users. Defaults to 'ecs-cf-broker-'
+      constraints:
+        - must_match_regex: '^[^A-Z\-\_][a-z0-9\.\-\_]*$'
+          error_message: 'Allowed characters are letters (only lowercase), numbers and character . and the following characters not from the beginning: - _'
     - name: broker_repository_endpoint
       label: Repository Endpoint
       description: (Optional) Enter the URI/endpoint for the ECS S3 API that should be used for storing broker metadata.  Defaults to the object endpoint or base URL
