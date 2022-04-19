@@ -236,7 +236,7 @@ forms:
       type: string
       configurable: true
       optional: true
-    - name: broker_use_v4_signer
+    - name: broker_aws_signature_v4
       label: AWS Signature Version 4
       description: Use AWS Signature Version 4 for authentication (using version 2 if not set)
       type: boolean
