@@ -223,7 +223,7 @@ forms:
         property_blueprints:
         - name: certificate
           label: ECS Management Certificate
-          description: SSL certificate to enable broker to communicate with ECS API Management. This is required for self-signed certificates, but may not be needed when the ECS is configured with a signed certificate from a trusted source
+          description: SSL certificate to enable broker to communicate with ECS Management API. This is required for self-signed certificates, but may not be needed when the ECS is configured with a signed certificate from a trusted source
           type: text
           configurable: true
           optional: true
