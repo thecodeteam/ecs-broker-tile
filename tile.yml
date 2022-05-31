@@ -223,7 +223,7 @@ forms:
         property_blueprints:
         - name: certificate
           label: ECS Management Certificate
-          description: SSL certificate to enable broker to communicate with ECS API Managment. This is required for self-signed certificates, but may not be needed when the ECS is configured with a signed certificate from a trusted source
+          description: SSL certificate to enable broker to communicate with ECS Management API. This is required for self-signed certificates, but may not be needed when the ECS is configured with a signed certificate from a trusted source
           type: text
           configurable: true
           optional: true
@@ -411,11 +411,11 @@ forms:
         configurable: true
         description: (Optional) Tags for buckets. Represented as key-value pairs in format 'key1=value1,key2=value2'
         constraints:
-          - must_match_regex: '^[\w\d\+\-\.\_\:\/\@\s\=\,]*$'
+          - must_match_regex: '^[\w\d\+\-\.\_\:\/\@\s\=\,\$]*$'
             error_message: 'Allowed characters are letters, numbers, and spaces representable in UTF-8, and the following characters: + - . _ : / @'
           - must_match_regex: '^(.{0,128}\s?=\s?.{0,256}\s?,\s?)*.{0,128}\s?=\s?.{0,256}$|^$'
             error_message: 'A tag key can be up to 128 Unicode characters in length, and tag values can be up to 256 Unicode characters in length'
-          - must_match_regex: '^([\w\d\+\-\.\_\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\:\/\@\s]{0,256}\s?,\s?)*[\w\d\+\-\.\_\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\:\/\@\s]{0,256}$|^$'
+          - must_match_regex: '^([\w\d\+\-\.\_\$\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\$\:\/\@\s]{0,256}\s?,\s?)*[\w\d\+\-\.\_\$\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\$\:\/\@\s]{0,256}$|^$'
             error_message: Tag pairs should be presented in format 'key1=value1,key2=value2'
     - name: namespace_option
       select_value: Namespace
@@ -603,11 +603,11 @@ forms:
       configurable: true
       description: (Optional) Tags for buckets. Represented as key-value pairs in format 'key1=value1,key2=value2'
       constraints:
-        - must_match_regex: '^[\w\d\+\-\.\_\:\/\@\s\=\,]*$'
+        - must_match_regex: '^[\w\d\+\-\.\_\:\/\@\s\=\,\$]*$'
           error_message: 'Allowed characters are letters, numbers, and spaces representable in UTF-8, and the following characters: + - . _ : / @'
         - must_match_regex: '^(.{0,128}\s?=\s?.{0,256}\s?,\s?)*.{0,128}\s?=\s?.{0,256}$|^$'
           error_message: 'A tag key can be up to 128 Unicode characters in length, and tag values can be up to 256 Unicode characters in length'
-        - must_match_regex: '^([\w\d\+\-\.\_\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\:\/\@\s]{0,256}\s?,\s?)*[\w\d\+\-\.\_\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\:\/\@\s]{0,256}$|^$'
+        - must_match_regex: '^([\w\d\+\-\.\_\$\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\$\:\/\@\s]{0,256}\s?,\s?)*[\w\d\+\-\.\_\$\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\$\:\/\@\s]{0,256}$|^$'
           error_message: Tag pairs should be presented in format 'key1=value1,key2=value2'
     default:
     - name: 5gb
@@ -764,11 +764,11 @@ forms:
         configurable: true
         description: (Optional) Tags for buckets. Represented as key-value pairs in format 'key1=value1,key2=value2'
         constraints:
-          - must_match_regex: '^[\w\d\+\-\.\_\:\/\@\s\=\,]*$'
+          - must_match_regex: '^[\w\d\+\-\.\_\:\/\@\s\=\,\$]*$'
             error_message: 'Allowed characters are letters, numbers, and spaces representable in UTF-8, and the following characters: + - . _ : / @'
           - must_match_regex: '^(.{0,128}\s?=\s?.{0,256}\s?,\s?)*.{0,128}\s?=\s?.{0,256}$|^$'
             error_message: 'A tag key can be up to 128 Unicode characters in length, and tag values can be up to 256 Unicode characters in length'
-          - must_match_regex: '^([\w\d\+\-\.\_\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\:\/\@\s]{0,256}\s?,\s?)*[\w\d\+\-\.\_\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\:\/\@\s]{0,256}$|^$'
+          - must_match_regex: '^([\w\d\+\-\.\_\$\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\$\:\/\@\s]{0,256}\s?,\s?)*[\w\d\+\-\.\_\$\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\$\:\/\@\s]{0,256}$|^$'
             error_message: Tag pairs should be presented in format 'key1=value1,key2=value2'
     - name: namespace_option
       select_value: Namespace
@@ -956,11 +956,11 @@ forms:
       configurable: true
       description: (Optional) Tags for buckets. Represented as key-value pairs in format 'key1=value1,key2=value2'
       constraints:
-        - must_match_regex: '^[\w\d\+\-\.\_\:\/\@\s\=\,]*$'
+        - must_match_regex: '^[\w\d\+\-\.\_\:\/\@\s\=\,\$]*$'
           error_message: 'Allowed characters are letters, numbers, and spaces representable in UTF-8, and the following characters: + - . _ : / @'
         - must_match_regex: '^(.{0,128}\s?=\s?.{0,256}\s?,\s?)*.{0,128}\s?=\s?.{0,256}$|^$'
           error_message: 'A tag key can be up to 128 Unicode characters in length, and tag values can be up to 256 Unicode characters in length'
-        - must_match_regex: '^([\w\d\+\-\.\_\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\:\/\@\s]{0,256}\s?,\s?)*[\w\d\+\-\.\_\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\:\/\@\s]{0,256}$|^$'
+        - must_match_regex: '^([\w\d\+\-\.\_\$\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\$\:\/\@\s]{0,256}\s?,\s?)*[\w\d\+\-\.\_\$\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\$\:\/\@\s]{0,256}$|^$'
           error_message: Tag pairs should be presented in format 'key1=value1,key2=value2'
     default:
     - name: 5gb
@@ -1116,11 +1116,11 @@ forms:
         configurable: true
         description: (Optional) Tags for buckets. Represented as key-value pairs in format 'key1=value1,key2=value2'
         constraints:
-          - must_match_regex: '^[\w\d\+\-\.\_\:\/\@\s\=\,]*$'
+          - must_match_regex: '^[\w\d\+\-\.\_\:\/\@\s\=\,\$]*$'
             error_message: 'Allowed characters are letters, numbers, and spaces representable in UTF-8, and the following characters: + - . _ : / @'
           - must_match_regex: '^(.{0,128}\s?=\s?.{0,256}\s?,\s?)*.{0,128}\s?=\s?.{0,256}$|^$'
             error_message: 'A tag key can be up to 128 Unicode characters in length, and tag values can be up to 256 Unicode characters in length'
-          - must_match_regex: '^([\w\d\+\-\.\_\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\:\/\@\s]{0,256}\s?,\s?)*[\w\d\+\-\.\_\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\:\/\@\s]{0,256}$|^$'
+          - must_match_regex: '^([\w\d\+\-\.\_\$\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\$\:\/\@\s]{0,256}\s?,\s?)*[\w\d\+\-\.\_\$\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\$\:\/\@\s]{0,256}$|^$'
             error_message: Tag pairs should be presented in format 'key1=value1,key2=value2'
     - name: namespace_option
       select_value: Namespace
@@ -1308,11 +1308,11 @@ forms:
       configurable: true
       description: (Optional) Tags for buckets. Represented as key-value pairs in format 'key1=value1,key2=value2'
       constraints:
-        - must_match_regex: '^[\w\d\+\-\.\_\:\/\@\s\=\,]*$'
+        - must_match_regex: '^[\w\d\+\-\.\_\:\/\@\s\=\,\$]*$'
           error_message: 'Allowed characters are letters, numbers, and spaces representable in UTF-8, and the following characters: + - . _ : / @'
         - must_match_regex: '^(.{0,128}\s?=\s?.{0,256}\s?,\s?)*.{0,128}\s?=\s?.{0,256}$|^$'
           error_message: 'A tag key can be up to 128 Unicode characters in length, and tag values can be up to 256 Unicode characters in length'
-        - must_match_regex: '^([\w\d\+\-\.\_\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\:\/\@\s]{0,256}\s?,\s?)*[\w\d\+\-\.\_\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\:\/\@\s]{0,256}$|^$'
+        - must_match_regex: '^([\w\d\+\-\.\_\$\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\$\:\/\@\s]{0,256}\s?,\s?)*[\w\d\+\-\.\_\$\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\$\:\/\@\s]{0,256}$|^$'
           error_message: Tag pairs should be presented in format 'key1=value1,key2=value2'
     default:
     - name: 5gb
@@ -1468,11 +1468,11 @@ forms:
         configurable: true
         description: (Optional) Tags for buckets. Represented as key-value pairs in format 'key1=value1,key2=value2'
         constraints:
-          - must_match_regex: '^[\w\d\+\-\.\_\:\/\@\s\=\,]*$'
+          - must_match_regex: '^[\w\d\+\-\.\_\:\/\@\s\=\,\$]*$'
             error_message: 'Allowed characters are letters, numbers, and spaces representable in UTF-8, and the following characters: + - . _ : / @'
           - must_match_regex: '^(.{0,128}\s?=\s?.{0,256}\s?,\s?)*.{0,128}\s?=\s?.{0,256}$|^$'
             error_message: 'A tag key can be up to 128 Unicode characters in length, and tag values can be up to 256 Unicode characters in length'
-          - must_match_regex: '^([\w\d\+\-\.\_\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\:\/\@\s]{0,256}\s?,\s?)*[\w\d\+\-\.\_\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\:\/\@\s]{0,256}$|^$'
+          - must_match_regex: '^([\w\d\+\-\.\_\$\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\$\:\/\@\s]{0,256}\s?,\s?)*[\w\d\+\-\.\_\$\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\$\:\/\@\s]{0,256}$|^$'
             error_message: Tag pairs should be presented in format 'key1=value1,key2=value2'
     - name: namespace_option
       select_value: Namespace
@@ -1660,11 +1660,11 @@ forms:
       configurable: true
       description: (Optional) Tags for buckets. Represented as key-value pairs in format 'key1=value1,key2=value2'
       constraints:
-        - must_match_regex: '^[\w\d\+\-\.\_\:\/\@\s\=\,]*$'
+        - must_match_regex: '^[\w\d\+\-\.\_\:\/\@\s\=\,\$]*$'
           error_message: 'Allowed characters are letters, numbers, and spaces representable in UTF-8, and the following characters: + - . _ : / @'
         - must_match_regex: '^(.{0,128}\s?=\s?.{0,256}\s?,\s?)*.{0,128}\s?=\s?.{0,256}$|^$'
           error_message: 'A tag key can be up to 128 Unicode characters in length, and tag values can be up to 256 Unicode characters in length'
-        - must_match_regex: '^([\w\d\+\-\.\_\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\:\/\@\s]{0,256}\s?,\s?)*[\w\d\+\-\.\_\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\:\/\@\s]{0,256}$|^$'
+        - must_match_regex: '^([\w\d\+\-\.\_\$\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\$\:\/\@\s]{0,256}\s?,\s?)*[\w\d\+\-\.\_\$\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\$\:\/\@\s]{0,256}$|^$'
           error_message: Tag pairs should be presented in format 'key1=value1,key2=value2'
     default:
     - name: 5gb
@@ -1820,11 +1820,11 @@ forms:
         configurable: true
         description: (Optional) Tags for buckets. Represented as key-value pairs in format 'key1=value1,key2=value2'
         constraints:
-          - must_match_regex: '^[\w\d\+\-\.\_\:\/\@\s\=\,]*$'
+          - must_match_regex: '^[\w\d\+\-\.\_\:\/\@\s\=\,\$]*$'
             error_message: 'Allowed characters are letters, numbers, and spaces representable in UTF-8, and the following characters: + - . _ : / @'
           - must_match_regex: '^(.{0,128}\s?=\s?.{0,256}\s?,\s?)*.{0,128}\s?=\s?.{0,256}$|^$'
             error_message: 'A tag key can be up to 128 Unicode characters in length, and tag values can be up to 256 Unicode characters in length'
-          - must_match_regex: '^([\w\d\+\-\.\_\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\:\/\@\s]{0,256}\s?,\s?)*[\w\d\+\-\.\_\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\:\/\@\s]{0,256}$|^$'
+          - must_match_regex: '^([\w\d\+\-\.\_\$\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\$\:\/\@\s]{0,256}\s?,\s?)*[\w\d\+\-\.\_\$\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\$\:\/\@\s]{0,256}$|^$'
             error_message: Tag pairs should be presented in format 'key1=value1,key2=value2'
     - name: namespace_option
       select_value: Namespace
@@ -2012,11 +2012,11 @@ forms:
       configurable: true
       description: (Optional) Tags for buckets. Represented as key-value pairs in format 'key1=value1,key2=value2'
       constraints:
-        - must_match_regex: '^[\w\d\+\-\.\_\:\/\@\s\=\,]*$'
+        - must_match_regex: '^[\w\d\+\-\.\_\:\/\@\s\=\,\$]*$'
           error_message: 'Allowed characters are letters, numbers, and spaces representable in UTF-8, and the following characters: + - . _ : / @'
         - must_match_regex: '^(.{0,128}\s?=\s?.{0,256}\s?,\s?)*.{0,128}\s?=\s?.{0,256}$|^$'
           error_message: 'A tag key can be up to 128 Unicode characters in length, and tag values can be up to 256 Unicode characters in length'
-        - must_match_regex: '^([\w\d\+\-\.\_\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\:\/\@\s]{0,256}\s?,\s?)*[\w\d\+\-\.\_\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\:\/\@\s]{0,256}$|^$'
+        - must_match_regex: '^([\w\d\+\-\.\_\$\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\$\:\/\@\s]{0,256}\s?,\s?)*[\w\d\+\-\.\_\$\:\/\@\s]{0,128}\s?=\s?[\w\d\+\-\.\_\$\:\/\@\s]{0,256}$|^$'
           error_message: Tag pairs should be presented in format 'key1=value1,key2=value2'
     default:
     - name: 5gb
