@@ -578,6 +578,12 @@ forms:
       default: true
       configurable: true
       description: This allows a bucket or namespace to remain online even if the primary site is offline. This is typically enabled, but can be disabled if strict data consistency is required, since actual replication is asynchronous
+    - name: ado_read_only
+      label: Enable ADO Read-Only
+      type: boolean
+      default: false
+      configurable: true
+      description: Normally, when "Access During Outage" is enabled, the bucket will continue to be writeable if the primary site is offline. This option will force the bucket to become read-only in that situation, to avoid "split-brain" conflicts (when writes happen to both sides of a network segmentation)
     - name: default_retention
       label: Default Retention (Seconds)
       type: integer
@@ -931,6 +937,12 @@ forms:
       default: true
       configurable: true
       description: This allows a bucket or namespace to remain online even if the primary site is offline. This is typically enabled, but can be disabled if strict data consistency is required, since actual replication is asynchronous
+    - name: ado_read_only
+      label: Enable ADO Read-Only
+      type: boolean
+      default: false
+      configurable: true
+      description: Normally, when "Access During Outage" is enabled, the bucket will continue to be writeable if the primary site is offline. This option will force the bucket to become read-only in that situation, to avoid "split-brain" conflicts (when writes happen to both sides of a network segmentation)
     - name: default_retention
       label: Default Retention (Seconds)
       type: integer
@@ -1283,6 +1295,12 @@ forms:
       default: true
       configurable: true
       description: This allows a bucket or namespace to remain online even if the primary site is offline. This is typically enabled, but can be disabled if strict data consistency is required, since actual replication is asynchronous
+    - name: ado_read_only
+      label: Enable ADO Read-Only
+      type: boolean
+      default: false
+      configurable: true
+      description: Normally, when "Access During Outage" is enabled, the bucket will continue to be writeable if the primary site is offline. This option will force the bucket to become read-only in that situation, to avoid "split-brain" conflicts (when writes happen to both sides of a network segmentation)
     - name: default_retention
       label: Default Retention (Seconds)
       type: integer
@@ -1635,6 +1653,12 @@ forms:
       default: true
       configurable: true
       description: This allows a bucket or namespace to remain online even if the primary site is offline. This is typically enabled, but can be disabled if strict data consistency is required, since actual replication is asynchronous
+    - name: ado_read_only
+      label: Enable ADO Read-Only
+      type: boolean
+      default: false
+      configurable: true
+      description: Normally, when "Access During Outage" is enabled, the bucket will continue to be writeable if the primary site is offline. This option will force the bucket to become read-only in that situation, to avoid "split-brain" conflicts (when writes happen to both sides of a network segmentation)
     - name: default_retention
       label: Default Retention (Seconds)
       type: integer
@@ -1987,6 +2011,12 @@ forms:
       default: true
       configurable: true
       description: This allows a bucket or namespace to remain online even if the primary site is offline. This is typically enabled, but can be disabled if strict data consistency is required, since actual replication is asynchronous
+    - name: ado_read_only
+      label: Enable ADO Read-Only
+      type: boolean
+      default: false
+      configurable: true
+      description: Normally, when "Access During Outage" is enabled, the bucket will continue to be writeable if the primary site is offline. This option will force the bucket to become read-only in that situation, to avoid "split-brain" conflicts (when writes happen to both sides of a network segmentation)
     - name: default_retention
       label: Default Retention (Seconds)
       type: integer
