@@ -281,6 +281,13 @@ jobs:
           OPSMAN_ENV_FILE_NAME: ((opsman_env_file_name))
           CONFIG_FILE_NAME: ((apply_changes_file_name))
 
+      - put: cf-enable-service-access-((cf_foundation_name))
+        resource: ((cf_foundation_name))
+        params:
+          command: enable-service-access
+          service: ecs-bucket
+          access_org: ecs-broker-service-org
+
   - name: test-5gb-bucket
     serial_groups: [((cf_foundation_name))-test-bucket]
     plan:
@@ -418,3 +425,59 @@ jobs:
         params:
           command: delete-service
           service_instance: ecs-broker-test-bucket
+
+  - name: delete-product
+    plan:
+      - in_parallel:
+          - get: pipelines-repo
+            passed: [test-5gb-bucket, test-unlimited-bucket]
+          - get: pivnet-product
+            resource: pivnet-product
+            params:
+              globs:
+                - "*.pivotal"
+          - get: om-cli
+            params:
+              globs:
+                - "*linux-?.?.?"
+          - get: jq
+            params:
+              globs:
+                - "*linux64*"
+
+      - task: create-opsman-env
+        file: pipelines-repo/tasks/create-yml-file/task.yml
+        output_mapping:
+          output-folder: env
+        params:
+          DEBUG: ((debug))
+          OUTPUT_FILE_NAME: ((opsman_env_file_name))
+          PARAM_NAME: ((opsman_config))
+
+      - task: unstage-tile
+        file: pipelines-repo/tasks/unstage-product/task.yml
+        input_mapping:
+          env: env
+        params:
+          DEBUG: ((debug))
+          OPSMAN_ENV_FILE_NAME: ((opsman_env_file_name))
+          PRODUCT_NAME: ((product_slug))
+
+      - task: create-apply-changes-config
+        file: pipelines-repo/tasks/create-yml-file/task.yml
+        output_mapping:
+          output-folder: config
+        params:
+          DEBUG: ((debug))
+          OUTPUT_FILE_NAME: ((apply_changes_file_name))
+          PARAM_NAME: ((apply_changes_config))
+
+      - task: apply-changes
+        file: pipelines-repo/tasks/apply-changes/task.yml
+        input_mapping:
+          env: env
+          config: config
+        params:
+          DEBUG: ((debug))
+          OPSMAN_ENV_FILE_NAME: ((opsman_env_file_name))
+
