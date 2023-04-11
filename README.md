@@ -15,7 +15,7 @@ be configured from the PCF Ops Manager.
 
 ## Current Status
 
-Currently, the Tile version 2.0.3 is available for download via the [Pivotal Network product page](https://network.pivotal.io/products/ecs-service-broker/).
+Currently, the Tile version 2.3.1 is available for download via the [Pivotal Network product page](https://network.pivotal.io/products/ecs-service-broker/).
 
 ## Requirement
 
