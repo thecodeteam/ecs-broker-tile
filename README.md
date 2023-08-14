@@ -1,5 +1,8 @@
 # EMC ECS Service Broker PCF Tile
 
+## REPOSITORY HAS MOVED!!
+**_NOTE: This repository is no longer maintained - all updates past v2.3.1 will be located here: https://github.com/EMCECS/ecs-broker-tile_**
+
 ## Description
 
 This tile is created using the [Pivotal Tile Generator](https://docs.pivotal.io/tiledev/2-10/tile-generator.html) and deploys a service-broker application as a CF app. It deploys a sister project, the [ECS Service Broker](https://github.com/thecodeteam/ecs-cf-service-broker). For more instructions on using the broker once deployed, refer to the [Pivotal Network documentation](https://docs.pivotal.io/partners/ecs-service-broker/).
